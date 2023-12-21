@@ -21,9 +21,19 @@ class _MiniVideoViewState extends State<MiniVideoView> {
     super.initState();
     createNetUrlFromBytes();
     videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl))
-      ..initialize().then((value) => setState(() {}))
-      ..play()
-      ..setVolume(0);
+      ..initialize().then((value) {
+        if (videoPlayerController.value.hasError) {
+          debugPrint("Error initializing video: ${videoPlayerController.value.errorDescription}");
+        }
+        setState(() {});
+      })
+      ..setVolume(0)
+      ..play().then((value) {
+        if (videoPlayerController.value.hasError) {
+          debugPrint("Error initializing video: ${videoPlayerController.value.errorDescription}");
+        }
+        setState(() {});
+      });
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
       videoPlayerController: videoPlayerController,
@@ -47,10 +57,14 @@ class _MiniVideoViewState extends State<MiniVideoView> {
     videoUrl = url;
   }
 
+  Future<void> disposeView() async {
+    await videoPlayerController.dispose();
+    _customVideoPlayerController.dispose();
+  }
+
   @override
   void dispose() {
-    videoPlayerController.dispose();
-    _customVideoPlayerController.dispose();
+    disposeView();
     super.dispose();
   }
 
@@ -59,8 +73,8 @@ class _MiniVideoViewState extends State<MiniVideoView> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 180,
-        width: 180,
+        height: 200,
+        width: 200,
         color: Colors.white,
         child: CustomVideoPlayer(
           customVideoPlayerController: _customVideoPlayerController,

@@ -105,6 +105,8 @@ class IndexController extends GetxController {
           ///TapHandling
           if (index == 1) {
             tabHandleOfViewProduct();
+          } else if (index == 2) {
+            tabHandleOfAddProduct();
           } else if (index == 5) {
             tabHandleOfOverseeCategory();
           }
@@ -428,6 +430,7 @@ class IndexController extends GetxController {
   //Product Type Control
   List<String> productTypeList = ["Ring", "Earring", "Necklace", "Bracelet", "Diamond"];
   Rx<String?> selectedProductType = Rx<String?>(null);
+  Rx<String?> selectedProductCategoryID = Rx<String?>(null);
 
   //Diamond Detail Control
   List<String> stoneTypeList = ["Diamond", "Ruby", "Emerald", "Sapphire"];
@@ -701,6 +704,27 @@ class IndexController extends GetxController {
   //TextEditing Controller
   final GlobalKey<FormState> formValidateKey = GlobalKey<FormState>();
 
+  void tabHandleOfAddProduct() {
+    if (categoryListModel.value == null || categoryListModel.value?.data?.isEmpty == true) {
+      getCategoryList(isNotLoader: true);
+    }
+  }
+
+  void onProductTypeDropDownChanged({String? newVal}) {
+    debugPrint("onProductTypeDropDownChanged -------------->");
+    if (newVal != null) {
+      debugPrint("newVal: $newVal");
+      selectedProductCategoryID.value = newVal;
+      categoryListModel.value?.data?.forEach((ele) {
+        if (ele.id == selectedProductCategoryID.value) {
+          selectedProductType.value = ele.categoryName;
+        }
+      });
+    } else {
+      debugPrint("DropDown Value is Null");
+    }
+  }
+
   void onShapeTapped({required int index, required List<ShapeModel> shapeList}) {
     for (int i = 0; i < shapeList.length; i++) {
       if (i == index) {
@@ -796,12 +820,14 @@ class IndexController extends GetxController {
       Uint8List? fileBytes = result.files.first.bytes;
       String fileName = result.files.first.name;
 
-      if (visualDetailsList[index].videoBytesData.value == null) {
-        visualDetailsList[index].videoBytesData.value = MemoryFileModel(byteList: fileBytes.obs, fileName: fileName);
-      } else {
-        visualDetailsList[index].videoBytesData.value?.byteList.value = fileBytes;
-        visualDetailsList[index].videoBytesData.value?.fileName = fileName;
-      }
+      visualDetailsList[index].videoBytesData.value = MemoryFileModel(byteList: fileBytes.obs, fileName: fileName);
+
+      // if (visualDetailsList[index].videoBytesData.value == null) {
+      //
+      // } else {
+      //   visualDetailsList[index].videoBytesData.value?.byteList.value = fileBytes;
+      //   visualDetailsList[index].videoBytesData.value?.fileName = fileName;
+      // }
     } else {
       debugPrint("Video Picker Value is Null");
     }
@@ -833,11 +859,11 @@ class IndexController extends GetxController {
 
       ///BasicDetails
       passingData.addAll({
-        Consts.categoryIdKey: "",
+        Consts.categoryIdKey: selectedProductCategoryID.value,
         Consts.nameKey: productNameController.text,
         Consts.subTitleKey: productSubTitleController.text,
         Consts.descriptionKey: productDetailsController.text,
-        Consts.genderKey: selectedGender.value,
+        Consts.genderKey: selectedGender.value.toLowerCase(),
         Consts.generalPriceKey: productGeneralPriceController.text,
       });
 
@@ -861,7 +887,7 @@ class IndexController extends GetxController {
       diamondData.addInnerParamsIfNotNull(key: Consts.measurementsKey, value: measurementsController.text);
 
       passingData.addAll({
-        Consts.diamondDetailsKey: diamondData,
+        Consts.diamondDetailsKey: diamondData.toString(),
       });
 
       ///SideDiamondDetails
@@ -887,7 +913,7 @@ class IndexController extends GetxController {
         diamondData.addInnerParamsIfNotNull(key: Consts.measurementsKey, value: sideDiaMeasurementsController.text);
 
         passingData.addAll({
-          Consts.sideDiamondDetailsKey: sideDiamondData,
+          Consts.sideDiamondDetailsKey: sideDiamondData.toString(),
         });
       }
 
@@ -932,9 +958,11 @@ class IndexController extends GetxController {
         additionalData.addInnerParamsIfNotNull(key: Consts.claspTypeKey, value: selectedClaspType.value);
       }
 
-      passingData.addAll({
-        Consts.additionalDetailsKey: additionalData,
-      });
+      if (additionalData.isNotEmpty) {
+        passingData.addAll({
+          Consts.additionalDetailsKey: additionalData.toString(),
+        });
+      }
 
       ///VisualDetails
 
@@ -966,14 +994,20 @@ class IndexController extends GetxController {
       // dynamic data = await ApiProvider.commonProvider(
       //   url: URLs.addJewelleryUri,
       //   bodyData: passingData,
+      //   header: {
+      //     "Authorization":
+      //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
+      //   },
       // );
       //
       // if (data != null) {
       //   addJewelleryModel.value = AddJewelleryModel.fromJson(data);
       //
       //   if (addJewelleryModel.value?.success == true) {
+      //     MyToasts.successToast(toast: addJewelleryModel.value?.message ?? 'No message');
       //   } else {
       //     debugPrint("API Success is false");
+      //     MyToasts.errorToast(toast: addJewelleryModel.value?.message ?? 'No message');
       //   }
       // } else {
       //   debugPrint("Data is null");
@@ -1114,9 +1148,12 @@ class IndexController extends GetxController {
     getCategoryList();
   }
 
-  Future<void> getCategoryList() async {
+  Future<void> getCategoryList({bool? isNotLoader}) async {
     debugPrint("getCategoryList --------------------------->");
-    showLoader();
+
+    if (isNotLoader != true) {
+      showLoader();
+    }
 
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
@@ -1136,7 +1173,9 @@ class IndexController extends GetxController {
       debugPrint("Data is null");
     }
 
-    hideLoader();
+    if (isNotLoader != true) {
+      hideLoader();
+    }
   }
 
   void onDeleteCategoryTapped({required String categoryID}) {
@@ -1166,7 +1205,22 @@ class IndexController extends GetxController {
           if (deleteModel.success == true) {
             debugPrint("API Success is true");
             categoryListModel.value?.data?.removeWhere((element) => (element.id == categoryID) ? true : false);
-            ;
+
+            bool isCurrentElementPresentInList = false;
+            categoryListModel.value?.data?.forEach((ele) {
+              if (ele.id == selectedProductCategoryID.value) {
+                isCurrentElementPresentInList = true;
+              }
+            });
+            if (isCurrentElementPresentInList != true) {
+              if (selectedProductCategoryID.value != null) {
+                selectedProductCategoryID.value = null;
+              }
+              if (selectedProductType.value != null) {
+                selectedProductType.value = null;
+              }
+            }
+
             Get.back();
             MyToasts.successToast(toast: deleteModel.message ?? "No message");
           } else {

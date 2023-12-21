@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:admin_web_app/controllers/index_controller.dart';
+import 'package:admin_web_app/models/add_product/category_list_model.dart';
 import 'package:admin_web_app/models/color_model.dart';
 import 'package:admin_web_app/models/memory_file_model.dart';
 import 'package:admin_web_app/models/metal_model.dart';
@@ -128,12 +129,20 @@ class AddProductScreen extends StatelessWidget {
                                           ],
                                         ),
                                         const SizedBox(height: 5),
-                                        CommonDropDownButton(
-                                          selectedDropDownValue: controller.selectedProductType,
-                                          dropdownList: controller.productTypeList,
-                                          isNotEmpty: true,
-                                          isNotEmptyMessage: "Please select the product type.",
-                                        ),
+                                        Obx(() => CommonDropDownButton(
+                                              selectedDropDownValue: controller.selectedProductCategoryID,
+                                              items: controller.categoryListModel.value?.data?.map((CtDatum value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value.id,
+                                                  child: Text(value.categoryName.toString()),
+                                                );
+                                              }).toList(),
+                                              isNotEmpty: true,
+                                              isNotEmptyMessage: "Please select the product type.",
+                                              onChanged: (newVal) {
+                                                controller.onProductTypeDropDownChanged(newVal: newVal);
+                                              },
+                                            )),
                                       ],
                                     ),
                                   ),
@@ -2167,8 +2176,8 @@ class AddProductScreen extends StatelessWidget {
                                       ? Column(
                                           children: [
                                             Center(
-                                                child: Obx(() => MiniVideoView(
-                                                    bytes: element.videoBytesData.value?.byteList.value))),
+                                                child:
+                                                    MiniVideoView(bytes: element.videoBytesData.value?.byteList.value)),
                                             const SizedBox(height: 10),
                                           ],
                                         )
