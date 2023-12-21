@@ -21,8 +21,6 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-//Filtration in Search & Order, View Product Screen, View Order Screen,
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

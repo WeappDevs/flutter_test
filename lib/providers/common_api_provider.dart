@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:admin_web_app/providers/internet_provider.dart';
-import 'package:admin_web_app/utils/consts.dart';
+import 'package:admin_web_app/utils/common_componets/common_toast.dart';
 import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,25 +35,30 @@ class ApiProvider {
             return data;
           }
         } else if (response.statusCode == 101 || response.statusCode == 102) {
+          nullErrorToast();
           return null;
         } else if (response.statusCode == 401) {
           // Block by the admin(Authentication failed).
+          nullErrorToast();
           return null;
         } else if (response.statusCode == 404) {
           //for if there is no data found or something went wrong
           debugPrint("Body: ${response.body}");
+          nullErrorToast();
           return null;
         } else {
           return json.decode(response.body);
         }
       } on SocketException catch (e) {
         debugPrint("Socket Exception: $e");
+        nullErrorToast();
         return null;
       } on FormatException catch (e) {
         debugPrint("Format Exception: $e");
         throw Exception("Format Exception: $e");
       } catch (exception) {
         debugPrint("Exception: $exception");
+        nullErrorToast();
         return null;
       }
     } else {
@@ -112,11 +117,14 @@ class ApiProvider {
           }
         } else if (respond.statusCode == 401) {
           // Block by the admin(Authentication failed).
+          nullErrorToast();
           return null;
         } else if (respond.statusCode == 101 || respond.statusCode == 102) {
+          nullErrorToast();
           return null;
         } else if (respond.statusCode == 404) {
           //for if there is no data found or something went wrong
+          nullErrorToast();
           return null;
         } else {
           return json.decode(respond.body);
@@ -132,6 +140,7 @@ class ApiProvider {
         }
       }
     } else {
+      nullErrorToast();
       return null;
     }
   }
@@ -139,5 +148,10 @@ class ApiProvider {
   static void onTokenNotFound() {
     debugPrint("onTokenNotFound -------------------->");
     Get.rootDelegate.offAndToNamed(RouteNames.kSignInScreenRoute);
+  }
+
+  static void nullErrorToast() {
+    debugPrint("nullErrorToast -------------------->");
+    MyToasts.errorToast(toast: "Something went wrong");
   }
 }
