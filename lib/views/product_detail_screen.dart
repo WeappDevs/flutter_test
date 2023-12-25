@@ -3,6 +3,7 @@ import 'package:admin_web_app/utils/assets.dart';
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/views/widgets/NestedRowBuilder.dart';
+import 'package:admin_web_app/views/widgets/empty_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -107,34 +108,16 @@ class ProductDetailScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       color: Clr.whiteColor,
                                     ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 20, horizontal: 15),
+                                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Media Inner Details",
-                                          style:
-                                              CustomTextStyle.infoHeadingStyle,
+                                          style: CustomTextStyle.infoHeadingStyle,
                                         ),
                                         const SizedBox(height: 10),
-                                        Center(
-                                          child: Column(
-                                            children: [
-                                              const SizedBox(height: 10),
-                                              SvgPicture.asset(
-                                                  LocalSVG.noDataIcon),
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                "No Media Inner Details Available.",
-                                                style: CustomTextStyle
-                                                    .mediumGreyStyle,
-                                              ),
-                                              const SizedBox(height: 10),
-                                            ],
-                                          ),
-                                        )
+                                        const EmptyView(emptyText: "No Media Inner Details Available.")
                                       ],
                                     ),
                                   ),
@@ -150,8 +133,7 @@ class ProductDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Clr.whiteColor,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 15),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -161,10 +143,7 @@ class ProductDetailScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               NestedRowBuilder(
-                                data: controller
-                                        .productDetailModel.value?.data?.value
-                                        ?.toJson() ??
-                                    <String, dynamic>{},
+                                data: controller.productDetailModel.value?.data?.value?.toJson() ?? <String, dynamic>{},
                               ),
                               /*Column(
                                 children: controller.productDetailModel.value?.data?.value
@@ -213,8 +192,7 @@ class ProductDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Clr.whiteColor,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 15),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -224,8 +202,7 @@ class ProductDetailScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               Column(
-                                children: controller.productDetailModel.value
-                                        ?.data?.value?.additionalDetails
+                                children: controller.productDetailModel.value?.data?.value?.additionalDetails
                                         ?.toJson()
                                         .entries
                                         .map((element) {
@@ -234,8 +211,7 @@ class ProductDetailScreen extends StatelessWidget {
                                         child: SizedBox(
                                           width: double.infinity,
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Expanded(
                                                   flex: 3,
@@ -246,15 +222,9 @@ class ProductDetailScreen extends StatelessWidget {
                                                           .trimLeft()
                                                           .capitalize
                                                           .toString(),
-                                                      style: const TextStyle(
-                                                          color:
-                                                              Clr.greyColor))),
+                                                      style: const TextStyle(color: Clr.greyColor))),
                                               const SizedBox(width: 10),
-                                              Expanded(
-                                                  flex: 9,
-                                                  child: Text(element.value
-                                                          ?.toString() ??
-                                                      "-")),
+                                              Expanded(flex: 9, child: Text(element.value?.toString() ?? "-")),
                                             ],
                                           ),
                                         ),
@@ -277,8 +247,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                   color: Clr.whiteColor,
                                 ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 15),
+                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -288,44 +257,29 @@ class ProductDetailScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10),
                                     Column(
-                                      children: controller
-                                              .productDetailModel
-                                              .value
-                                              ?.data
-                                              ?.value
-                                              ?.diamondDetails
+                                      children: controller.productDetailModel.value?.data?.value?.diamondDetails
                                               ?.toJson()
                                               .entries
                                               .map((element) {
                                             return Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 5),
+                                              padding: const EdgeInsets.only(top: 5),
                                               child: SizedBox(
                                                 width: double.infinity,
                                                 child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Expanded(
                                                         flex: 2,
                                                         child: Text(
                                                             element.key
-                                                                .replaceAll(
-                                                                    "_", " ")
+                                                                .replaceAll("_", " ")
                                                                 .toString()
                                                                 .trimLeft()
                                                                 .capitalize
                                                                 .toString(),
-                                                            style: const TextStyle(
-                                                                color: Clr
-                                                                    .greyColor))),
+                                                            style: const TextStyle(color: Clr.greyColor))),
                                                     const SizedBox(width: 10),
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: Text(element
-                                                                .value
-                                                                ?.toString() ??
-                                                            "-")),
+                                                    Expanded(flex: 4, child: Text(element.value?.toString() ?? "-")),
                                                   ],
                                                 ),
                                               ),
@@ -346,8 +300,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                   color: Clr.whiteColor,
                                 ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 15),
+                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -357,44 +310,29 @@ class ProductDetailScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10),
                                     Column(
-                                      children: controller
-                                              .productDetailModel
-                                              .value
-                                              ?.data
-                                              ?.value
-                                              ?.sideDiamondDetails
+                                      children: controller.productDetailModel.value?.data?.value?.sideDiamondDetails
                                               ?.toJson()
                                               .entries
                                               .map((element) {
                                             return Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 5),
+                                              padding: const EdgeInsets.only(top: 5),
                                               child: SizedBox(
                                                 width: double.infinity,
                                                 child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Expanded(
                                                         flex: 2,
                                                         child: Text(
                                                             element.key
-                                                                .replaceAll(
-                                                                    "_", " ")
+                                                                .replaceAll("_", " ")
                                                                 .toString()
                                                                 .trimLeft()
                                                                 .capitalize
                                                                 .toString(),
-                                                            style: const TextStyle(
-                                                                color: Clr
-                                                                    .greyColor))),
+                                                            style: const TextStyle(color: Clr.greyColor))),
                                                     const SizedBox(width: 10),
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: Text(element
-                                                                .value
-                                                                ?.toString() ??
-                                                            "-")),
+                                                    Expanded(flex: 4, child: Text(element.value?.toString() ?? "-")),
                                                   ],
                                                 ),
                                               ),
@@ -412,81 +350,12 @@ class ProductDetailScreen extends StatelessWidget {
                       ],
                     )
                   : Center(
-                      child: LoadingAnimationWidget.fallingDot(
-                          color: Clr.whiteColor, size: 32),
+                      child: LoadingAnimationWidget.fallingDot(color: Clr.whiteColor, size: 32),
                     );
             })
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildNestedRows(Map<String, dynamic> data) {
-    return Column(
-      children: data.entries.expand((element) {
-        return (element.value is Map)
-            ? [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(
-                            element.key
-                                .replaceAll("_", " ")
-                                .toString()
-                                .trimLeft()
-                                .capitalize
-                                .toString(),
-                            style: const TextStyle(color: Clr.greyColor),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 9,
-                          child: buildNestedRows(element.value),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ]
-            : [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(
-                            element.key
-                                .replaceAll("_", " ")
-                                .toString()
-                                .trimLeft()
-                                .capitalize
-                                .toString(),
-                            style: const TextStyle(color: Clr.greyColor),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          flex: 9,
-                          child: Text(element.value?.toString() ?? "-"),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ];
-      }).toList(),
     );
   }
 }

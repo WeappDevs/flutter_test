@@ -1,31 +1,31 @@
 // To parse this JSON data, do
 //
-//     final loginModel = loginModelFromJson(jsonString);
+//     final userModel = userModelFromJson(jsonString);
 
 import 'dart:convert';
 
-LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String loginModelToJson(LoginModel data) => json.encode(data.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
-class LoginModel {
+class UserModel {
   final bool? success;
   final int? statuscode;
   final String? message;
-  final Data? data;
+  final UData? data;
 
-  LoginModel({
+  UserModel({
     this.success,
     this.statuscode,
     this.message,
     this.data,
   });
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         success: json["success"],
         statuscode: json["statuscode"],
         message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : UData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +36,7 @@ class LoginModel {
       };
 }
 
-class Data {
+class UData {
   final String? id;
   final String? firstName;
   final String? emailAddress;
@@ -49,7 +49,7 @@ class Data {
   final DateTime? updatedAt;
   final String? token;
 
-  Data({
+  UData({
     this.id,
     this.firstName,
     this.emailAddress,
@@ -63,7 +63,7 @@ class Data {
     this.token,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory UData.fromJson(Map<String, dynamic> json) => UData(
         id: json["_id"],
         firstName: json["first_name"],
         emailAddress: json["email_address"],

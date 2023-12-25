@@ -3,6 +3,8 @@ import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/common_componets/common_text_field.dart';
 import 'package:admin_web_app/utils/common_componets/hover_button.dart';
 import 'package:admin_web_app/utils/common_componets/hover_underline_button.dart';
+import 'package:admin_web_app/utils/consts.dart';
+import 'package:admin_web_app/utils/string_extention.dart';
 import 'package:admin_web_app/utils/strings.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:flutter/material.dart';
@@ -66,10 +68,10 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  Str.verificationSubTitleText,
+                Text(
+                  "${Str.verificationSubTitleText} ${Consts.defaultEmail.maskedEmail}",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Clr.greyColor,
                   ),
                 ),
@@ -85,7 +87,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   children: [
                     HoverTextUnderlineButton(
                       btnText: Str.resendOTPBtnText,
-                      callBack: () {},
+                      callBack: controller.onSentOTPCalled,
+                      isLoading: controller.isReSentOTPBtnLoading,
                     )
                   ],
                 ),
@@ -94,8 +97,9 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: HoverButton(
                     width: double.infinity,
-                    btnText: Str.continueBtnText,
-                    callback: controller.onContinueBtnTapped,
+                    btnText: Str.nextBtnText,
+                    callback: controller.onNextBtnTapped,
+                    isLoading: controller.isLoading,
                   ),
                 ),
                 const SizedBox(height: 30),

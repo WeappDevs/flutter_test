@@ -13,6 +13,7 @@ class HoverMenuButton extends StatefulWidget {
   final RxList<FilterModel>? selectedFilterList;
   final bool? isSingleSelection;
   final int? maxShownItemCount;
+  final VoidCallback? onChanged;
 
   const HoverMenuButton({
     super.key,
@@ -24,6 +25,7 @@ class HoverMenuButton extends StatefulWidget {
     required this.selectedFilterList,
     this.isSingleSelection,
     this.maxShownItemCount,
+    this.onChanged,
   });
 
   @override
@@ -68,29 +70,21 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
                   children: widget.items ??
                       [
                         Container(
-                          height: (widget.filterList.length >
-                                  (widget.maxShownItemCount ?? 8))
-                              ? 350
-                              : null,
+                          height: (widget.filterList.length > (widget.maxShownItemCount ?? 8)) ? 350 : null,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Clr.whiteColor,
                           ),
                           child: Scrollbar(
-                            thumbVisibility: (widget.filterList.length >
-                                    (widget.maxShownItemCount ?? 8))
-                                ? true
-                                : false,
+                            thumbVisibility:
+                                (widget.filterList.length > (widget.maxShownItemCount ?? 8)) ? true : false,
                             child: SingleChildScrollView(
-                              physics: (widget.filterList.length >
-                                      (widget.maxShownItemCount ?? 8))
+                              physics: (widget.filterList.length > (widget.maxShownItemCount ?? 8))
                                   ? const BouncingScrollPhysics()
                                   : const NeverScrollableScrollPhysics(),
                               child: Column(
-                                children: List.generate(
-                                    widget.filterList.length, (index) {
-                                  FilterModel element =
-                                      widget.filterList[index];
+                                children: List.generate(widget.filterList.length, (index) {
+                                  FilterModel element = widget.filterList[index];
                                   return ListTile(
                                     horizontalTitleGap: 5,
                                     leading: Obx(() {
@@ -102,6 +96,9 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
                                             index: index,
                                             value: value,
                                           );
+                                          if (widget.onChanged != null) {
+                                            widget.onChanged!();
+                                          }
                                         },
                                       );
                                     }),
@@ -212,8 +209,7 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
 
           for (var element in widget.filterList) {
             if (widget.filterList[index] == element) {
-              int? searchIndex =
-                  widget.selectedFilterList?.indexOf(widget.filterList[index]);
+              int? searchIndex = widget.selectedFilterList?.indexOf(widget.filterList[index]);
 
               if (searchIndex == -1 || searchIndex == null) {
                 widget.selectedFilterList?.add(element);
@@ -225,8 +221,7 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
         } else {
           widget.filterList[index].isSelected.value = false;
 
-          int? searchIndex =
-              widget.selectedFilterList?.indexOf(widget.filterList[index]);
+          int? searchIndex = widget.selectedFilterList?.indexOf(widget.filterList[index]);
 
           if (searchIndex != -1 && searchIndex != null) {
             widget.selectedFilterList?.removeAt(searchIndex);
@@ -239,8 +234,7 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
           if (value == true) {
             widget.selectedFilterList?.add(widget.filterList[index]);
           } else {
-            int? searchIndex =
-                widget.selectedFilterList?.indexOf(widget.filterList[index]);
+            int? searchIndex = widget.selectedFilterList?.indexOf(widget.filterList[index]);
 
             if (searchIndex != -1 && searchIndex != null) {
               widget.selectedFilterList?.removeAt(searchIndex);

@@ -21,8 +21,7 @@ class CustomDialog {
         child: Container(
           height: height,
           width: width ?? 450,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10), color: Clr.whiteColor),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Clr.whiteColor),
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
           child: child,
         ),
@@ -51,8 +50,7 @@ class CustomDialog {
           borderRadius: BorderRadius.circular(10),
           child: Container(
             width: width ?? 430,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Clr.whiteColor),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Clr.whiteColor),
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
             child: WillPopScope(
               onWillPop: () {
@@ -140,6 +138,7 @@ class CustomDialog {
     String? btnText2,
     void Function()? callback,
     void Function()? callback2,
+    RxBool? isLoading,
   }) {
     Get.dialog(
       barrierDismissible: barrierDismissible,
@@ -150,8 +149,7 @@ class CustomDialog {
           borderRadius: BorderRadius.circular(10),
           child: Container(
             width: width ?? 430,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Clr.whiteColor),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Clr.whiteColor),
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
             child: WillPopScope(
               onWillPop: () {
@@ -211,6 +209,7 @@ class CustomDialog {
                           flex: 1,
                           child: HoverButton(
                             btnText: btnText ?? "Confirm",
+                            isLoading: isLoading,
                             callback: callback ??
                                 () {
                                   Get.back();

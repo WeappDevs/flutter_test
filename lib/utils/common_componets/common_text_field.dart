@@ -4,20 +4,23 @@ import 'package:admin_web_app/utils/text_field_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CommonTextField extends StatelessWidget {
-  const CommonTextField({
-    super.key,
-    this.controller,
-    this.maxLines,
-    this.decoration,
-    this.validateType,
-    this.inputFormatters,
-    this.validator,
-    this.isNotEmptyValidator,
-    this.hintText,
-    this.isEmptyText,
-  });
+  CommonTextField(
+      {super.key,
+      this.controller,
+      this.maxLines,
+      this.decoration,
+      this.validateType,
+      this.inputFormatters,
+      this.validator,
+      this.isNotEmptyValidator,
+      this.hintText,
+      this.isEmptyText,
+      this.isObscure,
+      this.onChanged});
 
   final TextEditingController? controller;
   final InputDecoration? decoration;
@@ -27,21 +30,43 @@ class CommonTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? hintText;
   final String? isEmptyText;
+  final void Function(String)? onChanged;
 
   //It will set validator as not empty
   final bool? isNotEmptyValidator;
 
+  //It will set the suffix icon of the show/hide and make the text secure
+  final bool? isObscure;
+  final RxBool isObscureVal = true.obs;
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: decoration ?? CustomTextFieldStyle.normalFieldDecoration.copyWith(hintText: hintText),
-      maxLines: maxLines ?? 1,
-      controller: controller,
-      inputFormatters: inputFormatters ?? inputFormattersFun(),
-      validator: validator ?? validatorFun,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      textInputAction: TextInputAction.next,
-    );
+    return Obx(() {
+      isObscureVal.value;
+
+      return TextFormField(
+        decoration: decoration ??
+            CustomTextFieldStyle.normalFieldDecoration.copyWith(
+              hintText: hintText,
+              suffixIcon: (isObscure == true)
+                  ? InkWell(
+                      onTap: toggleObscureVal,
+                      child: (isObscureVal.value == true)
+                          ? const Icon(Icons.hide_source_rounded)
+                          : const Icon(Icons.panorama_fish_eye),
+                    )
+                  : null,
+            ),
+        maxLines: maxLines ?? 1,
+        controller: controller,
+        inputFormatters: inputFormatters ?? inputFormattersFun(),
+        validator: validator ?? validatorFun,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: TextInputAction.next,
+        obscureText: (isObscure == true) ? isObscureVal.value : false,
+        onChanged: onChanged,
+      );
+    });
   }
 
   List<TextInputFormatter> inputFormattersFun() {
@@ -223,5 +248,9 @@ class CommonTextField extends StatelessWidget {
       return null;
     }
     return null;
+  }
+
+  void toggleObscureVal() {
+    isObscureVal.value = !isObscureVal.value;
   }
 }

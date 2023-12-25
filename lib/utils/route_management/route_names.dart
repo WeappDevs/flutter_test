@@ -3,4 +3,5 @@ class RouteNames {
   static const String kSplashScreenRoute = "/";
   static const String kSignInScreenRoute = "/Login";
   static const String kOTPVerificationScreenRoute = "/OTPVerification";
+  static const String kResetPasswordScreenRoute = "/ResetPassword";
 }

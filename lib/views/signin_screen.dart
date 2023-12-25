@@ -85,6 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   hintText: Str.passHintText,
                   controller: controller.passController,
                   validateType: Validate.Password,
+                  isObscure: true,
                 ),
                 const SizedBox(height: 5),
                 Row(
@@ -106,6 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     HoverTextUnderlineButton(
                       btnText: Str.forgotPassBtnText,
                       callBack: controller.onForgotPassBtnTapped,
+                      isLoading: controller.isForgotBtnLoading,
                     ),
                   ],
                 ),

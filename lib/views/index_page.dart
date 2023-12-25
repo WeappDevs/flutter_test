@@ -1,6 +1,7 @@
 import 'package:admin_web_app/controllers/index_controller.dart';
 import 'package:admin_web_app/utils/assets.dart';
 import 'package:admin_web_app/utils/colors.dart';
+import 'package:admin_web_app/utils/consts.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/views/add_product_screen.dart';
 import 'package:admin_web_app/views/dashboard_screen.dart';
@@ -62,11 +63,11 @@ class _IndexPageState extends State<IndexPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Admin Name".capitalize.toString(),
+                            Consts.userModel?.data?.firstName ?? "GreenWave",
                             style: CustomTextStyle.title600Style,
                           ),
                           Text(
-                            "admin role".toLowerCase(),
+                            "admin".toLowerCase(),
                             style: CustomTextStyle.mediumGreyStyle,
                           ),
                         ],

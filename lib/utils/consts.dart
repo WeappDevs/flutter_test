@@ -1,3 +1,5 @@
+import 'package:admin_web_app/models/auth/user_model.dart';
+
 class URLs {
   /// Local
   static const String ipAddress = '127.0.0.1';
@@ -17,23 +19,39 @@ class URLs {
   static const String adminLoginUri = "${URLs.baseUrl}/admin_login";
   static const String adminLogoutUri = "${URLs.baseUrl}/admin_logout";
   static const String adminChangePasswordUri = "${URLs.baseUrl}/admin_change_password";
+  static const String adminSendOtpUri = "${URLs.baseUrl}/admin_send_otp";
+  static const String adminVerifyOtpUri = "${URLs.baseUrl}/admin_verify_otp";
+  static const String adminResetPasswordUri = "${URLs.baseUrl}/admin_reset_password";
 
   ///Jewelery Operations
   static const String addJewelleryUri = "${URLs.baseUrl}/add_jewellery";
   static const String jewelleryListUri = "${URLs.baseUrl}/jewellery_list";
   static const String jewelleryDetailsUri = "${URLs.baseUrl}/jewellery_details";
   static const String deleteJewelleryUri = "${URLs.baseUrl}/delete_jewellery";
+  static const String uploadVisualMediaUri = "${URLs.baseUrl}/upload_visual_media";
+  static const String inWaitingJewelleryUri = "${URLs.baseUrl}/in_waiting_jewellery";
+  static const String searchJewelleryUri = "${URLs.baseUrl}/search_jewellery";
 
   ///Category Operations
   static const String categoryListUri = "${URLs.baseUrl}/category_list";
   static const String addCategoryUri = "${URLs.baseUrl}/add_category";
   static const String editCategoryUri = "${URLs.baseUrl}/edit_category";
   static const String deleteCategoryUri = "${URLs.baseUrl}/delete_category";
+
+  ///DashBoard
+  static const String adminDashboardUri = "${URLs.baseUrl}/admin_dashboard";
 }
 
 class Consts {
+  ///Header Auth
+  static const authKey = "Authorization";
+  static const bearerKey = "Bearer";
+
   ///User Login Data
   static const String userDataKey = "user_data";
+  static const String rememberDataKey = "remember_data";
+  static UserModel? userModel;
+  static const String defaultEmail = "anandi99796@gmail.com";
 
   ///Comparison Keys..................................
   static const String ringKey = "Ring";
@@ -96,6 +114,24 @@ class Consts {
   static const String chainTypeKey = "chain_type";
   static const String claspTypeKey = "clasp_type";
   static const String jewelleryIdKey = "jewellery_id";
+  static const String inWaitingKey = "in_waiting";
+
+  ///Search API
+  static const String searchNameKey = "search_name";
+  static const String metalKey = "metal";
+  static const String minPriceKey = "min_price";
+  static const String maxPriceKey = "max_price";
+  static const String abailibilityByKey = "abailibility_by";
+  static const String shortByKey = "short_by";
+  static const String priceKey = "price";
+  static const String maleVal = "male";
+  static const String femaleVal = "female";
+  static const String otherVal = "other";
+  static const String inStockVal = "in_stock";
+  static const String inWaitingVal = "in_waiting";
+  static const String topRatedVal = "top_rated";
+  static const String priceLhVal = "price_lh";
+  static const String priceHlVal = "price_hl";
 
   ///Change Pass
   static const String oldPasswordKey = "old_password";
@@ -104,6 +140,7 @@ class Consts {
   ///Auth
   static const String emailAddressKey = "email_address";
   static const String passwordKey = "password";
+  static const String otpKey = "otp";
 
   ///Category
   static const String categoryNameKey = "category_name";

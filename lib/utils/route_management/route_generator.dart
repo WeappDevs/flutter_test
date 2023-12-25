@@ -1,6 +1,7 @@
 import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:admin_web_app/views/index_page.dart';
 import 'package:admin_web_app/views/otp_verification_screen.dart';
+import 'package:admin_web_app/views/reset_password_screen.dart';
 import 'package:admin_web_app/views/signin_screen.dart';
 import 'package:admin_web_app/views/splash_screen.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,10 @@ class RouteGenerator {
       GetPage(
         name: RouteNames.kOTPVerificationScreenRoute,
         page: () => const OTPVerificationScreen(),
+      ),
+      GetPage(
+        name: RouteNames.kResetPasswordScreenRoute,
+        page: () => const ResetPasswordScreen(),
       ),
     ];
   }

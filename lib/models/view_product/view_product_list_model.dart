@@ -33,7 +33,8 @@ class ViewProductListModel {
         message: json["message"],
         totalNumberOfData: json["total_number_of_data"],
         currentPage: json["current_page"],
-        data: json["data"] == null ? <VDatum>[].obs : List<VDatum>.from(json["data"]!.map((x) => VDatum.fromJson(x))).obs,
+        data:
+            json["data"] == null ? <VDatum>[].obs : List<VDatum>.from(json["data"]!.map((x) => VDatum.fromJson(x))).obs,
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,6 +53,7 @@ class VDatum {
   final String? name;
   final num? generalPrice;
   final AdditionalDetails? additionalDetails;
+  final RxBool? inWaiting;
 
   VDatum({
     this.id,
@@ -59,6 +61,7 @@ class VDatum {
     this.name,
     this.generalPrice,
     this.additionalDetails,
+    this.inWaiting,
   });
 
   factory VDatum.fromJson(Map<String, dynamic> json) => VDatum(
@@ -66,6 +69,11 @@ class VDatum {
         categoryId: json["category_id"] == null ? null : CategoryId.fromJson(json["category_id"]),
         name: json["name"],
         generalPrice: json["general_price"],
+        inWaiting: json["in_waiting"] == null
+            ? false.obs
+            : (json["in_waiting"].toString() == "true")
+                ? true.obs
+                : false.obs,
         additionalDetails:
             json["additional_details"] == null ? null : AdditionalDetails.fromJson(json["additional_details"]),
       );
@@ -76,6 +84,7 @@ class VDatum {
         "name": name,
         "general_price": generalPrice,
         "additional_details": additionalDetails?.toJson(),
+        "in_waiting": inWaiting?.value,
       };
 }
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:admin_web_app/providers/internet_provider.dart';
 import 'package:admin_web_app/utils/common_componets/common_toast.dart';
+import 'package:admin_web_app/utils/consts.dart';
 import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,8 @@ class ApiProvider {
 
         if (response.statusCode == 200) {
           if (isPrintResponse == true) {
+            debugPrint("URl: $url");
+            debugPrint("RowBody: $bodyData");
             debugPrint("StatusCode: ${response.statusCode.toString()}");
             debugPrint("Body: ${response.body.toString()}");
           }
@@ -44,7 +47,7 @@ class ApiProvider {
         } else if (response.statusCode == 404) {
           //for if there is no data found or something went wrong
           debugPrint("Body: ${response.body}");
-          nullErrorToast();
+          onAuthFailed();
           return null;
         } else {
           return json.decode(response.body);
@@ -104,6 +107,8 @@ class ApiProvider {
 
         if (respond.statusCode == 200) {
           if (isPrintResponse == true) {
+            debugPrint("URl: $url");
+            debugPrint("RowBody: $body");
             debugPrint("StatusCode: ${respond.statusCode.toString()}");
             debugPrint("Body: ${respond.body.toString()}");
           }
@@ -124,7 +129,8 @@ class ApiProvider {
           return null;
         } else if (respond.statusCode == 404) {
           //for if there is no data found or something went wrong
-          nullErrorToast();
+          debugPrint("Body: ${respond.body}");
+          onAuthFailed();
           return null;
         } else {
           return json.decode(respond.body);
@@ -153,5 +159,26 @@ class ApiProvider {
   static void nullErrorToast() {
     debugPrint("nullErrorToast -------------------->");
     MyToasts.errorToast(toast: "Something went wrong");
+  }
+
+  static void onAuthFailed() {
+    debugPrint("onAuthFailed -------------------->");
+    MyToasts.errorToast(toast: "Authentication failed.");
+    Get.rootDelegate.toNamed(RouteNames.kSignInScreenRoute);
+  }
+
+  static Map<String, String> commonHeader() {
+    ///Test Header
+    // Map<String, dynamic> headerData = {
+    //   Consts.authKey:
+    //       '${Consts.bearerKey} eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
+    // };
+
+    /// Release Header
+    Map<String, String> headerData = {Consts.authKey: '${Consts.bearerKey} ${Consts.userModel?.data?.token ?? ""}'};
+
+    debugPrint("headerData: $headerData");
+
+    return headerData;
   }
 }

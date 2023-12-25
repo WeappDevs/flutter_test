@@ -1,18 +1,23 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:admin_web_app/models/add_product/add_jewellery_model.dart';
 import 'package:admin_web_app/models/add_product/category_list_model.dart';
+import 'package:admin_web_app/models/auth/user_model.dart';
 import 'package:admin_web_app/models/category/add_category_model.dart';
 import 'package:admin_web_app/models/category/delete_category_model.dart';
 import 'package:admin_web_app/models/color_model.dart';
 import 'package:admin_web_app/models/fitter_model.dart';
+import 'package:admin_web_app/models/home/dashboard_model.dart';
 import 'package:admin_web_app/models/memory_file_model.dart';
 import 'package:admin_web_app/models/metal_model.dart';
 import 'package:admin_web_app/models/product/product_detail_model.dart';
+import 'package:admin_web_app/models/res/response_model.dart';
 import 'package:admin_web_app/models/shape_model.dart';
 import 'package:admin_web_app/models/tab_model.dart';
 import 'package:admin_web_app/models/view_product/view_product_list_model.dart';
 import 'package:admin_web_app/models/visual_detail_model.dart';
 import 'package:admin_web_app/providers/common_api_provider.dart';
+import 'package:admin_web_app/providers/storage_provider.dart';
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/common_componets/common_dropdown.dart';
 import 'package:admin_web_app/utils/common_componets/common_text_field.dart';
@@ -21,12 +26,14 @@ import 'package:admin_web_app/utils/common_componets/custom_dialog.dart';
 import 'package:admin_web_app/utils/common_componets/hover_button.dart';
 import 'package:admin_web_app/utils/consts.dart';
 import 'package:admin_web_app/utils/map_extension.dart';
+import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:admin_web_app/views/product_detail_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 enum ShippingDetailsRadio { Default, Custom }
@@ -37,8 +44,20 @@ class IndexController extends GetxController {
   ///OnInit Section...............................................................................
   @override
   void onInit() {
+    getUserDataFromStorage();
     addVisualDetailElement();
+    getDashBoardData();
     super.onInit();
+  }
+
+  void getUserDataFromStorage() {
+    debugPrint("getUserDataFromStorage------------------------->");
+    dynamic readData = StorageProvider.instance.readStorage(key: Consts.userDataKey);
+    if (readData != null) {
+      Consts.userModel = UserModel.fromJson(readData);
+    } else {
+      Get.rootDelegate.offNamed(RouteNames.kSignInScreenRoute);
+    }
   }
 
   void addVisualDetailElement() {
@@ -103,10 +122,14 @@ class IndexController extends GetxController {
           tabList[i].isSelectedTab.value = true;
 
           ///TapHandling
-          if (index == 1) {
+          if (index == 0) {
+            tabHandleOfDashBoard();
+          } else if (index == 1) {
             tabHandleOfViewProduct();
           } else if (index == 2) {
             tabHandleOfAddProduct();
+          } else if (index == 3) {
+            tabHandleOfSearchProduct();
           } else if (index == 5) {
             tabHandleOfOverseeCategory();
           }
@@ -125,22 +148,41 @@ class IndexController extends GetxController {
   }
 
   void onLogoutBtnTapped() {
+    RxBool isLoading = false.obs;
+
     debugPrint("onLogoutBtnTapped -------------->");
     CustomDialog.failureDialog(
       title: "Logout!",
       subtitle:
           "Are you certain you wish to log out? Please be aware that doing so will require you to sign in again to access the details.",
       callback: () async {
+        isLoading.value = true;
+
+        dynamic data = await ApiProvider.commonProvider(
+          url: URLs.adminLogoutUri,
+          header: ApiProvider.commonHeader(),
+        );
+
+        if (data != null) {
+          ResponseModel rModel = ResponseModel.fromJson(data);
+
+          if (rModel.success == true) {
+            await StorageProvider.instance.removeStorage(key: Consts.userDataKey);
+
+            isLoading.value = false;
+            Get.back();
+            Get.rootDelegate.toNamed(RouteNames.kSignInScreenRoute);
+          } else {
+            MyToasts.errorToast(toast: rModel.message ?? "No Message");
+          }
+        } else {
+          debugPrint("Data is null");
+        }
+
+        isLoading.value = false;
         Get.back();
-        // dynamic data = await ApiProvider.commonProvider(
-        //   url: URLs.adminLogoutUri,
-        // );
-        //
-        // if (data != null) {
-        // } else {
-        //   debugPrint("Data is null");
-        // }
       },
+      isLoading: isLoading,
     );
   }
 
@@ -149,6 +191,7 @@ class IndexController extends GetxController {
     TextEditingController oldPassController = TextEditingController();
     TextEditingController newPassController = TextEditingController();
     TextEditingController confirmPassController = TextEditingController();
+    RxBool isLoading = false.obs;
 
     debugPrint("onChangePassBtnTapped -------------->");
     CustomDialog.dialog(
@@ -171,6 +214,7 @@ class IndexController extends GetxController {
           CommonTextField(
             controller: oldPassController,
             validateType: Validate.Password,
+            isObscure: true,
           ),
           const SizedBox(height: 15),
           Text(
@@ -181,6 +225,7 @@ class IndexController extends GetxController {
           CommonTextField(
             controller: newPassController,
             validateType: Validate.Password,
+            isObscure: true,
           ),
           const SizedBox(height: 15),
           Text(
@@ -191,27 +236,48 @@ class IndexController extends GetxController {
           CommonTextField(
             controller: confirmPassController,
             validateType: Validate.Password,
+            isObscure: true,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return ValidateStr.passwordEmptyValidator;
+              } else if (value != newPassController.text) {
+                return ValidateStr.confirmPasswordValidValidator;
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 30),
           HoverButton(
             btnText: "Confirm",
+            isLoading: isLoading,
             callback: () async {
               if (formKey.currentState?.validate() == true) {
-                Get.back();
-                // Map<String, dynamic> bodyData = {
-                //   Consts.oldPasswordKey: oldPassController.text,
-                //   Consts.newPasswordKey: newPassController.text,
-                // };
-                //
-                // dynamic data = await ApiProvider.commonProvider(
-                //   url: URLs.adminChangePasswordUri,
-                //   bodyData: bodyData,
-                // );
-                //
-                // if (data != null) {
-                // } else {
-                //   debugPrint("Data is null");
-                // }
+                Map<String, dynamic> bodyData = {
+                  Consts.oldPasswordKey: oldPassController.text,
+                  Consts.newPasswordKey: newPassController.text,
+                };
+
+                dynamic data = await ApiProvider.commonProvider(
+                  url: URLs.adminChangePasswordUri,
+                  bodyData: bodyData,
+                  header: ApiProvider.commonHeader(),
+                );
+
+                if (data != null) {
+                  ResponseModel rModel = ResponseModel.fromJson(data);
+
+                  if (rModel.success == true) {
+                    await StorageProvider.instance.removeStorage(key: Consts.userDataKey);
+
+                    isLoading.value = false;
+                    Get.back();
+                    Get.rootDelegate.toNamed(RouteNames.kSignInScreenRoute);
+                  } else {
+                    MyToasts.errorToast(toast: rModel.message ?? "No Message");
+                  }
+                } else {
+                  debugPrint("Data is null");
+                }
               }
             },
           ),
@@ -228,11 +294,39 @@ class IndexController extends GetxController {
     isTableLoaderShow.value = Loader.Show.name;
   }
 
+  ///DashBoard Access............................................................................
+  Rx<DashboardModel?> dashboardModel = Rx<DashboardModel?>(null);
+
+  void tabHandleOfDashBoard() {
+    getDashBoardData();
+  }
+
+  Future<void> getDashBoardData() async {
+    debugPrint("getDashBoardData ---------------------->");
+    dynamic data = await ApiProvider.commonProvider(
+      url: URLs.adminDashboardUri,
+      header: ApiProvider.commonHeader(),
+    );
+
+    if (data != null) {
+      dashboardModel.value = DashboardModel.fromJson(data);
+
+      if (dashboardModel.value?.success == true) {
+        debugPrint("API Success is true");
+      } else {
+        debugPrint("API Success is false: ${viewProductListModel.value?.message}");
+        MyToasts.errorToast(toast: viewProductListModel.value?.message ?? "No Message");
+      }
+    } else {
+      debugPrint("Data is null");
+    }
+  }
+
   ///View Product Access............................................................................
-//handlers of the table pagination
-  RxInt selectedTableIndex = 0.obs;
-  RxInt pageLength = 10.obs;
-  final ItemScrollController itemScrollController = ItemScrollController();
+  //handlers of the table pagination
+  RxInt selectedProductTableIndex = 0.obs;
+  RxInt productPageLength = 10.obs;
+  final ItemScrollController productItemScrollController = ItemScrollController();
 
   //Table Loader Handler
   Rx<String> isTableLoaderShow = Loader.Hide.name.obs;
@@ -241,6 +335,7 @@ class IndexController extends GetxController {
   Rx<ProductDetailModel?> productDetailModel = Rx<ProductDetailModel?>(null);
 
   void tabHandleOfViewProduct() {
+    selectedProductTableIndex.value = 0;
     getProductList();
   }
 
@@ -264,7 +359,8 @@ class IndexController extends GetxController {
 
       if (viewProductListModel.value?.success == true) {
         debugPrint("API Success is true");
-        getPageLength(totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 0);
+        getPageLength(
+            totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 0, pageLength: productPageLength);
       } else {
         debugPrint("API Success is false: ${viewProductListModel.value?.message}");
         MyToasts.errorToast(toast: viewProductListModel.value?.message.toString() ?? "");
@@ -278,6 +374,7 @@ class IndexController extends GetxController {
 
   void getPageLength({
     required int totalNumberOfData,
+    required RxInt pageLength,
   }) {
     debugPrint("getPageLength ------------------------>");
     int checkHasHalfPage = totalNumberOfData % Consts.limitValKey;
@@ -292,52 +389,74 @@ class IndexController extends GetxController {
     debugPrint("totalPage: $pageLength");
   }
 
-  void onNextButtonTapped() {
+  void onNextButtonTapped(
+      {required RxInt selectedTableIndex,
+      required ItemScrollController itemScrollController,
+      required RxInt pageLength,
+      required void Function(int) onIndexChanged}) {
     debugPrint("onNextButtonTapped -------------->");
     if (selectedTableIndex.value < (pageLength.value - 1)) {
       selectedTableIndex++;
       itemScrollController.jumpTo(index: selectedTableIndex.value);
-      getProductList(pageIndex: (selectedTableIndex.value + 1));
+
+      // getProductList(pageIndex: (selectedTableIndex.value + 1));
+      onIndexChanged(selectedTableIndex.value + 1);
     } else {
       debugPrint("Given next index is out of bound.");
     }
   }
 
-  void onBackButtonTapped() {
+  void onBackButtonTapped(
+      {required RxInt selectedTableIndex,
+      required ItemScrollController itemScrollController,
+      required RxInt pageLength,
+      required void Function(int) onIndexChanged}) {
     debugPrint("onBackButtonTapped -------------->");
     if (selectedTableIndex.value > 0) {
       selectedTableIndex--;
       itemScrollController.jumpTo(index: selectedTableIndex.value);
-      getProductList(pageIndex: (selectedTableIndex.value + 1));
+      // getProductList(pageIndex: (selectedTableIndex.value + 1));
+      onIndexChanged(selectedTableIndex.value + 1);
     } else {
       debugPrint("Given back index is out of bound.");
     }
   }
 
-  void goToFirstElement() {
+  void goToFirstElement(
+      {required RxInt selectedTableIndex,
+      required ItemScrollController itemScrollController,
+      required void Function(int) onIndexChanged}) {
     debugPrint("goToFirstElement -------------->");
     if (selectedTableIndex.value != 0) {
       selectedTableIndex.value = 0;
       itemScrollController.jumpTo(index: 0);
-      getProductList(pageIndex: (selectedTableIndex.value + 1));
+      // getProductList(pageIndex: (selectedTableIndex.value + 1));
+      onIndexChanged(selectedTableIndex.value + 1);
     }
   }
 
-  void goToLastElement() {
+  void goToLastElement(
+      {required RxInt selectedTableIndex,
+      required ItemScrollController itemScrollController,
+      required void Function(int) onIndexChanged,
+      required RxInt pageLength}) {
     debugPrint("goToLastElement -------------->");
     if (selectedTableIndex.value != (pageLength.value - 1)) {
       selectedTableIndex.value = (pageLength.value - 1);
       itemScrollController.jumpTo(index: (pageLength.value - 1));
-      getProductList(pageIndex: (selectedTableIndex.value + 1));
+      // getProductList(pageIndex: (selectedTableIndex.value + 1));
+      onIndexChanged(selectedTableIndex.value + 1);
     }
   }
 
-  void onElementTapped({required int index}) {
+  void onElementTapped(
+      {required int index, required RxInt selectedTableIndex, required void Function(int) onIndexChanged}) {
     debugPrint("onElementTapped -------------->");
     debugPrint("actual index: $index");
     if (selectedTableIndex.value != index) {
       selectedTableIndex.value = index;
-      getProductList(pageIndex: (selectedTableIndex.value + 1));
+      // getProductList(pageIndex: (selectedTableIndex.value + 1));
+      onIndexChanged(selectedTableIndex.value + 1);
     }
   }
 
@@ -368,7 +487,7 @@ class IndexController extends GetxController {
           if (deleteModel.success == true) {
             viewProductListModel.value?.data?.removeWhere((element) => (element.id == jewelID) ? true : false);
             Get.back();
-            MyToasts.errorToast(toast: deleteModel.message ?? "No Message");
+            MyToasts.successToast(toast: deleteModel.message ?? "No Message");
           } else {
             debugPrint("API Success is false: ${deleteModel.message}");
             Get.back();
@@ -379,6 +498,33 @@ class IndexController extends GetxController {
         }
       },
     );
+  }
+
+  Future<void> onInWaitingBtnTapped({required VDatum ele}) async {
+    Map<String, dynamic> passingData = {
+      Consts.jewelleryIdKey: ele.id.toString(),
+      Consts.inWaitingKey: ((ele.inWaiting?.value == true) ? false : true).toString(),
+    };
+
+    ///API Calling
+    dynamic data = await ApiProvider.commonProvider(
+      url: URLs.inWaitingJewelleryUri,
+      bodyData: passingData,
+      header: ApiProvider.commonHeader(),
+    );
+
+    if (data != null) {
+      ResponseModel responseModel = ResponseModel.fromJson(data);
+      if (responseModel.success == true) {
+        ele.inWaiting?.value = (ele.inWaiting?.value == true) ? false : true;
+        MyToasts.successToast(toast: responseModel.message ?? "No Message");
+      } else {
+        debugPrint("API Success is false: ${responseModel.message}");
+        MyToasts.errorToast(toast: responseModel.message ?? "No Message");
+      }
+    } else {
+      debugPrint("Data is null");
+    }
   }
 
   Future<void> onViewProductBtnTapped({required String jewelID}) async {
@@ -1017,91 +1163,151 @@ class IndexController extends GetxController {
 
   ///Search Product Access............................................................................
   List<FilterModel> shapeFilterList = [
-    FilterModel(filterText: "Asscher", isSelected: false.obs),
-    FilterModel(filterText: "Cushion", isSelected: false.obs),
-    FilterModel(filterText: "Elongated Cushion", isSelected: false.obs),
-    FilterModel(filterText: "Emerald", isSelected: false.obs),
-    FilterModel(filterText: "Heart", isSelected: false.obs),
-    FilterModel(filterText: "Marquise", isSelected: false.obs),
-    FilterModel(filterText: "Oval", isSelected: false.obs),
-    FilterModel(filterText: "Pear", isSelected: false.obs),
-    FilterModel(filterText: "Princess", isSelected: false.obs),
-    FilterModel(filterText: "Radiant", isSelected: false.obs),
-    FilterModel(filterText: "Round", isSelected: false.obs),
+    FilterModel(filterText: "Asscher", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Cushion", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Elongated Cushion", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Emerald", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Heart", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Marquise", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Oval", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Pear", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Princess", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Radiant", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(filterText: "Round", isSelected: false.obs, categoryText: Consts.shapeKey),
   ];
   List<FilterModel> colorHueFilterList = [
-    FilterModel(filterText: "White", isSelected: false.obs),
-    FilterModel(filterText: "Very Light Yellow", isSelected: false.obs),
-    FilterModel(filterText: "Light Yellow", isSelected: false.obs),
-    FilterModel(filterText: "Yellow", isSelected: false.obs),
+    FilterModel(filterText: "White", isSelected: false.obs, categoryText: Consts.colorHueKey),
+    FilterModel(filterText: "Very Light Yellow", isSelected: false.obs, categoryText: Consts.colorHueKey),
+    FilterModel(filterText: "Light Yellow", isSelected: false.obs, categoryText: Consts.colorHueKey),
+    FilterModel(filterText: "Yellow", isSelected: false.obs, categoryText: Consts.colorHueKey),
   ];
   List<FilterModel> priceFilterList = [
-    FilterModel(filterText: "\$0-\$50", isSelected: false.obs),
-    FilterModel(filterText: "\$50-\$100", isSelected: false.obs),
-    FilterModel(filterText: "\$100-\$200", isSelected: false.obs),
-    FilterModel(filterText: "\$200-\$400", isSelected: false.obs),
-    FilterModel(filterText: "\$400-\$1000", isSelected: false.obs),
-    FilterModel(filterText: "\$1000-\$1500", isSelected: false.obs),
-    FilterModel(filterText: "\$1500-\$2000", isSelected: false.obs),
-    FilterModel(filterText: "\$2000-\$3000", isSelected: false.obs),
-    FilterModel(filterText: "Highest", isSelected: false.obs),
-    FilterModel(filterText: "Lowest", isSelected: false.obs),
+    FilterModel(
+        filterText: "\$0-\$50", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 0, maxPrice: 50),
+    FilterModel(
+        filterText: "\$50-\$100", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 50, maxPrice: 100),
+    FilterModel(
+        filterText: "\$100-\$200", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 100, maxPrice: 200),
+    FilterModel(
+        filterText: "\$200-\$400", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 200, maxPrice: 400),
+    FilterModel(
+        filterText: "\$400-\$1000",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 400,
+        maxPrice: 1000),
+    FilterModel(
+        filterText: "\$1000-\$1500",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 1000,
+        maxPrice: 1500),
+    FilterModel(
+        filterText: "\$1500-\$2000",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 1500,
+        maxPrice: 2000),
+    FilterModel(
+        filterText: "\$2000-\$3000",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 2000,
+        maxPrice: 3000),
+    FilterModel(filterText: "Highest", isSelected: false.obs, categoryText: Consts.priceKey),
+    FilterModel(filterText: "Lowest", isSelected: false.obs, categoryText: Consts.priceKey),
   ];
   List<FilterModel> metalFilterList = [
-    FilterModel(filterText: "10K White Gold", isSelected: false.obs),
-    FilterModel(filterText: "10K Yellow GOld", isSelected: false.obs),
-    FilterModel(filterText: "10K Rose GOld", isSelected: false.obs),
-    FilterModel(filterText: "14K White Gold", isSelected: false.obs),
-    FilterModel(filterText: "14K Yellow GOld", isSelected: false.obs),
-    FilterModel(filterText: "14K Rose GOld", isSelected: false.obs),
-    FilterModel(filterText: "18K White Gold", isSelected: false.obs),
-    FilterModel(filterText: "18K Yellow GOld", isSelected: false.obs),
-    FilterModel(filterText: "18K Rose GOld", isSelected: false.obs),
-    FilterModel(filterText: "22K White Gold", isSelected: false.obs),
-    FilterModel(filterText: "22K Yellow GOld", isSelected: false.obs),
-    FilterModel(filterText: "22K Rose GOld", isSelected: false.obs),
-    FilterModel(filterText: "24K White Gold", isSelected: false.obs),
-    FilterModel(filterText: "24K Yellow GOld", isSelected: false.obs),
-    FilterModel(filterText: "24K Rose GOld", isSelected: false.obs),
-    FilterModel(filterText: "Platinum", isSelected: false.obs),
+    FilterModel(filterText: "10K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "10K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "10K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "14K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "14K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "14K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "18K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "18K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "18K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "22K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "22K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "22K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "24K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "24K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "24K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(filterText: "Platinum", isSelected: false.obs, categoryText: Consts.metalKey),
   ];
   List<FilterModel> clarityFilterList = [
-    FilterModel(filterText: "FL", isSelected: false.obs),
-    FilterModel(filterText: "IF", isSelected: false.obs),
-    FilterModel(filterText: "VVS1", isSelected: false.obs),
-    FilterModel(filterText: "VVS2", isSelected: false.obs),
-    FilterModel(filterText: "VS1", isSelected: false.obs),
-    FilterModel(filterText: "VS2", isSelected: false.obs),
-    FilterModel(filterText: "SI1", isSelected: false.obs),
-    FilterModel(filterText: "SI2", isSelected: false.obs),
-    FilterModel(filterText: "SI3", isSelected: false.obs),
-    FilterModel(filterText: "L1", isSelected: false.obs),
-    FilterModel(filterText: "L2", isSelected: false.obs),
-    FilterModel(filterText: "L3", isSelected: false.obs),
+    FilterModel(filterText: "FL", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "IF", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "VVS1", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "VVS2", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "VS1", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "VS2", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "SI1", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "SI2", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "SI3", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "L1", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "L2", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(filterText: "L3", isSelected: false.obs, categoryText: Consts.clarityKey),
   ];
   List<FilterModel> genderFilterList = [
-    FilterModel(filterText: "Woman", isSelected: false.obs),
-    FilterModel(filterText: "Unisex", isSelected: false.obs),
-    FilterModel(filterText: "Men", isSelected: false.obs),
+    FilterModel(
+        filterText: "Woman", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.femaleVal),
+    FilterModel(
+        filterText: "Unisex", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.otherVal),
+    FilterModel(filterText: "Men", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.maleVal),
   ];
   List<FilterModel> inStockFilterList = [
-    FilterModel(filterText: "In Stock", isSelected: false.obs),
-    FilterModel(filterText: "In Waiting", isSelected: false.obs),
+    FilterModel(
+        filterText: "In Stock",
+        isSelected: false.obs,
+        categoryText: Consts.abailibilityByKey,
+        paramName: Consts.inStockVal),
+    FilterModel(
+        filterText: "In Waiting",
+        isSelected: false.obs,
+        categoryText: Consts.abailibilityByKey,
+        paramName: Consts.inWaitingVal),
   ];
   List<FilterModel> shortByFilterList = [
-    FilterModel(filterText: "Best Sellers", isSelected: false.obs),
-    FilterModel(filterText: "Top Rated", isSelected: false.obs),
-    FilterModel(filterText: "Newest", isSelected: false.obs),
-    FilterModel(filterText: "Price: Low to High", isSelected: false.obs),
-    FilterModel(filterText: "Price: High to Low", isSelected: false.obs),
-    FilterModel(filterText: "Name(A-Z)", isSelected: false.obs),
+    FilterModel(filterText: "Best Sellers", isSelected: false.obs, categoryText: Consts.shortByKey),
+    FilterModel(
+        filterText: "Top Rated", isSelected: false.obs, categoryText: Consts.shortByKey, paramName: Consts.topRatedVal),
+    FilterModel(filterText: "Newest", isSelected: false.obs, categoryText: Consts.shortByKey),
+    FilterModel(
+        filterText: "Price: Low to High",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey,
+        paramName: Consts.priceLhVal),
+    FilterModel(
+        filterText: "Price: High to Low",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey,
+        paramName: Consts.priceHlVal),
+    FilterModel(filterText: "Name(A-Z)", isSelected: false.obs, categoryText: Consts.shortByKey),
+    FilterModel(filterText: "Name(Z-A)", isSelected: false.obs, categoryText: Consts.shortByKey),
   ];
   RxList<FilterModel> selectedFilterList = <FilterModel>[].obs;
+
+  //Search API Handlers
+  Rx<ViewProductListModel?> searchProductListModel = Rx<ViewProductListModel?>(null);
+  TextEditingController searchController = TextEditingController();
+  Timer? timer;
+
+  //handlers of the table pagination
+  RxInt selectedSearchTableIndex = 0.obs;
+  RxInt searchPageLength = 10.obs;
+  final ItemScrollController searchItemScrollController = ItemScrollController();
+
+  void tabHandleOfSearchProduct() {
+    selectedSearchTableIndex.value = 0;
+    getSearchList(pageIndex: 1);
+  }
 
   void onDeleteFilterBtnTapped({required FilterModel element, required int index}) {
     debugPrint("onDeleteFilterBtnTapped-------------------->");
     element.isSelected.value = false;
     selectedFilterList.removeAt(index);
+    onSearchFieldAndFilterChanged();
   }
 
   void onResetAllBtnTapped() {
@@ -1110,6 +1316,108 @@ class IndexController extends GetxController {
       element.isSelected.value = false;
     }
     selectedFilterList.clear();
+    onSearchFieldAndFilterChanged();
+  }
+
+  Future<void> getSearchList({int? pageIndex}) async {
+    debugPrint("getSearchList ------------------------->");
+    showLoader();
+
+    Map<String, dynamic> passData = {
+      Consts.pageKey: (pageIndex != null) ? pageIndex.toString() : 1.toString(),
+      Consts.limitKey: Consts.limitValKey.toString(),
+    };
+
+    passData.addParamsIfNotNull(key: Consts.searchNameKey, value: searchController.text);
+
+    List<String> colorHueList = [];
+    List<String> metalList = [];
+    List<String> clarityList = [];
+    List<num> priceList = [];
+
+    for (var element in selectedFilterList) {
+      //Single Selection
+      if (element.categoryText == Consts.shapeKey) {
+        passData.addParamsIfNotNull(key: element.categoryText, value: element.filterText);
+      }
+      if (element.categoryText == Consts.genderKey) {
+        passData.addParamsIfNotNull(key: element.categoryText, value: element.paramName);
+      }
+      if (element.categoryText == Consts.abailibilityByKey) {
+        passData.addParamsIfNotNull(key: element.categoryText, value: element.paramName);
+      }
+      if (element.categoryText == Consts.shortByKey) {
+        passData.addParamsIfNotNull(key: element.categoryText, value: element.paramName);
+      }
+
+      //Multiple Selection
+      if (element.categoryText == Consts.colorHueKey) {
+        colorHueList.add(element.filterText);
+      }
+      if (element.categoryText == Consts.metalKey) {
+        metalList.add(element.filterText);
+      }
+      if (element.categoryText == Consts.clarityKey) {
+        clarityList.add(element.filterText);
+      }
+
+      //price
+      if (element.categoryText == Consts.priceKey) {
+        priceList.add(element.minPrice ?? 0);
+        priceList.add(element.maxPrice ?? 0);
+      }
+    }
+
+    passData.addParamsIfNotNull(key: Consts.colorHueKey, value: colorHueList);
+    passData.addParamsIfNotNull(key: Consts.metalKey, value: metalList);
+    passData.addParamsIfNotNull(key: Consts.clarityKey, value: clarityList);
+
+    //Price logic
+    if (priceList.isNotEmpty) {
+      // Find the minimum number
+      num minNumber = priceList.reduce((min, current) => current < min ? current : min);
+
+      // Find the maximum number
+      num maxNumber = priceList.reduce((max, current) => current > max ? current : max);
+
+      passData.addParamsIfNotNull(key: Consts.minPriceKey, value: minNumber);
+      passData.addParamsIfNotNull(key: Consts.maxPriceKey, value: maxNumber);
+    }
+
+    debugPrint("passData: $passData");
+
+    ///API Calling
+    dynamic data = await ApiProvider.commonProvider(
+      url: URLs.searchJewelleryUri,
+      bodyData: passData,
+      header: ApiProvider.commonHeader(),
+    );
+
+    if (data != null) {
+      searchProductListModel.value = ViewProductListModel.fromJson(data);
+
+      if (searchProductListModel.value?.success == true) {
+        debugPrint("API Success is true");
+        getPageLength(
+            totalNumberOfData: searchProductListModel.value?.totalNumberOfData ?? 0, pageLength: searchPageLength);
+      } else {
+        debugPrint("API Success is false: ${searchProductListModel.value?.message}");
+        MyToasts.errorToast(toast: searchProductListModel.value?.message.toString() ?? "");
+      }
+    } else {
+      debugPrint("Data is null");
+    }
+
+    hideLoader();
+  }
+
+  void onSearchFieldAndFilterChanged() {
+    timer?.cancel();
+    timer = Timer(const Duration(milliseconds: 300), () {
+      debugPrint("onSearchFieldChanged----------------------------------------->");
+      selectedSearchTableIndex.value = 0;
+      getSearchList(pageIndex: 1);
+    });
   }
 
   ///Manage Order Access............................................................................
