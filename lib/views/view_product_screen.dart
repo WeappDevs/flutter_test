@@ -218,7 +218,9 @@ class ViewProductScreen extends StatelessWidget {
                                                 message: "Delete Product",
                                                 child: InkWell(
                                                   onTap: () {
-                                                    controller.onDeleteProductTapped(jewelID: element.id ?? "");
+                                                    controller.onDeleteProductTapped(
+                                                        jewelID: element.id ?? "",
+                                                        dataList: controller.viewProductListModel.value?.data);
                                                   },
                                                   child: Container(
                                                     height: 35,
@@ -243,123 +245,121 @@ class ViewProductScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 30),
-                          Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    controller.goToFirstElement(
-                                      selectedTableIndex: controller.selectedProductTableIndex,
-                                      itemScrollController: controller.productItemScrollController,
-                                      onIndexChanged: (index) {
-                                        controller.getProductList(pageIndex: index);
-                                      },
-                                    );
-                                  },
-                                  splashRadius: 20,
-                                  icon: const Icon(Icons.keyboard_double_arrow_left),
-                                ),
-                                const SizedBox(width: 5),
-                                IconButton(
-                                  onPressed: () {
-                                    controller.onBackButtonTapped(
-                                      selectedTableIndex: controller.selectedProductTableIndex,
-                                      itemScrollController: controller.productItemScrollController,
-                                      pageLength: controller.productPageLength,
-                                      onIndexChanged: (index) {
-                                        controller.getProductList(pageIndex: index);
-                                      },
-                                    );
-                                  },
-                                  splashRadius: 20,
-                                  icon: const Icon(Icons.chevron_left_rounded),
-                                ),
-                                const SizedBox(width: 5),
-                                Obx(() => SizedBox(
-                                      width: (controller.productPageLength.value < 5)
-                                          ? controller.productPageLength.value * 60
-                                          : 290,
-                                      height: 45,
-                                      child: ScrollablePositionedList.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: controller.productPageLength.value,
-                                        itemScrollController: controller.productItemScrollController,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(5),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  controller.onElementTapped(
-                                                    index: index,
-                                                    selectedTableIndex: controller.selectedProductTableIndex,
-                                                    onIndexChanged: (index) {
-                                                      controller.getProductList(pageIndex: index);
-                                                    },
-                                                  );
-                                                },
-                                                child: Obx(() => Container(
-                                                      height: 45,
-                                                      width: 45,
-                                                      decoration: BoxDecoration(
-                                                        color: (controller.selectedProductTableIndex.value == index)
-                                                            ? Clr.primaryColor
-                                                            : Clr.transparentColor,
-                                                      ),
-                                                      alignment: Alignment.center,
-                                                      child: Text(
-                                                        (index + 1).toString(),
-                                                        style: CustomTextStyle.tableHeaderStyle.copyWith(
-                                                            color: (controller.selectedProductTableIndex.value == index)
-                                                                ? Clr.whiteColor
-                                                                : Clr.blackColor),
-                                                      ),
-                                                    )),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    )),
-                                const SizedBox(width: 5),
-                                IconButton(
-                                  onPressed: () {
-                                    controller.onNextButtonTapped(
-                                      selectedTableIndex: controller.selectedProductTableIndex,
-                                      itemScrollController: controller.productItemScrollController,
-                                      pageLength: controller.productPageLength,
-                                      onIndexChanged: (index) {
-                                        controller.getProductList(pageIndex: index);
-                                      },
-                                    );
-                                  },
-                                  splashRadius: 20,
-                                  icon: const Icon(Icons.chevron_right_rounded),
-                                ),
-                                const SizedBox(width: 5),
-                                IconButton(
-                                  onPressed: () {
-                                    controller.goToLastElement(
-                                      selectedTableIndex: controller.selectedProductTableIndex,
-                                      itemScrollController: controller.productItemScrollController,
-                                      onIndexChanged: (index) {
-                                        controller.getProductList(pageIndex: index);
-                                      },
-                                      pageLength: controller.productPageLength,
-                                    );
-                                  },
-                                  splashRadius: 20,
-                                  icon: const Icon(Icons.keyboard_double_arrow_right),
-                                ),
-                              ],
-                            ),
-                          ),
                         ],
                       )
                     : const EmptyView(emptyText: "No Product Available.")),
+            const SizedBox(height: 30),
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      controller.goToFirstElement(
+                        selectedTableIndex: controller.selectedProductTableIndex,
+                        itemScrollController: controller.productItemScrollController,
+                        onIndexChanged: (index) {
+                          controller.getProductList(pageIndex: index);
+                        },
+                      );
+                    },
+                    splashRadius: 20,
+                    icon: const Icon(Icons.keyboard_double_arrow_left),
+                  ),
+                  const SizedBox(width: 5),
+                  IconButton(
+                    onPressed: () {
+                      controller.onBackButtonTapped(
+                        selectedTableIndex: controller.selectedProductTableIndex,
+                        itemScrollController: controller.productItemScrollController,
+                        pageLength: controller.productPageLength,
+                        onIndexChanged: (index) {
+                          controller.getProductList(pageIndex: index);
+                        },
+                      );
+                    },
+                    splashRadius: 20,
+                    icon: const Icon(Icons.chevron_left_rounded),
+                  ),
+                  const SizedBox(width: 5),
+                  Obx(() => SizedBox(
+                        width: (controller.productPageLength.value < 5) ? controller.productPageLength.value * 60 : 290,
+                        height: 45,
+                        child: ScrollablePositionedList.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.productPageLength.value,
+                          itemScrollController: controller.productItemScrollController,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 7),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.onElementTapped(
+                                      index: index,
+                                      selectedTableIndex: controller.selectedProductTableIndex,
+                                      onIndexChanged: (index) {
+                                        controller.getProductList(pageIndex: index);
+                                      },
+                                    );
+                                  },
+                                  child: Obx(() => Container(
+                                        height: 45,
+                                        width: 45,
+                                        decoration: BoxDecoration(
+                                          color: (controller.selectedProductTableIndex.value == index)
+                                              ? Clr.primaryColor
+                                              : Clr.transparentColor,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          (index + 1).toString(),
+                                          style: CustomTextStyle.tableHeaderStyle.copyWith(
+                                              color: (controller.selectedProductTableIndex.value == index)
+                                                  ? Clr.whiteColor
+                                                  : Clr.blackColor),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )),
+                  const SizedBox(width: 5),
+                  IconButton(
+                    onPressed: () {
+                      controller.onNextButtonTapped(
+                        selectedTableIndex: controller.selectedProductTableIndex,
+                        itemScrollController: controller.productItemScrollController,
+                        pageLength: controller.productPageLength,
+                        onIndexChanged: (index) {
+                          controller.getProductList(pageIndex: index);
+                        },
+                      );
+                    },
+                    splashRadius: 20,
+                    icon: const Icon(Icons.chevron_right_rounded),
+                  ),
+                  const SizedBox(width: 5),
+                  IconButton(
+                    onPressed: () {
+                      controller.goToLastElement(
+                        selectedTableIndex: controller.selectedProductTableIndex,
+                        itemScrollController: controller.productItemScrollController,
+                        onIndexChanged: (index) {
+                          controller.getProductList(pageIndex: index);
+                        },
+                        pageLength: controller.productPageLength,
+                      );
+                    },
+                    splashRadius: 20,
+                    icon: const Icon(Icons.keyboard_double_arrow_right),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 50),
           ],
         ),

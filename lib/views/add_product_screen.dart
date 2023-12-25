@@ -2052,6 +2052,8 @@ class AddProductScreen extends StatelessWidget {
                                         ),
                                       );
                                     }).toList(),
+                                    isNotEmpty: true,
+                                    isNotEmptyMessage: "Please select metal type",
                                   ),
                                   const SizedBox(height: 15),
                                   Text(
@@ -2087,7 +2089,7 @@ class AddProductScreen extends StatelessWidget {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          controller.onImagePickerTapped(index: index);
+                                          controller.onImagePickerTapped(index: index, element: element);
                                         },
                                         icon: const Icon(Icons.add_photo_alternate_rounded),
                                       )
@@ -2150,6 +2152,17 @@ class AddProductScreen extends StatelessWidget {
                                           ),
                                         )),
                                   ),
+                                  Obx(() => (element.isImageError.value == true)
+                                      ? Column(
+                                          children: [
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "    Please select at least 1 image",
+                                              style: CustomTextStyle.errorRedStyle,
+                                            ),
+                                          ],
+                                        )
+                                      : const SizedBox()),
                                   const SizedBox(height: 15),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2182,6 +2195,25 @@ class AddProductScreen extends StatelessWidget {
                                           ],
                                         )
                                       : const SizedBox()),
+                                  Obx(() => (element.isVideoError.value == true)
+                                      ? Column(
+                                          children: [
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "    Please select video",
+                                              style: CustomTextStyle.errorRedStyle,
+                                            ),
+                                          ],
+                                        )
+                                      : const SizedBox()),
+                                  const SizedBox(height: 10),
+                                  Obx(() => (element.version.value != 1)
+                                      ? HoverButton(
+                                          btnText: "Save",
+                                          callback: () {},
+                                        )
+                                      : const SizedBox()),
+                                  const SizedBox(height: 10),
                                   Container(
                                     height: .8,
                                     width: double.infinity,

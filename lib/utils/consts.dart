@@ -61,6 +61,14 @@ class Consts {
   static const String diamondKey = "Diamond";
   static const String customKey = "Custom";
 
+  ///Tab Index
+  static const int dashBoardIndex = 0;
+  static const int viewProductIndex = 1;
+  static const int addProductIndex = 2;
+  static const int searchProductIndex = 3;
+  static const int manageOrdersIndex = 4;
+  static const int overseeCategoryIndex = 5;
+
   ///Add Jewellery API
   static const String categoryIdKey = "category_id";
   static const String nameKey = "name";

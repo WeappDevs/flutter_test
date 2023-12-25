@@ -23,6 +23,11 @@ class CustomTextStyle {
     color: Clr.redColor,
   );
 
+  static TextStyle errorRedStyle = const TextStyle(
+    fontSize: 12,
+    color: Clr.redColor,
+  );
+
   static TextStyle midBlackStyle = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,

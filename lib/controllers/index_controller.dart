@@ -29,11 +29,9 @@ import 'package:admin_web_app/utils/map_extension.dart';
 import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
-import 'package:admin_web_app/views/product_detail_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 enum ShippingDetailsRadio { Default, Custom }
@@ -61,14 +59,19 @@ class IndexController extends GetxController {
   }
 
   void addVisualDetailElement() {
-    visualDetailsList.add(VisualDetailModel(
-        metalTypeList: metalTypeList,
-        selectedMetalType: Rx<String?>(null),
-        rhodiumPlatedList: generalRhodiumPlatedList,
-        selectedRhodiumPlated: Rx<String?>(null),
-        imageList: <MemoryFileModel>[].obs,
-        priceController: TextEditingController(),
-        videoBytesData: Rx<MemoryFileModel?>(null)));
+    visualDetailsList.add(
+      VisualDetailModel(
+          metalTypeList: metalTypeList,
+          selectedMetalType: Rx<String?>(null),
+          rhodiumPlatedList: generalRhodiumPlatedList,
+          selectedRhodiumPlated: Rx<String?>(null),
+          imageList: <MemoryFileModel>[].obs,
+          priceController: TextEditingController(),
+          videoBytesData: Rx<MemoryFileModel?>(null),
+          version: 1.obs,
+          isImageError: false.obs,
+          isVideoError: false.obs),
+    );
   }
 
   ///Main Controller Access.....................................................................
@@ -122,15 +125,15 @@ class IndexController extends GetxController {
           tabList[i].isSelectedTab.value = true;
 
           ///TapHandling
-          if (index == 0) {
+          if (index == Consts.dashBoardIndex) {
             tabHandleOfDashBoard();
-          } else if (index == 1) {
+          } else if (index == Consts.viewProductIndex) {
             tabHandleOfViewProduct();
-          } else if (index == 2) {
+          } else if (index == Consts.addProductIndex) {
             tabHandleOfAddProduct();
-          } else if (index == 3) {
+          } else if (index == Consts.searchProductIndex) {
             tabHandleOfSearchProduct();
-          } else if (index == 5) {
+          } else if (index == Consts.overseeCategoryIndex) {
             tabHandleOfOverseeCategory();
           }
         }
@@ -460,7 +463,7 @@ class IndexController extends GetxController {
     }
   }
 
-  void onDeleteProductTapped({required String jewelID}) {
+  void onDeleteProductTapped({required String jewelID, required RxList<VDatum>? dataList}) {
     debugPrint("onDeleteProductTapped -------------->");
     CustomDialog.failureDialog(
       title: "Delete Product?",
@@ -485,7 +488,8 @@ class IndexController extends GetxController {
           DeleteModel deleteModel = DeleteModel.fromJson(data);
 
           if (deleteModel.success == true) {
-            viewProductListModel.value?.data?.removeWhere((element) => (element.id == jewelID) ? true : false);
+            dataList?.removeWhere((element) => (element.id == jewelID) ? true : false);
+
             Get.back();
             MyToasts.successToast(toast: deleteModel.message ?? "No Message");
           } else {
@@ -529,6 +533,12 @@ class IndexController extends GetxController {
 
   Future<void> onViewProductBtnTapped({required String jewelID}) async {
     debugPrint("onViewProductBtnTapped--------------------------->");
+
+    //Work when selected tab is other than the view product
+    if (selectedTabIndex.value != Consts.viewProductIndex) {
+      onTabTapped(index: Consts.viewProductIndex);
+    }
+
     if (isProductDetail.value != true) {
       isProductDetail.value = true;
       Map<String, dynamic> passingData = {
@@ -927,7 +937,7 @@ class IndexController extends GetxController {
     visualDetailsList.removeAt(index);
   }
 
-  Future<void> onImagePickerTapped({required int index}) async {
+  Future<void> onImagePickerTapped({required int index, required VisualDetailModel element}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.image,
@@ -946,6 +956,7 @@ class IndexController extends GetxController {
               ),
             );
       }
+      element.version++;
     } else {
       debugPrint("Image Picker Value is Null");
     }
@@ -998,9 +1009,36 @@ class IndexController extends GetxController {
     }
   }
 
+  void onUploadMediaBtnTapped() {
+    debugPrint("onUploadMediaBtnTapped --------------------->");
+  }
+
+  bool validateMedia() {
+    bool isGoFurther = true;
+    for (var element in visualDetailsList) {
+      if (element.imageList.value.isEmpty) {
+        element.isImageError.value = true;
+        isGoFurther = false;
+      } else {
+        element.isImageError.value = false;
+      }
+      if (element.videoBytesData.value == null) {
+        element.isVideoError.value = true;
+        isGoFurther = false;
+      } else {
+        element.isVideoError.value = true;
+      }
+    }
+    return isGoFurther;
+  }
+
   Future<void> onAddProductBtnTapped() async {
     debugPrint("onAddProductBtnTapped----------------------->");
-    if (formValidateKey.currentState?.validate() == true) {
+    if (validateMedia() == true) {
+      //For state management
+    }
+
+    if (formValidateKey.currentState?.validate() == true && validateMedia() == true) {
       Map<String, dynamic> passingData = {};
 
       ///BasicDetails
@@ -1137,27 +1175,27 @@ class IndexController extends GetxController {
       debugPrint("passingData: $passingData");
 
       ///API Calling
-      // dynamic data = await ApiProvider.commonProvider(
-      //   url: URLs.addJewelleryUri,
-      //   bodyData: passingData,
-      //   header: {
-      //     "Authorization":
-      //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-      //   },
-      // );
-      //
-      // if (data != null) {
-      //   addJewelleryModel.value = AddJewelleryModel.fromJson(data);
-      //
-      //   if (addJewelleryModel.value?.success == true) {
-      //     MyToasts.successToast(toast: addJewelleryModel.value?.message ?? 'No message');
-      //   } else {
-      //     debugPrint("API Success is false");
-      //     MyToasts.errorToast(toast: addJewelleryModel.value?.message ?? 'No message');
-      //   }
-      // } else {
-      //   debugPrint("Data is null");
-      // }
+      dynamic data = await ApiProvider.commonProvider(
+        url: URLs.addJewelleryUri,
+        bodyData: passingData,
+        header: {
+          "Authorization":
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
+        },
+      );
+
+      if (data != null) {
+        addJewelleryModel.value = AddJewelleryModel.fromJson(data);
+
+        if (addJewelleryModel.value?.success == true) {
+          MyToasts.successToast(toast: addJewelleryModel.value?.message ?? 'No message');
+        } else {
+          debugPrint("API Success is false");
+          MyToasts.errorToast(toast: addJewelleryModel.value?.message ?? 'No message');
+        }
+      } else {
+        debugPrint("Data is null");
+      }
     }
   }
 
