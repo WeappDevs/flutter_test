@@ -17,3 +17,4 @@ samples, guidance on mobile development, and a full API reference.
 
 #Important Facts Of Web
 - In Web after refresh web all the variable becomes the null or in the it's initial form so is important for store it in the cookies.
+- When you are using the video player with that you cannot use the SelectionArea widget (it generate the blank black screen issue).

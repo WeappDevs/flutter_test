@@ -14,26 +14,17 @@ class MiniVideoView extends StatefulWidget {
 class _MiniVideoViewState extends State<MiniVideoView> {
   late VideoPlayerController videoPlayerController;
   late CustomVideoPlayerController _customVideoPlayerController;
+
   String videoUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
   @override
   void initState() {
     super.initState();
     createNetUrlFromBytes();
-    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl))
-      ..initialize().then((value) {
-        if (videoPlayerController.value.hasError) {
-          debugPrint("Error initializing video: ${videoPlayerController.value.errorDescription}");
-        }
-        setState(() {});
-      })
+    videoPlayerController = VideoPlayerController.network(videoUrl)
+      ..initialize().then((value) => setState(() {}))
       ..setVolume(0)
-      ..play().then((value) {
-        if (videoPlayerController.value.hasError) {
-          debugPrint("Error initializing video: ${videoPlayerController.value.errorDescription}");
-        }
-        setState(() {});
-      });
+      ..play();
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
       videoPlayerController: videoPlayerController,
@@ -70,16 +61,6 @@ class _MiniVideoViewState extends State<MiniVideoView> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        height: 200,
-        width: 200,
-        color: Colors.white,
-        child: CustomVideoPlayer(
-          customVideoPlayerController: _customVideoPlayerController,
-        ),
-      ),
-    );
+    return CustomVideoPlayer(customVideoPlayerController: _customVideoPlayerController);
   }
 }

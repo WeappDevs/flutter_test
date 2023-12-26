@@ -25,6 +25,7 @@ import 'package:admin_web_app/utils/common_componets/common_toast.dart';
 import 'package:admin_web_app/utils/common_componets/custom_dialog.dart';
 import 'package:admin_web_app/utils/common_componets/hover_button.dart';
 import 'package:admin_web_app/utils/consts.dart';
+import 'package:admin_web_app/utils/list_extenstion.dart';
 import 'package:admin_web_app/utils/map_extension.dart';
 import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
@@ -67,7 +68,7 @@ class IndexController extends GetxController {
           selectedRhodiumPlated: Rx<String?>(null),
           imageList: <MemoryFileModel>[].obs,
           priceController: TextEditingController(),
-          videoBytesData: Rx<MemoryFileModel?>(null),
+          videoBytesData: MemoryFileModel(byteList: Rx<Uint8List?>(null)),
           version: 1.obs,
           isImageError: false.obs,
           isVideoError: false.obs),
@@ -968,7 +969,6 @@ class IndexController extends GetxController {
 
   Future<void> onVideoPickerTapped({required int index}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      // allowMultiple: true,
       type: FileType.video,
     );
     // debugPrint("files: $result");
@@ -977,14 +977,14 @@ class IndexController extends GetxController {
       Uint8List? fileBytes = result.files.first.bytes;
       String fileName = result.files.first.name;
 
-      visualDetailsList[index].videoBytesData.value = MemoryFileModel(byteList: fileBytes.obs, fileName: fileName);
+      if (visualDetailsList[index].videoBytesData?.byteList.value != null) {
+        visualDetailsList[index].videoBytesData?.byteList.value = null;
+      }
 
-      // if (visualDetailsList[index].videoBytesData.value == null) {
-      //
-      // } else {
-      //   visualDetailsList[index].videoBytesData.value?.byteList.value = fileBytes;
-      //   visualDetailsList[index].videoBytesData.value?.fileName = fileName;
-      // }
+      Future.delayed(const Duration(milliseconds: 200)).then((value) {
+        visualDetailsList[index].videoBytesData?.byteList.value = fileBytes;
+        visualDetailsList[index].videoBytesData?.fileName = fileName;
+      });
     } else {
       debugPrint("Video Picker Value is Null");
     }
@@ -1022,11 +1022,11 @@ class IndexController extends GetxController {
       } else {
         element.isImageError.value = false;
       }
-      if (element.videoBytesData.value == null) {
+      if (element.videoBytesData?.byteList.value == null) {
         element.isVideoError.value = true;
         isGoFurther = false;
       } else {
-        element.isVideoError.value = true;
+        element.isVideoError.value = false;
       }
     }
     return isGoFurther;
@@ -1034,11 +1034,9 @@ class IndexController extends GetxController {
 
   Future<void> onAddProductBtnTapped() async {
     debugPrint("onAddProductBtnTapped----------------------->");
-    if (validateMedia() == true) {
-      //For state management
-    }
+    bool isValidateMedia = validateMedia();
 
-    if (formValidateKey.currentState?.validate() == true && validateMedia() == true) {
+    if (formValidateKey.currentState?.validate() == true && isValidateMedia == true) {
       Map<String, dynamic> passingData = {};
 
       ///BasicDetails
@@ -1406,9 +1404,9 @@ class IndexController extends GetxController {
       }
     }
 
-    passData.addParamsIfNotNull(key: Consts.colorHueKey, value: colorHueList);
-    passData.addParamsIfNotNull(key: Consts.metalKey, value: metalList);
-    passData.addParamsIfNotNull(key: Consts.clarityKey, value: clarityList);
+    passData.addParamsIfNotNull(key: Consts.colorHueKey, value: colorHueList.listStringify);
+    passData.addParamsIfNotNull(key: Consts.metalKey, value: metalList.listStringify);
+    passData.addParamsIfNotNull(key: Consts.clarityKey, value: clarityList.listStringify);
 
     //Price logic
     if (priceList.isNotEmpty) {

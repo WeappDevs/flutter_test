@@ -10,7 +10,7 @@ class VisualDetailModel {
   Rx<String?> selectedRhodiumPlated;
   RxList<MemoryFileModel> imageList = <MemoryFileModel>[].obs;
   TextEditingController priceController;
-  Rx<MemoryFileModel?> videoBytesData;
+  MemoryFileModel? videoBytesData;
   RxInt version;
   RxBool isImageError;
   RxBool isVideoError;
