@@ -77,6 +77,9 @@ class ApiProvider {
     required List<Uint8List> files,
     required String fieldName,
     bool? isPrintResponse = true,
+    //For Use in Upload Media API
+    Uint8List? otherFiles,
+    String? otherFieldName,
   }) async {
     // final hasInternet = await checkInternet();
 
@@ -98,6 +101,12 @@ class ApiProvider {
         if (body[key] != null) {
           request.fields[key] = body[key].toString();
         }
+      }
+
+      //For Use in Upload Media API
+      if (otherFiles != null && otherFieldName != null) {
+        var multipartFile = http.MultipartFile.fromBytes(otherFieldName, otherFiles, filename: otherFieldName);
+        request.files.add(multipartFile);
       }
 
       try {

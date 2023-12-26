@@ -2167,7 +2167,7 @@ class AddProductScreen extends StatelessWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        controller.onVideoPickerTapped(index: index);
+                                        controller.onVideoPickerTapped(index: index, element: element);
                                       },
                                       icon: const Icon(Icons.video_call_rounded),
                                     )
@@ -2204,7 +2204,9 @@ class AddProductScreen extends StatelessWidget {
                                 Obx(() => (element.version.value != 1)
                                     ? HoverButton(
                                         btnText: "Save",
-                                        callback: () {},
+                                        callback: () {
+                                          controller.onUploadMediaBtnTapped(element: element);
+                                        },
                                       )
                                     : const SizedBox()),
                                 const SizedBox(height: 10),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:admin_web_app/models/add_product/add_jewellery_model.dart';
 import 'package:admin_web_app/models/add_product/category_list_model.dart';
+import 'package:admin_web_app/models/add_product/upload_media_model.dart';
 import 'package:admin_web_app/models/auth/user_model.dart';
 import 'package:admin_web_app/models/category/add_category_model.dart';
 import 'package:admin_web_app/models/category/delete_category_model.dart';
@@ -967,7 +968,7 @@ class IndexController extends GetxController {
     visualDetailsList[outerIndex].imageList.removeAt(innerIndex);
   }
 
-  Future<void> onVideoPickerTapped({required int index}) async {
+  Future<void> onVideoPickerTapped({required int index, required VisualDetailModel element}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.video,
     );
@@ -985,6 +986,8 @@ class IndexController extends GetxController {
         visualDetailsList[index].videoBytesData?.byteList.value = fileBytes;
         visualDetailsList[index].videoBytesData?.fileName = fileName;
       });
+
+      element.version++;
     } else {
       debugPrint("Video Picker Value is Null");
     }
@@ -1009,8 +1012,53 @@ class IndexController extends GetxController {
     }
   }
 
-  void onUploadMediaBtnTapped() {
+  Future<void> onUploadMediaBtnTapped({required VisualDetailModel element}) async {
     debugPrint("onUploadMediaBtnTapped --------------------->");
+    List<Uint8List> imagePassList = [];
+
+    for (var ele in element.imageList) {
+      if (ele.byteList.value != null) {
+        imagePassList.add(ele.byteList.value!);
+      }
+    }
+
+    ///API Calling
+    dynamic data = await ApiProvider.commonMultipartProvider(
+      url: URLs.uploadVisualMediaUri,
+      header: ApiProvider.commonHeader(),
+      body: {},
+      files: imagePassList,
+      fieldName: Consts.productImagesKey,
+      otherFiles: element.videoBytesData?.byteList.value,
+      otherFieldName: Consts.productVideoKey,
+    );
+
+    if (data != null) {
+      UploadMediaModel uploadMediaModel = UploadMediaModel.fromJson(data);
+
+      if (uploadMediaModel.success == true) {
+        element.version.value = 1;
+
+        if (uploadMediaModel.data != null) {
+          if (uploadMediaModel.data?.productImages?.isNotEmpty == true) {
+            for (int i = 0; i < element.imageList.length; i++) {
+              MemoryFileModel image = element.imageList[i];
+
+              image.netImagePath = uploadMediaModel.data?.productImages?[i];
+            }
+          }
+          if (uploadMediaModel.data?.productVideo?.isNotEmpty == true) {
+            element.videoBytesData?.netImagePath = uploadMediaModel.data?.productVideo;
+          }
+        }
+
+        MyToasts.successToast(toast: uploadMediaModel.message ?? "No Message");
+      } else {
+        MyToasts.errorToast(toast: uploadMediaModel.message ?? "No Message");
+      }
+    } else {
+      debugPrint("Data is null");
+    }
   }
 
   bool validateMedia() {
