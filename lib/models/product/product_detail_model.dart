@@ -51,7 +51,7 @@ class PData {
   final DiamondDetails? sideDiamondDetails;
   final String? shippingDetails;
   final String? returnDetails;
-  final List<dynamic>? visualDetails;
+  final List<VisualDetails>? visualDetails;
   final num? averageRating;
   final bool? isDeleted;
   final DateTime? createdAt;
@@ -92,7 +92,9 @@ class PData {
             json["side_diamond_details"] == null ? null : DiamondDetails.fromJson(json["side_diamond_details"]),
         shippingDetails: json["shipping_details"],
         returnDetails: json["return_details"],
-        visualDetails: json["visual_details"] == null ? [] : List<dynamic>.from(json["visual_details"]!.map((x) => x)),
+        visualDetails: json["visual_details"] == null
+            ? []
+            : List<VisualDetails>.from(json["visual_details"]!.map((x) => VisualDetails.fromJson(x))),
         averageRating: json["average_rating"],
         isDeleted: json["is_deleted"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
@@ -112,7 +114,8 @@ class PData {
         "side_diamond_details": sideDiamondDetails?.toJson(),
         "shipping_details": shippingDetails,
         "return_details": returnDetails,
-        "visual_details": visualDetails == null ? [] : List<dynamic>.from(visualDetails!.map((x) => x)),
+        "visual_details":
+            visualDetails == null ? [] : List<Map<String, dynamic>>.from(visualDetails!.map((x) => x.toJson())),
         "average_rating": averageRating,
         "is_deleted": isDeleted,
         "createdAt": createdAt?.toIso8601String(),
@@ -300,6 +303,42 @@ class DiamondDetails {
         "depth": depth,
         "table": table,
         "measurements": measurements,
+        "_id": id,
+      };
+}
+
+class VisualDetails {
+  final String? metalTypeColor;
+  final String? rhodiumPlated;
+  final num? metalVisePrice;
+  final List<String>? productImages;
+  final String? productVideo;
+  final String? id;
+
+  VisualDetails({
+    this.metalTypeColor,
+    this.rhodiumPlated,
+    this.metalVisePrice,
+    this.productImages,
+    this.productVideo,
+    this.id,
+  });
+
+  factory VisualDetails.fromJson(Map<String, dynamic> json) => VisualDetails(
+        metalTypeColor: json["metal_type_color"],
+        rhodiumPlated: json["rhodium_plated"],
+        metalVisePrice: json["metal_vise_price"],
+        productImages: json["product_images"] == null ? [] : List<String>.from(json["product_images"]!.map((x) => x)),
+        productVideo: json["product_video"],
+        id: json["_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "metal_type_color": metalTypeColor,
+        "rhodium_plated": rhodiumPlated,
+        "metal_vise_price": metalVisePrice,
+        "product_images": productImages == null ? [] : List<String>.from(productImages!.map((x) => x)),
+        "product_video": productVideo,
         "_id": id,
       };
 }

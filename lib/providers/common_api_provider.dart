@@ -93,7 +93,7 @@ class ApiProvider {
       for (var file in files) {
         // var stream = http.ByteStream(file.openRead());
         // var length = await file.length();
-        var multipartFile = http.MultipartFile.fromBytes(fieldName, file, filename: fieldName);
+        var multipartFile = http.MultipartFile.fromBytes(fieldName, file, filename: "file_image.jpeg");
         request.files.add(multipartFile);
       }
 
@@ -105,7 +105,7 @@ class ApiProvider {
 
       //For Use in Upload Media API
       if (otherFiles != null && otherFieldName != null) {
-        var multipartFile = http.MultipartFile.fromBytes(otherFieldName, otherFiles, filename: otherFieldName);
+        var multipartFile = http.MultipartFile.fromBytes(otherFieldName, otherFiles, filename: "file_video.mp4");
         request.files.add(multipartFile);
       }
 

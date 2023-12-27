@@ -31,11 +31,9 @@ class OTPVerificationController extends GetxController {
         ResponseModel responseModel = ResponseModel.fromJson(data);
 
         if (responseModel.success == true) {
-          debugPrint("API Success is true");
           MyToasts.successToast(toast: responseModel.message ?? "No message");
           Get.rootDelegate.offNamed(RouteNames.kResetPasswordScreenRoute);
         } else {
-          debugPrint("API Success is false: ${responseModel.message}");
           MyToasts.errorToast(toast: responseModel.message ?? "No message");
         }
       } else {

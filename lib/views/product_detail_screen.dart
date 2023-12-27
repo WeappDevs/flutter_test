@@ -1,4 +1,5 @@
 import 'package:admin_web_app/controllers/index_controller.dart';
+import 'package:admin_web_app/models/product/product_detail_model.dart';
 import 'package:admin_web_app/utils/assets.dart';
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
@@ -117,7 +118,59 @@ class ProductDetailScreen extends StatelessWidget {
                                           style: CustomTextStyle.infoHeadingStyle,
                                         ),
                                         const SizedBox(height: 10),
-                                        const EmptyView(emptyText: "No Media Inner Details Available.")
+                                        if (controller
+                                                .productDetailModel.value?.data?.value?.visualDetails?.isNotEmpty ??
+                                            false) ...[
+                                          for (VisualDetails ele
+                                              in controller.productDetailModel.value?.data?.value?.visualDetails ??
+                                                  []) ...[
+                                            Column(
+                                              children: ele.toJson().entries.map((element) {
+                                                return Padding(
+                                                  padding: const EdgeInsets.only(top: 5),
+                                                  child: SizedBox(
+                                                    width: double.infinity,
+                                                    child: Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Expanded(
+                                                            flex: 3,
+                                                            child: Text(
+                                                                element.key
+                                                                    .replaceAll("_", " ")
+                                                                    .toString()
+                                                                    .trimLeft()
+                                                                    .capitalize
+                                                                    .toString(),
+                                                                style: const TextStyle(color: Clr.greyColor))),
+                                                        const SizedBox(width: 10),
+                                                        Expanded(
+                                                          flex: 9,
+                                                          child: (element.value is List)
+                                                              ? (element.value.length != 0)
+                                                                  ? Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      children: List.generate(
+                                                                          element.value.length,
+                                                                          (index) => (element
+                                                                                      .value[index].runtimeType ==
+                                                                                  String)
+                                                                              ? Text(element.value[index] ?? "-")
+                                                                              : Text(element.value?.toString() ?? "-")),
+                                                                    )
+                                                                  : const Text("-")
+                                                              : Text(element.value?.toString() ?? "-"),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ]
+                                        ] else ...[
+                                          const EmptyView()
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -138,7 +191,7 @@ class ProductDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Basic Details",
+                                "All Details",
                                 style: CustomTextStyle.infoHeadingStyle,
                               ),
                               const SizedBox(height: 10),
@@ -186,54 +239,122 @@ class ProductDetailScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Clr.whiteColor,
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Additional Details",
-                                style: CustomTextStyle.infoHeadingStyle,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Clr.whiteColor,
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Basic Details",
+                                      style: CustomTextStyle.infoHeadingStyle,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Column(
+                                      children: controller.productDetailModel.value?.data?.value
+                                              ?.toJson()
+                                              .entries
+                                              .map((element) {
+                                            return (element.value.runtimeType == String ||
+                                                    element.value.runtimeType == num ||
+                                                    element.value.runtimeType == int ||
+                                                    element.value.runtimeType == bool)
+                                                ? Padding(
+                                                    padding: const EdgeInsets.only(top: 5),
+                                                    child: SizedBox(
+                                                      width: double.infinity,
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Expanded(
+                                                              flex: 3,
+                                                              child: Text(
+                                                                  element.key
+                                                                      .replaceAll("_", " ")
+                                                                      .toString()
+                                                                      .trimLeft()
+                                                                      .capitalize
+                                                                      .toString(),
+                                                                  style: const TextStyle(color: Clr.greyColor))),
+                                                          const SizedBox(width: 10),
+                                                          Expanded(
+                                                              flex: 9, child: Text(element.value?.toString() ?? "-")),
+                                                          // Expanded(flex: 3, child: Text(element.value?.runtimeType.toString() ?? "-")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const SizedBox();
+                                          }).toList() ??
+                                          <Widget>[const EmptyView()],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: 10),
-                              Column(
-                                children: controller.productDetailModel.value?.data?.value?.additionalDetails
-                                        ?.toJson()
-                                        .entries
-                                        .map((element) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                  flex: 3,
-                                                  child: Text(
-                                                      element.key
-                                                          .replaceAll("_", " ")
-                                                          .toString()
-                                                          .trimLeft()
-                                                          .capitalize
-                                                          .toString(),
-                                                      style: const TextStyle(color: Clr.greyColor))),
-                                              const SizedBox(width: 10),
-                                              Expanded(flex: 9, child: Text(element.value?.toString() ?? "-")),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }).toList() ??
-                                    <Widget>[],
+                            ),
+                            const SizedBox(width: 30),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Clr.whiteColor,
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Additional Details",
+                                      style: CustomTextStyle.infoHeadingStyle,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Column(
+                                      children: controller.productDetailModel.value?.data?.value?.additionalDetails
+                                              ?.toJson()
+                                              .entries
+                                              .map((element) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(top: 5),
+                                              child: SizedBox(
+                                                width: double.infinity,
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                        flex: 3,
+                                                        child: Text(
+                                                            element.key
+                                                                .replaceAll("_", " ")
+                                                                .toString()
+                                                                .trimLeft()
+                                                                .capitalize
+                                                                .toString(),
+                                                            style: const TextStyle(color: Clr.greyColor))),
+                                                    const SizedBox(width: 10),
+                                                    Expanded(flex: 9, child: Text(element.value?.toString() ?? "-")),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }).toList() ??
+                                          <Widget>[const EmptyView()],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 30),
                         Row(
@@ -285,7 +406,7 @@ class ProductDetailScreen extends StatelessWidget {
                                               ),
                                             );
                                           }).toList() ??
-                                          <Widget>[],
+                                          <Widget>[const EmptyView()],
                                     ),
                                   ],
                                 ),
@@ -338,7 +459,7 @@ class ProductDetailScreen extends StatelessWidget {
                                               ),
                                             );
                                           }).toList() ??
-                                          <Widget>[],
+                                          <Widget>[const EmptyView()],
                                     ),
                                   ],
                                 ),

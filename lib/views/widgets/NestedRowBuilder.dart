@@ -10,57 +10,101 @@ class NestedRowBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: data.entries.expand((element) {
-        return (element.value is Map)
-            ? [
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: SizedBox(
-              width: double.infinity,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      element.key.replaceAll("_", " ").toString().trimLeft().capitalize.toString(),
-                      style: const TextStyle(color: Clr.greyColor),
+        debugPrint(element.value.runtimeType.toString());
+        return
+
+            ///Map
+            (element.value is Map)
+                ? [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (Map)",
+                                style: const TextStyle(color: Clr.greyColor),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 9,
+                              child: NestedRowBuilder(data: element.value),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    flex: 9,
-                    child: NestedRowBuilder(data: element.value),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ]
-            : [
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: SizedBox(
-              width: double.infinity,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      element.key.replaceAll("_", " ").toString().trimLeft().capitalize.toString(),
-                      style: const TextStyle(color: Clr.greyColor),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    flex: 9,
-                    child: Text(element.value?.toString() ?? "-"),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ];
+                  ]
+                :
+
+                ///List
+                (element.value is List)
+                    ? [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (List_${element.value.length})",
+                                    style: const TextStyle(color: Clr.greyColor),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  flex: 9,
+                                  child: (element.value.length != 0)
+                                      ? Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: List.generate(
+                                              element.value.length,
+                                              (index) => (element.value[index].runtimeType == String)
+                                                  ? Text(element.value[index] ?? "-")
+                                                  : NestedRowBuilder(data: element.value[index])),
+                                        )
+                                      : const Text("-"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ]
+
+                    ///Normal String and Other data types
+                    : [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    element.key.replaceAll("_", " ").toString().trimLeft().capitalize.toString(),
+                                    style: const TextStyle(color: Clr.greyColor),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  flex: 9,
+                                  child: Text(element.value?.toString() ?? "-"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ];
       }).toList(),
     );
   }

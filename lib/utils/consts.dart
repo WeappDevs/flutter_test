@@ -15,6 +15,9 @@ class URLs {
   ///Live(for production use)
   // String baseUrl = 'https://ad-anima.com:8082/v1/user';
 
+  ///Image Default Path
+  // String imgBaseUrl = 'http://localhost:8001/public/jewellery_images/9165_1703703114505.mp4';
+
   ///All Uri
   static const String adminLoginUri = "${URLs.baseUrl}/admin_login";
   static const String adminLogoutUri = "${URLs.baseUrl}/admin_logout";
@@ -82,7 +85,7 @@ class Consts {
   static const String customShippingDetailsKey = "custom_shipping_details";
   static const String returnDetailsKey = "return_details";
   static const String customReturnDetailsKey = "custom_return_details";
-  static const String visualDetailKey = "visual_detail";
+  static const String visualDetailsKey = "visual_details";
   static const String additionalDetailsKey = "additional_details";
   static const String stoneTypeKey = "stone_type";
   static const String creationMethodKey = "creation_method";
