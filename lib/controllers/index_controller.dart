@@ -64,16 +64,18 @@ class IndexController extends GetxController {
   void addVisualDetailElement() {
     visualDetailsList.add(
       VisualDetailModel(
-          metalTypeList: metalTypeList,
-          selectedMetalType: Rx<String?>(null),
-          rhodiumPlatedList: generalRhodiumPlatedList,
-          selectedRhodiumPlated: Rx<String?>(null),
-          imageList: <MemoryFileModel>[].obs,
-          priceController: TextEditingController(),
-          videoBytesData: MemoryFileModel(byteList: Rx<Uint8List?>(null)),
-          version: 1.obs,
-          isImageError: false.obs,
-          isVideoError: false.obs),
+        metalTypeList: metalTypeList,
+        selectedMetalType: Rx<String?>(null),
+        rhodiumPlatedList: generalRhodiumPlatedList,
+        selectedRhodiumPlated: Rx<String?>(null),
+        imageList: <MemoryFileModel>[].obs,
+        priceController: TextEditingController(),
+        videoBytesData: MemoryFileModel(byteList: Rx<Uint8List?>(null)),
+        version: 1.obs,
+        isImageError: false.obs,
+        isVideoError: false.obs,
+        isSaveLoading: false.obs,
+      ),
     );
   }
 
@@ -1323,101 +1325,119 @@ class IndexController extends GetxController {
 
   Future<void> onUploadMediaBtnTapped(
       {required VisualDetailModel element}) async {
-    debugPrint("onUploadMediaBtnTapped --------------------->");
-    List<Uint8List> imagePassList = [];
-    bool isVideoUpload = true;
+    if (validateMedia(isVersionNotConsider: true) == true) {
+      debugPrint("onUploadMediaBtnTapped --------------------->");
 
-    //Upload Image
-    for (var ele in element.imageList) {
-      if (ele.byteList.value != null && ele.netImagePath == null ||
-          ele.netImagePath?.isEmpty == true) {
-        imagePassList.add(ele.byteList.value!);
+      element.isSaveLoading.value = true;
+
+      List<Uint8List> imagePassList = [];
+      bool isVideoUpload = true;
+
+      //Upload Image
+      for (var ele in element.imageList) {
+        if (ele.byteList.value != null && ele.netImagePath == null ||
+            ele.netImagePath?.isEmpty == true) {
+          imagePassList.add(ele.byteList.value!);
+        }
       }
-    }
 
-    //Upload Video
-    if (element.videoBytesData?.netImagePath == null ||
-        element.videoBytesData?.netImagePath?.isEmpty == true) {
-      isVideoUpload = false;
-    }
+      //Upload Video
+      if (element.videoBytesData?.netImagePath == null ||
+          element.videoBytesData?.netImagePath?.isEmpty == true) {
+        isVideoUpload = false;
+      }
 
-    //all body print
-    debugPrint("imagePassList: $imagePassList");
-    debugPrint("isVideoUpload: $isVideoUpload");
+      //all body print
+      debugPrint("imagePassList: $imagePassList");
+      debugPrint("isVideoUpload: $isVideoUpload");
 
-    ///API Calling
-    dynamic data = await ApiProvider.commonMultipartProvider(
-      url: URLs.uploadVisualMediaUri,
-      header: ApiProvider.commonHeader(),
-      body: {},
-      files: imagePassList,
-      fieldName: Consts.productImagesKey,
-      otherFiles: (isVideoUpload == true)
-          ? element.videoBytesData?.byteList.value
-          : null,
-      otherFieldName: (isVideoUpload == true) ? Consts.productVideoKey : null,
-    );
+      ///API Calling
+      dynamic data = await ApiProvider.commonMultipartProvider(
+        url: URLs.uploadVisualMediaUri,
+        header: ApiProvider.commonHeader(),
+        body: {},
+        files: imagePassList,
+        fieldName: Consts.productImagesKey,
+        otherFiles: (isVideoUpload == true)
+            ? element.videoBytesData?.byteList.value
+            : null,
+        otherFieldName: (isVideoUpload == true) ? Consts.productVideoKey : null,
+      );
 
-    if (data != null) {
-      UploadMediaModel uploadMediaModel = UploadMediaModel.fromJson(data);
+      if (data != null) {
+        UploadMediaModel uploadMediaModel = UploadMediaModel.fromJson(data);
 
-      if (uploadMediaModel.success == true) {
-        element.version.value = 1;
+        if (uploadMediaModel.success == true) {
+          element.version.value = 1;
 
-        if (uploadMediaModel.data != null) {
-          //Get Image
-          if (uploadMediaModel.data?.productImages?.isNotEmpty == true) {
-            int uploadImageLength =
-                uploadMediaModel.data?.productImages?.length ?? 0;
+          if (uploadMediaModel.data != null) {
+            //Get Image
+            if (uploadMediaModel.data?.productImages?.isNotEmpty == true) {
+              int uploadImageLength =
+                  uploadMediaModel.data?.productImages?.length ?? 0;
 
-            for (int i = 0, j = 0; i < element.imageList.length; i++) {
-              if (j < uploadImageLength) {
-                MemoryFileModel image = element.imageList[i];
+              for (int i = 0, j = 0; i < element.imageList.length; i++) {
+                if (j < uploadImageLength) {
+                  MemoryFileModel image = element.imageList[i];
 
-                if (image.netImagePath == null ||
-                    image.netImagePath?.isEmpty == true) {
-                  image.netImagePath = uploadMediaModel.data?.productImages?[j];
-                  j++;
+                  if (image.netImagePath == null ||
+                      image.netImagePath?.isEmpty == true) {
+                    image.netImagePath =
+                        uploadMediaModel.data?.productImages?[j];
+                    j++;
+                  }
                 }
               }
             }
+
+            //Get Video
+            if (uploadMediaModel.data?.productVideo?.isNotEmpty == true) {
+              element.videoBytesData?.netImagePath =
+                  uploadMediaModel.data?.productVideo;
+            }
           }
 
-          //Get Video
-          if (uploadMediaModel.data?.productVideo?.isNotEmpty == true) {
-            element.videoBytesData?.netImagePath =
-                uploadMediaModel.data?.productVideo;
+          //all rest body print
+          for (var element in element.imageList) {
+            int i = 0;
+            debugPrint("$i----------------->");
+            debugPrint("fileName: ${element.fileName}");
+            debugPrint("netImagePath: ${element.netImagePath}");
+            i++;
           }
-        }
+          debugPrint("Video: ${element.videoBytesData?.netImagePath}");
 
-        //all rest body print
-        for (var element in element.imageList) {
-          int i = 0;
-          debugPrint("$i----------------->");
-          debugPrint("fileName: ${element.fileName}");
-          debugPrint("netImagePath: ${element.netImagePath}");
-          i++;
+          MyToasts.successToast(
+              toast: uploadMediaModel.message ?? "No Message");
+        } else {
+          MyToasts.errorToast(toast: uploadMediaModel.message ?? "No Message");
         }
-        debugPrint("Video: ${element.videoBytesData?.netImagePath}");
-
-        MyToasts.successToast(toast: uploadMediaModel.message ?? "No Message");
       } else {
-        MyToasts.errorToast(toast: uploadMediaModel.message ?? "No Message");
+        debugPrint("Data is null");
       }
-    } else {
-      debugPrint("Data is null");
     }
+    element.isSaveLoading.value = false;
   }
 
-  bool validateMedia() {
+  bool validateMedia({bool? isVersionNotConsider}) {
     bool isGoFurther = true;
     for (var element in visualDetailsList) {
+      //save validate
+      if (isVersionNotConsider != true) {
+        //(default version is 1)
+        if (element.version.value != 1 && element.isSaveLoading.value != true) {
+          isGoFurther = false;
+        }
+      }
+
+      //image validate
       if (element.imageList.value.isEmpty) {
         element.isImageError.value = true;
         isGoFurther = false;
       } else {
         element.isImageError.value = false;
       }
+      //video validate
       if (element.videoBytesData?.byteList.value == null) {
         element.isVideoError.value = true;
         isGoFurther = false;
@@ -1428,12 +1448,15 @@ class IndexController extends GetxController {
     return isGoFurther;
   }
 
+  RxBool isAddBtnLoading = false.obs;
+
   Future<void> onAddProductBtnTapped() async {
     debugPrint("onAddProductBtnTapped----------------------->");
     bool isValidateMedia = validateMedia();
 
     if (formValidateKey.currentState?.validate() == true &&
         isValidateMedia == true) {
+      isAddBtnLoading.value = true;
       Map<String, dynamic> passingData = {};
 
       ///BasicDetails
@@ -1615,13 +1638,50 @@ class IndexController extends GetxController {
       }
 
       ///VisualDetails
+      List<Map<String, dynamic>> visualDataList = [];
+      for (var element in visualDetailsList) {
+        if (element.version.value == 1) {
+          Map<String, dynamic> innerVisualData = {};
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.metalTypeColorKey,
+              value: element.selectedMetalType.value);
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.rhodiumPlatedKey,
+              value: element.selectedRhodiumPlated.value);
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.metalVisePriceKey,
+              value: element.priceController.text);
+
+          List<String> productImageList = [];
+          for (var image in element.imageList) {
+            if (image.netImagePath != null &&
+                image.netImagePath?.isNotEmpty == true) {
+              productImageList.add(image.netImagePath!);
+            }
+          }
+
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.productImagesKey, value: productImageList);
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.productVideoKey,
+              value: element.videoBytesData?.netImagePath);
+
+          visualDataList.add(innerVisualData);
+        }
+      }
+
+      if (visualDataList.isNotEmpty) {
+        passingData.addAll({
+          Consts.visualDetailKey: visualDataList.toString(),
+        });
+      }
 
       ///ShippingDetails
       passingData.addAll({
         Consts.shippingDetailsKey: selectedShippingDetails.value?.toLowerCase(),
       });
 
-      if (selectedShippingDetails.value == Consts.customKey) {
+      if (selectedShippingDetails.value == ShippingDetailsRadio.Custom.name) {
         passingData.addAll({
           Consts.customShippingDetailsKey: customShippingDetailsController.text,
         });
@@ -1632,7 +1692,7 @@ class IndexController extends GetxController {
         Consts.returnDetailsKey: selectedReturnDetails.value?.toLowerCase(),
       });
 
-      if (selectedReturnDetails.value == Consts.customKey) {
+      if (selectedReturnDetails.value == ReturnDetailsRadio.Custom.name) {
         passingData.addAll({
           Consts.customReturnDetailsKey: customReturnsDetailsController.text,
         });
@@ -1664,7 +1724,14 @@ class IndexController extends GetxController {
       } else {
         debugPrint("Data is null");
       }
+    } else {
+      if (isValidateMedia == false) {
+        MyToasts.warningToast(
+            toast: "Please save all media or recheck before proceeding.");
+      }
     }
+
+    isAddBtnLoading.value = false;
   }
 
   ///Search Product Access............................................................................

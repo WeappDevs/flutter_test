@@ -14,6 +14,7 @@ class VisualDetailModel {
   RxInt version;
   RxBool isImageError;
   RxBool isVideoError;
+  RxBool isSaveLoading;
 
   VisualDetailModel({
     required this.metalTypeList,
@@ -26,5 +27,6 @@ class VisualDetailModel {
     required this.version,
     required this.isImageError,
     required this.isVideoError,
+    required this.isSaveLoading,
   });
 }

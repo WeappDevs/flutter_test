@@ -77,6 +77,7 @@ class AddProductScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
+
                       ///Basic Details...................................................................................
                       Container(
                         decoration: BoxDecoration(
@@ -138,12 +139,12 @@ class AddProductScreen extends StatelessWidget {
                                           Text(
                                             "Product Type",
                                             style:
-                                                CustomTextStyle.fieldTitleStyle,
+                                            CustomTextStyle.fieldTitleStyle,
                                           ),
                                           const SizedBox(width: 5),
                                           const Tooltip(
                                             message:
-                                                "This defines the type of the product.",
+                                            "This defines the type of the product.",
                                             child: Icon(
                                               Icons.info_rounded,
                                               color: Clr.darkGreyColor,
@@ -153,7 +154,8 @@ class AddProductScreen extends StatelessWidget {
                                         ],
                                       ),
                                       const SizedBox(height: 5),
-                                      Obx(() => CommonDropDownButton(
+                                      Obx(() =>
+                                          CommonDropDownButton(
                                             selectedDropDownValue: controller
                                                 .selectedProductCategoryID,
                                             items: controller
@@ -167,11 +169,11 @@ class AddProductScreen extends StatelessWidget {
                                             }).toList(),
                                             isNotEmpty: true,
                                             isNotEmptyMessage:
-                                                "Please select the product type.",
+                                            "Please select the product type.",
                                             onChanged: (newVal) {
                                               controller
                                                   .onProductTypeDropDownChanged(
-                                                      newVal: newVal);
+                                                  newVal: newVal);
                                             },
                                           )),
                                     ],
@@ -185,7 +187,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Gender",
@@ -194,11 +196,11 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedGender,
+                                        controller.selectedGender,
                                         dropdownList: controller.genderList,
                                         isNotEmpty: true,
                                         isNotEmptyMessage:
-                                            "Please select the gender.",
+                                        "Please select the gender.",
                                       ),
                                     ],
                                   ),
@@ -211,7 +213,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "General Price",
@@ -222,8 +224,8 @@ class AddProductScreen extends StatelessWidget {
                                         decoration: CustomTextFieldStyle
                                             .normalFieldDecoration
                                             .copyWith(
-                                                prefixIcon: const Icon(Icons
-                                                    .currency_rupee_rounded)),
+                                            prefixIcon: const Icon(Icons
+                                                .currency_rupee_rounded)),
                                         controller: controller
                                             .productGeneralPriceController,
                                         validateType: Validate.FloatNumeric,
@@ -244,6 +246,7 @@ class AddProductScreen extends StatelessWidget {
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+
                             ///Ring Style...............................................................................
                             if (controller.selectedProductType.value ==
                                 Consts.ringKey) ...[
@@ -262,12 +265,12 @@ class AddProductScreen extends StatelessWidget {
                                         Text(
                                           "Additional Details",
                                           style:
-                                              CustomTextStyle.infoHeadingStyle,
+                                          CustomTextStyle.infoHeadingStyle,
                                         ),
                                         const SizedBox(width: 5),
                                         const Tooltip(
                                           message:
-                                              "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
+                                          "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
                                           child: Icon(
                                             Icons.info_rounded,
                                             color: Clr.darkGreyColor,
@@ -294,23 +297,23 @@ class AddProductScreen extends StatelessWidget {
                                     const SizedBox(height: 5),
                                     CommonDropDownButton(
                                       selectedDropDownValue:
-                                          controller.selectedRingStyle,
+                                      controller.selectedRingStyle,
                                       dropdownList: controller.ringStyleList,
                                       isNotEmpty: true,
                                       isNotEmptyMessage:
-                                          "Please select the style",
+                                      "Please select the style",
                                     ),
                                     const SizedBox(height: 15),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Flexible(
                                           flex: 2,
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "General Rhodium Plated",
@@ -333,7 +336,7 @@ class AddProductScreen extends StatelessWidget {
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "Average Width (mm)",
@@ -351,7 +354,7 @@ class AddProductScreen extends StatelessWidget {
                                                 controller: controller
                                                     .averageWidthController,
                                                 validateType:
-                                                    Validate.FloatNumeric,
+                                                Validate.FloatNumeric,
                                               ),
                                             ],
                                           ),
@@ -362,7 +365,7 @@ class AddProductScreen extends StatelessWidget {
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "Carat Total Weight",
@@ -374,7 +377,7 @@ class AddProductScreen extends StatelessWidget {
                                                 controller: controller
                                                     .caratTotalWeightController,
                                                 validateType:
-                                                    Validate.FloatNumeric,
+                                                Validate.FloatNumeric,
                                               ),
                                             ],
                                           ),
@@ -388,711 +391,734 @@ class AddProductScreen extends StatelessWidget {
                             ]
 
                             ///Earring Style...............................................................................
-                            else if (controller.selectedProductType.value ==
-                                Consts.earringKey) ...[
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Clr.whiteColor,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Additional Details",
-                                          style:
-                                              CustomTextStyle.infoHeadingStyle,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        const Tooltip(
-                                          message:
-                                              "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
-                                          child: Icon(
-                                            Icons.info_rounded,
-                                            color: Clr.darkGreyColor,
-                                            size: 17,
+                            else
+                              if (controller.selectedProductType.value ==
+                                  Consts.earringKey) ...[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Clr.whiteColor,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20, horizontal: 15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Additional Details",
+                                            style:
+                                            CustomTextStyle.infoHeadingStyle,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "Product SKU(Stock Keeping Unit)",
-                                      style: CustomTextStyle.fieldTitleStyle,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CommonTextField(
-                                      controller: controller.skuController,
-                                      validateType: Validate.SKU,
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "Style",
-                                      style: CustomTextStyle.fieldTitleStyle,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CommonDropDownButton(
-                                      selectedDropDownValue:
-                                          controller.selectedEarringStyle,
-                                      dropdownList: controller.earringStyleList,
-                                      isNotEmpty: true,
-                                      isNotEmptyMessage:
-                                          "Please select the style",
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "General Rhodium Plated",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue: controller
-                                                    .selectedGeneralRhodiumPlated,
-                                                dropdownList: controller
-                                                    .generalRhodiumPlatedList,
-                                              ),
-                                            ],
+                                          const SizedBox(width: 5),
+                                          const Tooltip(
+                                            message:
+                                            "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
+                                            child: Icon(
+                                              Icons.info_rounded,
+                                              color: Clr.darkGreyColor,
+                                              size: 17,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Carat Total Weight",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                controller: controller
-                                                    .caratTotalWeightController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Text(
+                                        "Product SKU(Stock Keeping Unit)",
+                                        style: CustomTextStyle.fieldTitleStyle,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      CommonTextField(
+                                        controller: controller.skuController,
+                                        validateType: Validate.SKU,
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Text(
+                                        "Style",
+                                        style: CustomTextStyle.fieldTitleStyle,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      CommonDropDownButton(
+                                        selectedDropDownValue:
+                                        controller.selectedEarringStyle,
+                                        dropdownList: controller
+                                            .earringStyleList,
+                                        isNotEmpty: true,
+                                        isNotEmptyMessage:
+                                        "Please select the style",
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "General Rhodium Plated",
+                                                  style: CustomTextStyle
+                                                      .fieldTitleStyle,
+                                                ),
+                                                const SizedBox(height: 5),
+                                                CommonDropDownButton(
+                                                  selectedDropDownValue: controller
+                                                      .selectedGeneralRhodiumPlated,
+                                                  dropdownList: controller
+                                                      .generalRhodiumPlatedList,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Back Type",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue: controller
-                                                    .selectedEarringBackType,
-                                                dropdownList: controller
-                                                    .earringBackTypeList,
-                                              ),
-                                            ],
+                                          const SizedBox(width: 10),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Carat Total Weight",
+                                                  style: CustomTextStyle
+                                                      .fieldTitleStyle,
+                                                ),
+                                                const SizedBox(height: 5),
+                                                CommonTextField(
+                                                  controller: controller
+                                                      .caratTotalWeightController,
+                                                  validateType:
+                                                  Validate.FloatNumeric,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Earring Length (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: Transform.rotate(
-                                                    angle: 90 / 180 * pi,
-                                                    child: const Icon(
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Back Type",
+                                                  style: CustomTextStyle
+                                                      .fieldTitleStyle,
+                                                ),
+                                                const SizedBox(height: 5),
+                                                CommonDropDownButton(
+                                                  selectedDropDownValue: controller
+                                                      .selectedEarringBackType,
+                                                  dropdownList: controller
+                                                      .earringBackTypeList,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Earring Length (inches)",
+                                                  style: CustomTextStyle
+                                                      .fieldTitleStyle,
+                                                ),
+                                                const SizedBox(height: 5),
+                                                CommonTextField(
+                                                  decoration: CustomTextFieldStyle
+                                                      .normalFieldDecoration
+                                                      .copyWith(
+                                                    prefixIcon: Transform
+                                                        .rotate(
+                                                      angle: 90 / 180 * pi,
+                                                      child: const Icon(
+                                                          Icons.linear_scale),
+                                                    ),
+                                                  ),
+                                                  controller: controller
+                                                      .earringLengthController,
+                                                  validateType:
+                                                  Validate.FloatNumeric,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Earring Width (inches)",
+                                                  style: CustomTextStyle
+                                                      .fieldTitleStyle,
+                                                ),
+                                                const SizedBox(height: 5),
+                                                CommonTextField(
+                                                  decoration: CustomTextFieldStyle
+                                                      .normalFieldDecoration
+                                                      .copyWith(
+                                                    prefixIcon: const Icon(
                                                         Icons.linear_scale),
                                                   ),
+                                                  controller: controller
+                                                      .earringWidthController,
+                                                  validateType:
+                                                  Validate.FloatNumeric,
                                                 ),
-                                                controller: controller
-                                                    .earringLengthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Earring Width (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: const Icon(
-                                                      Icons.linear_scale),
-                                                ),
-                                                controller: controller
-                                                    .earringWidthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 30),
-                            ]
+                                const SizedBox(height: 30),
+                              ]
 
-                            ///Necklace Style...............................................................................
-                            else if (controller.selectedProductType.value ==
-                                Consts.necklaceKey) ...[
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Clr.whiteColor,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                              ///Necklace Style...............................................................................
+                              else
+                                if (controller.selectedProductType.value ==
+                                    Consts.necklaceKey) ...[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Clr.whiteColor,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 15),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
                                       children: [
-                                        Text(
-                                          "Additional Details",
-                                          style:
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Additional Details",
+                                              style:
                                               CustomTextStyle.infoHeadingStyle,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        const Tooltip(
-                                          message:
+                                            ),
+                                            const SizedBox(width: 5),
+                                            const Tooltip(
+                                              message:
                                               "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
-                                          child: Icon(
-                                            Icons.info_rounded,
-                                            color: Clr.darkGreyColor,
-                                            size: 17,
-                                          ),
+                                              child: Icon(
+                                                Icons.info_rounded,
+                                                color: Clr.darkGreyColor,
+                                                size: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "Product SKU(Stock Keeping Unit)",
-                                      style: CustomTextStyle.fieldTitleStyle,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CommonTextField(
-                                      controller: controller.skuController,
-                                      validateType: Validate.SKU,
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "Style",
-                                      style: CustomTextStyle.fieldTitleStyle,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CommonDropDownButton(
-                                      selectedDropDownValue:
+                                        const SizedBox(height: 15),
+                                        Text(
+                                          "Product SKU(Stock Keeping Unit)",
+                                          style: CustomTextStyle
+                                              .fieldTitleStyle,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        CommonTextField(
+                                          controller: controller.skuController,
+                                          validateType: Validate.SKU,
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Text(
+                                          "Style",
+                                          style: CustomTextStyle
+                                              .fieldTitleStyle,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        CommonDropDownButton(
+                                          selectedDropDownValue:
                                           controller.selectedNecklaceStyle,
-                                      dropdownList:
+                                          dropdownList:
                                           controller.necklaceStyleList,
-                                      isNotEmpty: true,
-                                      isNotEmptyMessage:
+                                          isNotEmpty: true,
+                                          isNotEmptyMessage:
                                           "Please select the style",
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "General Rhodium Plated",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue: controller
-                                                    .selectedGeneralRhodiumPlated,
-                                                dropdownList: controller
-                                                    .generalRhodiumPlatedList,
-                                              ),
-                                            ],
-                                          ),
                                         ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Carat Total Weight",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                controller: controller
-                                                    .caratTotalWeightController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
+                                        const SizedBox(height: 15),
+                                        Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
+                                          children: [
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Pendant Length (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: Transform.rotate(
-                                                    angle: 90 / 180 * pi,
-                                                    child: const Icon(
-                                                        Icons.linear_scale),
+                                                children: [
+                                                  Text(
+                                                    "General Rhodium Plated",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
                                                   ),
-                                                ),
-                                                controller: controller
-                                                    .pendantLengthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Pendant Width (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: const Icon(
-                                                      Icons.linear_scale),
-                                                ),
-                                                controller: controller
-                                                    .pendantWidthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Chain Length (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: Transform.rotate(
-                                                    angle: 90 / 180 * pi,
-                                                    child: const Icon(
-                                                        Icons.linear_scale),
+                                                  const SizedBox(height: 5),
+                                                  CommonDropDownButton(
+                                                    selectedDropDownValue: controller
+                                                        .selectedGeneralRhodiumPlated,
+                                                    dropdownList: controller
+                                                        .generalRhodiumPlatedList,
                                                   ),
-                                                ),
-                                                controller: controller
-                                                    .chainLengthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Chain Width (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: const Icon(
-                                                      Icons.linear_scale),
-                                                ),
-                                                controller: controller
-                                                    .chainWidthController,
-                                                validateType:
+                                                children: [
+                                                  Text(
+                                                    "Carat Total Weight",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonTextField(
+                                                    controller: controller
+                                                        .caratTotalWeightController,
+                                                    validateType:
                                                     Validate.FloatNumeric,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
+                                        const SizedBox(height: 15),
+                                        Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
+                                          children: [
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Chain Type",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
+                                                children: [
+                                                  Text(
+                                                    "Pendant Length (inches)",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonTextField(
+                                                    decoration: CustomTextFieldStyle
+                                                        .normalFieldDecoration
+                                                        .copyWith(
+                                                      prefixIcon: Transform
+                                                          .rotate(
+                                                        angle: 90 / 180 * pi,
+                                                        child: const Icon(
+                                                            Icons.linear_scale),
+                                                      ),
+                                                    ),
+                                                    controller: controller
+                                                        .pendantLengthController,
+                                                    validateType:
+                                                    Validate.FloatNumeric,
+                                                  ),
+                                                ],
                                               ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue:
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Pendant Width (inches)",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonTextField(
+                                                    decoration: CustomTextFieldStyle
+                                                        .normalFieldDecoration
+                                                        .copyWith(
+                                                      prefixIcon: const Icon(
+                                                          Icons.linear_scale),
+                                                    ),
+                                                    controller: controller
+                                                        .pendantWidthController,
+                                                    validateType:
+                                                    Validate.FloatNumeric,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Chain Length (inches)",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonTextField(
+                                                    decoration: CustomTextFieldStyle
+                                                        .normalFieldDecoration
+                                                        .copyWith(
+                                                      prefixIcon: Transform
+                                                          .rotate(
+                                                        angle: 90 / 180 * pi,
+                                                        child: const Icon(
+                                                            Icons.linear_scale),
+                                                      ),
+                                                    ),
+                                                    controller: controller
+                                                        .chainLengthController,
+                                                    validateType:
+                                                    Validate.FloatNumeric,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Chain Width (inches)",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonTextField(
+                                                    decoration: CustomTextFieldStyle
+                                                        .normalFieldDecoration
+                                                        .copyWith(
+                                                      prefixIcon: const Icon(
+                                                          Icons.linear_scale),
+                                                    ),
+                                                    controller: controller
+                                                        .chainWidthController,
+                                                    validateType:
+                                                    Validate.FloatNumeric,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Chain Type",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonDropDownButton(
+                                                    selectedDropDownValue:
                                                     controller
                                                         .selectedChainType,
-                                                dropdownList:
+                                                    dropdownList:
                                                     controller.chainTypeList,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Clasp Type",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue:
-                                                    controller
-                                                        .selectedClaspType,
-                                                dropdownList:
-                                                    controller.claspTypeList,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 30),
-                            ]
-
-                            ///Bracelet Style...............................................................................
-                            else if (controller.selectedProductType.value ==
-                                Consts.braceletKey) ...[
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Clr.whiteColor,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Additional Details",
-                                          style:
-                                              CustomTextStyle.infoHeadingStyle,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        const Tooltip(
-                                          message:
-                                              "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
-                                          child: Icon(
-                                            Icons.info_rounded,
-                                            color: Clr.darkGreyColor,
-                                            size: 17,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "Product SKU(Stock Keeping Unit)",
-                                      style: CustomTextStyle.fieldTitleStyle,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CommonTextField(
-                                      controller: controller.skuController,
-                                      validateType: Validate.SKU,
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "Style",
-                                      style: CustomTextStyle.fieldTitleStyle,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CommonDropDownButton(
-                                      selectedDropDownValue:
-                                          controller.selectedBraceletStyle,
-                                      dropdownList:
-                                          controller.braceletStyleList,
-                                      isNotEmpty: true,
-                                      isNotEmptyMessage:
-                                          "Please select the style",
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "General Rhodium Plated",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue: controller
-                                                    .selectedGeneralRhodiumPlated,
-                                                dropdownList: controller
-                                                    .generalRhodiumPlatedList,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Carat Total Weight",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                controller: controller
-                                                    .caratTotalWeightController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Bracelet Length (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: Transform.rotate(
-                                                    angle: 90 / 180 * pi,
-                                                    child: const Icon(
-                                                        Icons.linear_scale),
                                                   ),
-                                                ),
-                                                controller: controller
-                                                    .braceletLengthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Flexible(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Bracelet Width (inches)",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonTextField(
-                                                decoration: CustomTextFieldStyle
-                                                    .normalFieldDecoration
-                                                    .copyWith(
-                                                  prefixIcon: const Icon(
-                                                      Icons.linear_scale),
-                                                ),
-                                                controller: controller
-                                                    .braceletWidthController,
-                                                validateType:
-                                                    Validate.FloatNumeric,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Clasp Type",
-                                                style: CustomTextStyle
-                                                    .fieldTitleStyle,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              CommonDropDownButton(
-                                                selectedDropDownValue:
+                                                children: [
+                                                  Text(
+                                                    "Clasp Type",
+                                                    style: CustomTextStyle
+                                                        .fieldTitleStyle,
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  CommonDropDownButton(
+                                                    selectedDropDownValue:
                                                     controller
                                                         .selectedClaspType,
-                                                dropdownList:
+                                                    dropdownList:
                                                     controller.claspTypeList,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 30),
-                            ]
+                                  ),
+                                  const SizedBox(height: 30),
+                                ]
+
+                                ///Bracelet Style...............................................................................
+                                else
+                                  if (controller.selectedProductType.value ==
+                                      Consts.braceletKey) ...[
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Clr.whiteColor,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20, horizontal: 15),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Additional Details",
+                                                style:
+                                                CustomTextStyle
+                                                    .infoHeadingStyle,
+                                              ),
+                                              const SizedBox(width: 5),
+                                              const Tooltip(
+                                                message:
+                                                "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
+                                                child: Icon(
+                                                  Icons.info_rounded,
+                                                  color: Clr.darkGreyColor,
+                                                  size: 17,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 15),
+                                          Text(
+                                            "Product SKU(Stock Keeping Unit)",
+                                            style: CustomTextStyle
+                                                .fieldTitleStyle,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          CommonTextField(
+                                            controller: controller
+                                                .skuController,
+                                            validateType: Validate.SKU,
+                                          ),
+                                          const SizedBox(height: 15),
+                                          Text(
+                                            "Style",
+                                            style: CustomTextStyle
+                                                .fieldTitleStyle,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          CommonDropDownButton(
+                                            selectedDropDownValue:
+                                            controller.selectedBraceletStyle,
+                                            dropdownList:
+                                            controller.braceletStyleList,
+                                            isNotEmpty: true,
+                                            isNotEmptyMessage:
+                                            "Please select the style",
+                                          ),
+                                          const SizedBox(height: 15),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Flexible(
+                                                flex: 2,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "General Rhodium Plated",
+                                                      style: CustomTextStyle
+                                                          .fieldTitleStyle,
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    CommonDropDownButton(
+                                                      selectedDropDownValue: controller
+                                                          .selectedGeneralRhodiumPlated,
+                                                      dropdownList: controller
+                                                          .generalRhodiumPlatedList,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Flexible(
+                                                flex: 2,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Carat Total Weight",
+                                                      style: CustomTextStyle
+                                                          .fieldTitleStyle,
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    CommonTextField(
+                                                      controller: controller
+                                                          .caratTotalWeightController,
+                                                      validateType:
+                                                      Validate.FloatNumeric,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 15),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Flexible(
+                                                flex: 2,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Bracelet Length (inches)",
+                                                      style: CustomTextStyle
+                                                          .fieldTitleStyle,
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    CommonTextField(
+                                                      decoration: CustomTextFieldStyle
+                                                          .normalFieldDecoration
+                                                          .copyWith(
+                                                        prefixIcon: Transform
+                                                            .rotate(
+                                                          angle: 90 / 180 * pi,
+                                                          child: const Icon(
+                                                              Icons
+                                                                  .linear_scale),
+                                                        ),
+                                                      ),
+                                                      controller: controller
+                                                          .braceletLengthController,
+                                                      validateType:
+                                                      Validate.FloatNumeric,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Flexible(
+                                                flex: 2,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Bracelet Width (inches)",
+                                                      style: CustomTextStyle
+                                                          .fieldTitleStyle,
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    CommonTextField(
+                                                      decoration: CustomTextFieldStyle
+                                                          .normalFieldDecoration
+                                                          .copyWith(
+                                                        prefixIcon: const Icon(
+                                                            Icons.linear_scale),
+                                                      ),
+                                                      controller: controller
+                                                          .braceletWidthController,
+                                                      validateType:
+                                                      Validate.FloatNumeric,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Flexible(
+                                                flex: 2,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Clasp Type",
+                                                      style: CustomTextStyle
+                                                          .fieldTitleStyle,
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    CommonDropDownButton(
+                                                      selectedDropDownValue:
+                                                      controller
+                                                          .selectedClaspType,
+                                                      dropdownList:
+                                                      controller.claspTypeList,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30),
+                                  ]
                           ],
                         );
                       }),
@@ -1120,7 +1146,7 @@ class AddProductScreen extends StatelessWidget {
                             const SizedBox(height: 5),
                             CommonDropDownButton(
                               selectedDropDownValue:
-                                  controller.selectedStoneType,
+                              controller.selectedStoneType,
                               dropdownList: controller.stoneTypeList,
                             ),
                             const SizedBox(height: 15),
@@ -1131,7 +1157,7 @@ class AddProductScreen extends StatelessWidget {
                             const SizedBox(height: 5),
                             CommonDropDownButton(
                               selectedDropDownValue:
-                                  controller.selectedCreationMethod,
+                              controller.selectedCreationMethod,
                               dropdownList: controller.creationMethodList,
                             ),
                             const SizedBox(height: 15),
@@ -1144,7 +1170,7 @@ class AddProductScreen extends StatelessWidget {
                               children: List.generate(
                                   controller.shapeList.length, (index) {
                                 ShapeModel element =
-                                    controller.shapeList[index];
+                                controller.shapeList[index];
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
@@ -1157,26 +1183,28 @@ class AddProductScreen extends StatelessWidget {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Obx(() => Image.asset(
+                                        Obx(() =>
+                                            Image.asset(
                                               element.shapePath,
                                               height: 55,
                                               fit: BoxFit.fitHeight,
                                               color: (element.isSelectedTab
-                                                          .value ==
-                                                      true)
+                                                  .value ==
+                                                  true)
                                                   ? Clr.primaryColor
                                                   : null,
                                             )),
                                         const SizedBox(height: 3),
-                                        Obx(() => Text(
+                                        Obx(() =>
+                                            Text(
                                               element.shapeName,
                                               style: (element.isSelectedTab
-                                                          .value ==
-                                                      true)
+                                                  .value ==
+                                                  true)
                                                   ? CustomTextStyle
-                                                      .smallPrimaryStyle
+                                                  .smallPrimaryStyle
                                                   : CustomTextStyle
-                                                      .smallBlackStyle,
+                                                  .smallBlackStyle,
                                             )),
                                       ],
                                     ),
@@ -1194,7 +1222,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Color",
@@ -1203,7 +1231,7 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedColor,
+                                        controller.selectedColor,
                                         items: controller.colorList
                                             .map((ColorModel value) {
                                           return DropdownMenuItem<String>(
@@ -1217,7 +1245,7 @@ class AddProductScreen extends StatelessWidget {
                                                     shape: BoxShape.circle,
                                                     color: value.color,
                                                     border:
-                                                        Border.all(width: .2),
+                                                    Border.all(width: .2),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 10),
@@ -1229,7 +1257,7 @@ class AddProductScreen extends StatelessWidget {
                                         }).toList(),
                                         isNotEmpty: true,
                                         isNotEmptyMessage:
-                                            "Please select the color",
+                                        "Please select the color",
                                       ),
                                     ],
                                   ),
@@ -1240,7 +1268,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Color Hue",
@@ -1249,7 +1277,7 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedColorHue,
+                                        controller.selectedColorHue,
                                         items: controller.colorHueList
                                             .map((ColorModel value) {
                                           return DropdownMenuItem<String>(
@@ -1263,7 +1291,7 @@ class AddProductScreen extends StatelessWidget {
                                                     shape: BoxShape.circle,
                                                     color: value.color,
                                                     border:
-                                                        Border.all(width: .2),
+                                                    Border.all(width: .2),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 10),
@@ -1275,7 +1303,7 @@ class AddProductScreen extends StatelessWidget {
                                         }).toList(),
                                         isNotEmpty: true,
                                         isNotEmptyMessage:
-                                            "Please select the color hue",
+                                        "Please select the color hue",
                                       ),
                                     ],
                                   ),
@@ -1291,7 +1319,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Clarity",
@@ -1300,7 +1328,7 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedClarity,
+                                        controller.selectedClarity,
                                         dropdownList: controller.clarityList,
                                       ),
                                     ],
@@ -1312,7 +1340,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Cut Grade",
@@ -1321,32 +1349,33 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedCutGrade,
+                                        controller.selectedCutGrade,
                                         items: controller.cutGradeList
                                             .map<DropdownMenuItem<String>>(
                                                 (String? value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Row(
-                                              children: [
-                                                for (int i = 0;
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Row(
+                                                  children: [
+                                                    for (int i = 0;
                                                     i <
                                                         (controller.cutGradeList
-                                                                .indexOf(
-                                                                    value ??
-                                                                        "") +
+                                                            .indexOf(
+                                                            value ??
+                                                                "") +
                                                             1);
                                                     i++) ...[
-                                                  const Icon(Icons.star,
-                                                      size: 17,
-                                                      color: Clr.primaryColor),
-                                                ],
-                                                const SizedBox(width: 10),
-                                                Text(value.toString()),
-                                              ],
-                                            ),
-                                          );
-                                        }).toList(),
+                                                      const Icon(Icons.star,
+                                                          size: 17,
+                                                          color: Clr
+                                                              .primaryColor),
+                                                    ],
+                                                    const SizedBox(width: 10),
+                                                    Text(value.toString()),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList(),
                                       ),
                                     ],
                                   ),
@@ -1363,7 +1392,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Count",
@@ -1384,7 +1413,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Carat Weight",
@@ -1393,7 +1422,7 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonTextField(
                                         controller:
-                                            controller.caratWeightController,
+                                        controller.caratWeightController,
                                         validateType: Validate.FloatNumeric,
                                       ),
                                     ],
@@ -1405,7 +1434,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Total  Carat Weight",
@@ -1440,7 +1469,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Polish",
@@ -1449,31 +1478,32 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedPolish,
+                                        controller.selectedPolish,
                                         items: controller.polishList
                                             .map<DropdownMenuItem<String>>(
                                                 (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Row(
-                                              children: [
-                                                for (int i = 0;
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Row(
+                                                  children: [
+                                                    for (int i = 0;
                                                     i <
                                                         (controller.cutGradeList
-                                                                .indexOf(
-                                                                    value) +
+                                                            .indexOf(
+                                                            value) +
                                                             1);
                                                     i++) ...[
-                                                  const Icon(Icons.star,
-                                                      size: 17,
-                                                      color: Clr.primaryColor),
-                                                ],
-                                                const SizedBox(width: 10),
-                                                Text(value.toString()),
-                                              ],
-                                            ),
-                                          );
-                                        }).toList(),
+                                                      const Icon(Icons.star,
+                                                          size: 17,
+                                                          color: Clr
+                                                              .primaryColor),
+                                                    ],
+                                                    const SizedBox(width: 10),
+                                                    Text(value.toString()),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList(),
                                       ),
                                     ],
                                   ),
@@ -1484,7 +1514,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Symmetry",
@@ -1493,31 +1523,32 @@ class AddProductScreen extends StatelessWidget {
                                       const SizedBox(height: 5),
                                       CommonDropDownButton(
                                         selectedDropDownValue:
-                                            controller.selectedSymmetry,
+                                        controller.selectedSymmetry,
                                         items: controller.symmetryList
                                             .map<DropdownMenuItem<String>>(
                                                 (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Row(
-                                              children: [
-                                                for (int i = 0;
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Row(
+                                                  children: [
+                                                    for (int i = 0;
                                                     i <
                                                         (controller.cutGradeList
-                                                                .indexOf(
-                                                                    value) +
+                                                            .indexOf(
+                                                            value) +
                                                             1);
                                                     i++) ...[
-                                                  const Icon(Icons.star,
-                                                      size: 17,
-                                                      color: Clr.primaryColor),
-                                                ],
-                                                const SizedBox(width: 10),
-                                                Text(value.toString()),
-                                              ],
-                                            ),
-                                          );
-                                        }).toList(),
+                                                      const Icon(Icons.star,
+                                                          size: 17,
+                                                          color: Clr
+                                                              .primaryColor),
+                                                    ],
+                                                    const SizedBox(width: 10),
+                                                    Text(value.toString()),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList(),
                                       ),
                                     ],
                                   ),
@@ -1533,7 +1564,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Depth",
@@ -1544,8 +1575,8 @@ class AddProductScreen extends StatelessWidget {
                                         decoration: CustomTextFieldStyle
                                             .normalFieldDecoration
                                             .copyWith(
-                                                suffixIcon:
-                                                    const Icon(Icons.percent)),
+                                            suffixIcon:
+                                            const Icon(Icons.percent)),
                                         controller: controller.depthController,
                                         validateType: Validate.FloatNumeric,
                                       ),
@@ -1558,7 +1589,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Table",
@@ -1569,8 +1600,8 @@ class AddProductScreen extends StatelessWidget {
                                         decoration: CustomTextFieldStyle
                                             .normalFieldDecoration
                                             .copyWith(
-                                                suffixIcon:
-                                                    const Icon(Icons.percent)),
+                                            suffixIcon:
+                                            const Icon(Icons.percent)),
                                         controller: controller.tableController,
                                         validateType: Validate.FloatNumeric,
                                       ),
@@ -1583,7 +1614,7 @@ class AddProductScreen extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Measurements",
@@ -1594,10 +1625,10 @@ class AddProductScreen extends StatelessWidget {
                                         decoration: CustomTextFieldStyle
                                             .normalFieldDecoration
                                             .copyWith(
-                                                suffixIcon: const Icon(
-                                                    Icons.content_cut_rounded)),
+                                            suffixIcon: const Icon(
+                                                Icons.content_cut_rounded)),
                                         controller:
-                                            controller.measurementsController,
+                                        controller.measurementsController,
                                         validateType: Validate.Measurement,
                                       ),
                                     ],
@@ -1630,7 +1661,7 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 const Tooltip(
                                   message:
-                                      "Add the 'Side Diamond Detail' when product has the multiple diamonds.",
+                                  "Add the 'Side Diamond Detail' when product has the multiple diamonds.",
                                   child: Icon(
                                     Icons.info_rounded,
                                     color: Clr.darkGreyColor,
@@ -1647,613 +1678,618 @@ class AddProductScreen extends StatelessWidget {
                               style: CustomTextStyle.fieldDescStyle,
                             ),
                             Obx(
-                              () => (controller
-                                          .isShowSideDiamondDetails.value ==
-                                      true)
+                                  () =>
+                              (controller
+                                  .isShowSideDiamondDetails.value ==
+                                  true)
                                   ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 15),
-                                        Text(
-                                          "Stone Type",
-                                          style:
-                                              CustomTextStyle.fieldTitleStyle,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 15),
+                                  Text(
+                                    "Stone Type",
+                                    style:
+                                    CustomTextStyle.fieldTitleStyle,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  CommonDropDownButton(
+                                    selectedDropDownValue: controller
+                                        .selectedSideDiaStoneType,
+                                    dropdownList:
+                                    controller.stoneTypeList,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Text(
+                                    "Creation Method",
+                                    style:
+                                    CustomTextStyle.fieldTitleStyle,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  CommonDropDownButton(
+                                    selectedDropDownValue: controller
+                                        .selectedSideDiaCreationMethod,
+                                    dropdownList:
+                                    controller.creationMethodList,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Text(
+                                    "Shape",
+                                    style:
+                                    CustomTextStyle.fieldTitleStyle,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Wrap(
+                                    children: List.generate(
+                                        controller.sideDiaShapeList
+                                            .length, (index) {
+                                      ShapeModel element = controller
+                                          .sideDiaShapeList[index];
+                                      return Padding(
+                                        padding:
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical: 10),
+                                        child: InkWell(
+                                          onTap: () {
+                                            controller.onShapeTapped(
+                                                index: index,
+                                                shapeList: controller
+                                                    .sideDiaShapeList);
+                                          },
+                                          child: Column(
+                                            mainAxisSize:
+                                            MainAxisSize.min,
+                                            children: [
+                                              Obx(() =>
+                                                  Image.asset(
+                                                    element.shapePath,
+                                                    height: 55,
+                                                    fit: BoxFit.fitHeight,
+                                                    color: (element
+                                                        .isSelectedTab
+                                                        .value ==
+                                                        true)
+                                                        ? Clr.primaryColor
+                                                        : null,
+                                                  )),
+                                              const SizedBox(height: 3),
+                                              Obx(() =>
+                                                  Text(
+                                                    element.shapeName,
+                                                    style: (element
+                                                        .isSelectedTab
+                                                        .value ==
+                                                        true)
+                                                        ? CustomTextStyle
+                                                        .smallPrimaryStyle
+                                                        : CustomTextStyle
+                                                        .smallBlackStyle,
+                                                  )),
+                                            ],
+                                          ),
                                         ),
-                                        const SizedBox(height: 5),
-                                        CommonDropDownButton(
-                                          selectedDropDownValue: controller
-                                              .selectedSideDiaStoneType,
-                                          dropdownList:
-                                              controller.stoneTypeList,
-                                        ),
-                                        const SizedBox(height: 15),
-                                        Text(
-                                          "Creation Method",
-                                          style:
-                                              CustomTextStyle.fieldTitleStyle,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        CommonDropDownButton(
-                                          selectedDropDownValue: controller
-                                              .selectedSideDiaCreationMethod,
-                                          dropdownList:
-                                              controller.creationMethodList,
-                                        ),
-                                        const SizedBox(height: 15),
-                                        Text(
-                                          "Shape",
-                                          style:
-                                              CustomTextStyle.fieldTitleStyle,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Wrap(
-                                          children: List.generate(
-                                              controller.sideDiaShapeList
-                                                  .length, (index) {
-                                            ShapeModel element = controller
-                                                .sideDiaShapeList[index];
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 10),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  controller.onShapeTapped(
-                                                      index: index,
-                                                      shapeList: controller
-                                                          .sideDiaShapeList);
-                                                },
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Obx(() => Image.asset(
-                                                          element.shapePath,
-                                                          height: 55,
-                                                          fit: BoxFit.fitHeight,
-                                                          color: (element
-                                                                      .isSelectedTab
-                                                                      .value ==
-                                                                  true)
-                                                              ? Clr.primaryColor
-                                                              : null,
-                                                        )),
-                                                    const SizedBox(height: 3),
-                                                    Obx(() => Text(
-                                                          element.shapeName,
-                                                          style: (element
-                                                                      .isSelectedTab
-                                                                      .value ==
-                                                                  true)
-                                                              ? CustomTextStyle
-                                                                  .smallPrimaryStyle
-                                                              : CustomTextStyle
-                                                                  .smallBlackStyle,
-                                                        )),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                      );
+                                    }),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
-                                            Flexible(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Color",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonDropDownButton(
-                                                    selectedDropDownValue:
-                                                        controller
-                                                            .selectedSideDiaColor,
-                                                    items: controller.colorList
-                                                        .map(
-                                                            (ColorModel value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value.colorName,
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              height: 20,
-                                                              width: 20,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color:
-                                                                    value.color,
-                                                                border:
-                                                                    Border.all(
-                                                                        width:
-                                                                            .2),
-                                                              ),
+                                            Text(
+                                              "Color",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonDropDownButton(
+                                              selectedDropDownValue:
+                                              controller
+                                                  .selectedSideDiaColor,
+                                              items: controller.colorList
+                                                  .map(
+                                                      (ColorModel value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value.colorName,
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            height: 20,
+                                                            width: 20,
+                                                            decoration:
+                                                            BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                              value.color,
+                                                              border:
+                                                              Border.all(
+                                                                  width:
+                                                                  .2),
                                                             ),
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            Text(value.colorName
-                                                                .toString()),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                    isNotEmpty: true,
-                                                    isNotEmptyMessage:
-                                                        "Please select the color",
-                                                  ),
-                                                ],
-                                              ),
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 10),
+                                                          Text(value.colorName
+                                                              .toString()),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                              isNotEmpty: true,
+                                              isNotEmptyMessage:
+                                              "Please select the color",
                                             ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Color Hue",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonDropDownButton(
-                                                    selectedDropDownValue:
-                                                        controller
-                                                            .selectedSideDiaColorHue,
-                                                    items: controller
-                                                        .colorHueList
-                                                        .map(
-                                                            (ColorModel value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value.colorName,
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              height: 20,
-                                                              width: 20,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color:
-                                                                    value.color,
-                                                                border:
-                                                                    Border.all(
-                                                                        width:
-                                                                            .2),
-                                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Color Hue",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonDropDownButton(
+                                              selectedDropDownValue:
+                                              controller
+                                                  .selectedSideDiaColorHue,
+                                              items: controller
+                                                  .colorHueList
+                                                  .map(
+                                                      (ColorModel value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value.colorName,
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            height: 20,
+                                                            width: 20,
+                                                            decoration:
+                                                            BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                              value.color,
+                                                              border:
+                                                              Border.all(
+                                                                  width:
+                                                                  .2),
                                                             ),
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            Text(value.colorName
-                                                                .toString()),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                    isNotEmpty: true,
-                                                    isNotEmptyMessage:
-                                                        "Please select the color hue",
-                                                  ),
-                                                ],
-                                              ),
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 10),
+                                                          Text(value.colorName
+                                                              .toString()),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                              isNotEmpty: true,
+                                              isNotEmptyMessage:
+                                              "Please select the color hue",
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 15),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                           children: [
-                                            Flexible(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Clarity",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonDropDownButton(
-                                                    selectedDropDownValue:
-                                                        controller
-                                                            .selectedSideDiaClarity,
-                                                    dropdownList:
-                                                        controller.clarityList,
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                              "Clarity",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
                                             ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Cut Grade",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonDropDownButton(
-                                                    selectedDropDownValue:
-                                                        controller
-                                                            .selectedSideDiaCutGrade,
-                                                    items: controller
-                                                        .cutGradeList
-                                                        .map<
-                                                                DropdownMenuItem<
-                                                                    String>>(
-                                                            (String? value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Row(
-                                                          children: [
-                                                            for (int i = 0;
-                                                                i <
-                                                                    (controller
-                                                                            .cutGradeList
-                                                                            .indexOf(value ??
-                                                                                "") +
-                                                                        1);
-                                                                i++) ...[
-                                                              const Icon(
-                                                                  Icons.star,
-                                                                  size: 17,
-                                                                  color: Clr
-                                                                      .primaryColor),
-                                                            ],
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            Text(value
-                                                                .toString()),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                ],
-                                              ),
+                                            const SizedBox(height: 5),
+                                            CommonDropDownButton(
+                                              selectedDropDownValue:
+                                              controller
+                                                  .selectedSideDiaClarity,
+                                              dropdownList:
+                                              controller.clarityList,
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 15),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                           children: [
-                                            Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Count",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonTextField(
-                                                    controller: controller
-                                                        .sideDiaCountController,
-                                                    validateType:
-                                                        Validate.RoundNumeric,
-                                                    isNotEmptyValidator: true,
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                              "Cut Grade",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
                                             ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Carat Weight",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonTextField(
-                                                    controller: controller
-                                                        .sideDiaCaratWeightController,
-                                                    validateType:
-                                                        Validate.FloatNumeric,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Total  Carat Weight",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonTextField(
-                                                    controller: controller
-                                                        .sideDiaTotalCaratWeightController,
-                                                    validateType:
-                                                        Validate.FloatNumeric,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 15),
-                                        Text(
-                                          "Setting",
-                                          style:
-                                              CustomTextStyle.fieldTitleStyle,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        CommonDropDownButton(
-                                          selectedDropDownValue:
-                                              controller.selectedSideDiaSetting,
-                                          dropdownList: controller.settingList,
-                                        ),
-                                        const SizedBox(height: 15),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Flexible(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Polish",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonDropDownButton(
-                                                    selectedDropDownValue:
-                                                        controller
-                                                            .selectedSideDiaPolish,
-                                                    items: controller.polishList
-                                                        .map<
-                                                            DropdownMenuItem<
-                                                                String>>((String
-                                                            value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Row(
-                                                          children: [
-                                                            for (int i = 0;
-                                                                i <
-                                                                    (controller
-                                                                            .cutGradeList
-                                                                            .indexOf(value) +
-                                                                        1);
-                                                                i++) ...[
-                                                              const Icon(
-                                                                  Icons.star,
-                                                                  size: 17,
-                                                                  color: Clr
-                                                                      .primaryColor),
-                                                            ],
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            Text(value
-                                                                .toString()),
+                                            const SizedBox(height: 5),
+                                            CommonDropDownButton(
+                                              selectedDropDownValue:
+                                              controller
+                                                  .selectedSideDiaCutGrade,
+                                              items: controller
+                                                  .cutGradeList
+                                                  .map<
+                                                  DropdownMenuItem<
+                                                      String>>(
+                                                      (String? value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Row(
+                                                        children: [
+                                                          for (int i = 0;
+                                                          i <
+                                                              (controller
+                                                                  .cutGradeList
+                                                                  .indexOf(
+                                                                  value ??
+                                                                      "") +
+                                                                  1);
+                                                          i++) ...[
+                                                            const Icon(
+                                                                Icons.star,
+                                                                size: 17,
+                                                                color: Clr
+                                                                    .primaryColor),
                                                           ],
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 3,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Symmetry",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonDropDownButton(
-                                                    selectedDropDownValue:
-                                                        controller
-                                                            .selectedSideDiaSymmetry,
-                                                    items: controller
-                                                        .symmetryList
-                                                        .map<
-                                                            DropdownMenuItem<
-                                                                String>>((String
-                                                            value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Row(
-                                                          children: [
-                                                            for (int i = 0;
-                                                                i <
-                                                                    (controller
-                                                                            .cutGradeList
-                                                                            .indexOf(value) +
-                                                                        1);
-                                                                i++) ...[
-                                                              const Icon(
-                                                                  Icons.star,
-                                                                  size: 17,
-                                                                  color: Clr
-                                                                      .primaryColor),
-                                                            ],
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            Text(value
-                                                                .toString()),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                ],
-                                              ),
+                                                          const SizedBox(
+                                                              width: 10),
+                                                          Text(value
+                                                              .toString()),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList(),
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 15),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                           children: [
-                                            Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Depth",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonTextField(
-                                                    decoration: CustomTextFieldStyle
-                                                        .normalFieldDecoration
-                                                        .copyWith(
-                                                            suffixIcon:
-                                                                const Icon(Icons
-                                                                    .percent)),
-                                                    controller: controller
-                                                        .sideDiaDepthController,
-                                                    validateType:
-                                                        Validate.FloatNumeric,
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                              "Count",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
                                             ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Table",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonTextField(
-                                                    decoration: CustomTextFieldStyle
-                                                        .normalFieldDecoration
-                                                        .copyWith(
-                                                            suffixIcon:
-                                                                const Icon(Icons
-                                                                    .percent)),
-                                                    controller: controller
-                                                        .sideDiaTableController,
-                                                    validateType:
-                                                        Validate.FloatNumeric,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Measurements",
-                                                    style: CustomTextStyle
-                                                        .fieldTitleStyle,
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CommonTextField(
-                                                    decoration: CustomTextFieldStyle
-                                                        .normalFieldDecoration
-                                                        .copyWith(
-                                                            suffixIcon:
-                                                                const Icon(Icons
-                                                                    .content_cut_rounded)),
-                                                    controller: controller
-                                                        .sideDiaMeasurementsController,
-                                                    validateType:
-                                                        Validate.FloatNumeric,
-                                                  ),
-                                                ],
-                                              ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              controller: controller
+                                                  .sideDiaCountController,
+                                              validateType:
+                                              Validate.RoundNumeric,
+                                              isNotEmptyValidator: true,
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    )
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Carat Weight",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              controller: controller
+                                                  .sideDiaCaratWeightController,
+                                              validateType:
+                                              Validate.FloatNumeric,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Total  Carat Weight",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              controller: controller
+                                                  .sideDiaTotalCaratWeightController,
+                                              validateType:
+                                              Validate.FloatNumeric,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Text(
+                                    "Setting",
+                                    style:
+                                    CustomTextStyle.fieldTitleStyle,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  CommonDropDownButton(
+                                    selectedDropDownValue:
+                                    controller.selectedSideDiaSetting,
+                                    dropdownList: controller.settingList,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Polish",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonDropDownButton(
+                                              selectedDropDownValue:
+                                              controller
+                                                  .selectedSideDiaPolish,
+                                              items: controller.polishList
+                                                  .map<
+                                                  DropdownMenuItem<
+                                                      String>>((String
+                                              value) {
+                                                return DropdownMenuItem<
+                                                    String>(
+                                                  value: value,
+                                                  child: Row(
+                                                    children: [
+                                                      for (int i = 0;
+                                                      i <
+                                                          (controller
+                                                              .cutGradeList
+                                                              .indexOf(value) +
+                                                              1);
+                                                      i++) ...[
+                                                        const Icon(
+                                                            Icons.star,
+                                                            size: 17,
+                                                            color: Clr
+                                                                .primaryColor),
+                                                      ],
+                                                      const SizedBox(
+                                                          width: 10),
+                                                      Text(value
+                                                          .toString()),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Symmetry",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonDropDownButton(
+                                              selectedDropDownValue:
+                                              controller
+                                                  .selectedSideDiaSymmetry,
+                                              items: controller
+                                                  .symmetryList
+                                                  .map<
+                                                  DropdownMenuItem<
+                                                      String>>((String
+                                              value) {
+                                                return DropdownMenuItem<
+                                                    String>(
+                                                  value: value,
+                                                  child: Row(
+                                                    children: [
+                                                      for (int i = 0;
+                                                      i <
+                                                          (controller
+                                                              .cutGradeList
+                                                              .indexOf(value) +
+                                                              1);
+                                                      i++) ...[
+                                                        const Icon(
+                                                            Icons.star,
+                                                            size: 17,
+                                                            color: Clr
+                                                                .primaryColor),
+                                                      ],
+                                                      const SizedBox(
+                                                          width: 10),
+                                                      Text(value
+                                                          .toString()),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Depth",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              decoration: CustomTextFieldStyle
+                                                  .normalFieldDecoration
+                                                  .copyWith(
+                                                  suffixIcon:
+                                                  const Icon(Icons
+                                                      .percent)),
+                                              controller: controller
+                                                  .sideDiaDepthController,
+                                              validateType:
+                                              Validate.FloatNumeric,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Table",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              decoration: CustomTextFieldStyle
+                                                  .normalFieldDecoration
+                                                  .copyWith(
+                                                  suffixIcon:
+                                                  const Icon(Icons
+                                                      .percent)),
+                                              controller: controller
+                                                  .sideDiaTableController,
+                                              validateType:
+                                              Validate.FloatNumeric,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Measurements",
+                                              style: CustomTextStyle
+                                                  .fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              decoration: CustomTextFieldStyle
+                                                  .normalFieldDecoration
+                                                  .copyWith(
+                                                  suffixIcon:
+                                                  const Icon(Icons
+                                                      .content_cut_rounded)),
+                                              controller: controller
+                                                  .sideDiaMeasurementsController,
+                                              validateType:
+                                              Validate.FloatNumeric,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
                                   : const SizedBox(),
                             ),
                             const SizedBox(height: 30),
                             Center(
-                              child: Obx(() => HoverButton(
+                              child: Obx(() =>
+                                  HoverButton(
                                     width: double.infinity,
                                     btnText: (controller
-                                                .isShowSideDiamondDetails
-                                                .value ==
-                                            true)
+                                        .isShowSideDiamondDetails
+                                        .value ==
+                                        true)
                                         ? "Remove the Details"
                                         : "Add the Details",
                                     callback:
-                                        controller.onSideDiamondDetailsTapped,
+                                    controller.onSideDiamondDetailsTapped,
                                   )),
                             ),
                           ],
@@ -2282,17 +2318,19 @@ class AddProductScreen extends StatelessWidget {
                               style: CustomTextStyle.fieldDescStyle,
                             ),
                             const SizedBox(height: 15),
-                            Obx(() => RadioListTile<String>(
+                            Obx(() =>
+                                RadioListTile<String>(
                                   value: ShippingDetailsRadio.Default.name,
                                   groupValue:
-                                      controller.selectedShippingDetails.value,
+                                  controller.selectedShippingDetails.value,
                                   onChanged: (String? value) {
                                     controller.onShippingDetailsRadioChanged(
                                         newVal: value);
                                   },
                                   title: const Text("Default"),
                                 )),
-                            Obx(() => Column(
+                            Obx(() =>
+                                Column(
                                   children: [
                                     RadioListTile<String>(
                                       value: ShippingDetailsRadio.Custom.name,
@@ -2301,35 +2339,35 @@ class AddProductScreen extends StatelessWidget {
                                       onChanged: (String? value) {
                                         controller
                                             .onShippingDetailsRadioChanged(
-                                                newVal: value);
+                                            newVal: value);
                                       },
                                       title: const Text("Custom"),
                                     ),
                                     (controller.selectedShippingDetails.value ==
-                                            ShippingDetailsRadio.Custom.name)
+                                        ShippingDetailsRadio.Custom.name)
                                         ? Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 30),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Product Custom Shipping Details",
-                                                  style: CustomTextStyle
-                                                      .fieldTitleStyle,
-                                                ),
-                                                const SizedBox(height: 5),
-                                                CommonTextField(
-                                                  maxLines: 3,
-                                                  controller: controller
-                                                      .customShippingDetailsController,
-                                                  validateType:
-                                                      Validate.Description,
-                                                ),
-                                              ],
-                                            ),
-                                          )
+                                      padding:
+                                      const EdgeInsets.only(left: 30),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Product Custom Shipping Details",
+                                            style: CustomTextStyle
+                                                .fieldTitleStyle,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          CommonTextField(
+                                            maxLines: 3,
+                                            controller: controller
+                                                .customShippingDetailsController,
+                                            validateType:
+                                            Validate.Description,
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                         : const SizedBox(),
                                   ],
                                 )),
@@ -2359,17 +2397,19 @@ class AddProductScreen extends StatelessWidget {
                               style: CustomTextStyle.fieldDescStyle,
                             ),
                             const SizedBox(height: 15),
-                            Obx(() => RadioListTile<String>(
+                            Obx(() =>
+                                RadioListTile<String>(
                                   value: ReturnDetailsRadio.Default.name,
                                   groupValue:
-                                      controller.selectedReturnDetails.value,
+                                  controller.selectedReturnDetails.value,
                                   onChanged: (String? value) {
                                     controller.onReturnDetailsRadioChanged(
                                         newVal: value);
                                   },
                                   title: const Text("Default"),
                                 )),
-                            Obx(() => Column(
+                            Obx(() =>
+                                Column(
                                   children: [
                                     RadioListTile<String>(
                                       value: ReturnDetailsRadio.Custom.name,
@@ -2382,30 +2422,30 @@ class AddProductScreen extends StatelessWidget {
                                       title: const Text("Custom"),
                                     ),
                                     (controller.selectedReturnDetails.value ==
-                                            ReturnDetailsRadio.Custom.name)
+                                        ReturnDetailsRadio.Custom.name)
                                         ? Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 30),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Product Custom Returns Details",
-                                                  style: CustomTextStyle
-                                                      .fieldTitleStyle,
-                                                ),
-                                                const SizedBox(height: 5),
-                                                CommonTextField(
-                                                  maxLines: 3,
-                                                  controller: controller
-                                                      .customReturnsDetailsController,
-                                                  validateType:
-                                                      Validate.Description,
-                                                ),
-                                              ],
-                                            ),
-                                          )
+                                      padding:
+                                      const EdgeInsets.only(left: 30),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Product Custom Returns Details",
+                                            style: CustomTextStyle
+                                                .fieldTitleStyle,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          CommonTextField(
+                                            maxLines: 3,
+                                            controller: controller
+                                                .customReturnsDetailsController,
+                                            validateType:
+                                            Validate.Description,
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                         : const SizedBox(),
                                   ],
                                 )),
@@ -2425,7 +2465,7 @@ class AddProductScreen extends StatelessWidget {
                     color: Clr.whiteColor,
                   ),
                   padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -2440,7 +2480,7 @@ class AddProductScreen extends StatelessWidget {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             VisualDetailModel element =
-                                controller.visualDetailsList[index];
+                            controller.visualDetailsList[index];
 
                             return Column(
                               mainAxisSize: MainAxisSize.min,
@@ -2449,7 +2489,7 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "${(index + 1)}.",
@@ -2457,16 +2497,16 @@ class AddProductScreen extends StatelessWidget {
                                     ),
                                     (index != 0)
                                         ? IconButton(
-                                            onPressed: () {
-                                              controller
-                                                  .onRemoveVisualDetailsTapped(
-                                                      index: index);
-                                            },
-                                            icon: const Icon(
-                                                Icons
-                                                    .cancel_presentation_rounded,
-                                                color: Clr.redColor),
-                                          )
+                                      onPressed: () {
+                                        controller
+                                            .onRemoveVisualDetailsTapped(
+                                            index: index);
+                                      },
+                                      icon: const Icon(
+                                          Icons
+                                              .cancel_presentation_rounded,
+                                          color: Clr.redColor),
+                                    )
                                         : const SizedBox(),
                                   ],
                                 ),
@@ -2487,7 +2527,7 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 CommonDropDownButton(
                                   selectedDropDownValue:
-                                      element.selectedMetalType,
+                                  element.selectedMetalType,
                                   items: element.metalTypeList
                                       .map((MetalModel value) {
                                     return DropdownMenuItem<String>(
@@ -2526,7 +2566,7 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 CommonDropDownButton(
                                   selectedDropDownValue:
-                                      element.selectedRhodiumPlated,
+                                  element.selectedRhodiumPlated,
                                   dropdownList: element.rhodiumPlatedList,
                                 ),
                                 const SizedBox(height: 15),
@@ -2549,7 +2589,7 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Product Images",
@@ -2573,18 +2613,19 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 SizedBox(
                                   width: 300,
-                                  child: Obx(() => Wrap(
+                                  child: Obx(() =>
+                                      Wrap(
                                         children: List.generate(
                                           element.imageList.length,
-                                          (i) {
+                                              (i) {
                                             MemoryFileModel? ele =
-                                                element.imageList[i];
+                                            element.imageList[i];
 
                                             return Padding(
                                               padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 7,
-                                                      vertical: 7),
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 7,
+                                                  vertical: 7),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -2593,15 +2634,15 @@ class AddProductScreen extends StatelessWidget {
                                                     width: 80,
                                                     decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
+                                                      BorderRadius.circular(
+                                                          20),
                                                       color: Clr
                                                           .veryLightGreyColor,
                                                       image: DecorationImage(
                                                         fit: BoxFit.cover,
                                                         image: MemoryImage(ele
-                                                                .byteList
-                                                                .value ??
+                                                            .byteList
+                                                            .value ??
                                                             Uint8List(0)),
                                                       ),
                                                     ),
@@ -2611,7 +2652,7 @@ class AddProductScreen extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     children: [
                                                       Text(
                                                         "${i + 1}.",
@@ -2622,10 +2663,10 @@ class AddProductScreen extends StatelessWidget {
                                                         onPressed: () {
                                                           controller
                                                               .onImageCancelBtnTapped(
-                                                                  outerIndex:
-                                                                      index,
-                                                                  innerIndex:
-                                                                      i);
+                                                              outerIndex:
+                                                              index,
+                                                              innerIndex:
+                                                              i);
                                                         },
                                                         icon: const Icon(Icons
                                                             .cancel_presentation_rounded),
@@ -2639,22 +2680,23 @@ class AddProductScreen extends StatelessWidget {
                                         ),
                                       )),
                                 ),
-                                Obx(() => (element.isImageError.value == true)
+                                Obx(() =>
+                                (element.isImageError.value == true)
                                     ? Column(
-                                        children: [
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "    Please select at least 1 image",
-                                            style:
-                                                CustomTextStyle.errorRedStyle,
-                                          ),
-                                        ],
-                                      )
+                                  children: [
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "    Please select at least 1 image",
+                                      style:
+                                      CustomTextStyle.errorRedStyle,
+                                    ),
+                                  ],
+                                )
                                     : const SizedBox()),
                                 const SizedBox(height: 15),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Product Video",
@@ -2666,7 +2708,7 @@ class AddProductScreen extends StatelessWidget {
                                             index: index, element: element);
                                       },
                                       icon:
-                                          const Icon(Icons.video_call_rounded),
+                                      const Icon(Icons.video_call_rounded),
                                     )
                                   ],
                                 ),
@@ -2678,42 +2720,45 @@ class AddProductScreen extends StatelessWidget {
                                 const SizedBox(height: 15),
                                 Obx(() {
                                   return (element
-                                              .videoBytesData?.byteList.value !=
-                                          null)
+                                      .videoBytesData?.byteList.value !=
+                                      null)
                                       ? Column(
-                                          children: [
-                                            Center(
-                                                child: MiniVideoView(
-                                                    bytes: element
-                                                        .videoBytesData
-                                                        ?.byteList
-                                                        .value)),
-                                            const SizedBox(height: 10),
-                                          ],
-                                        )
+                                    children: [
+                                      Center(
+                                          child: MiniVideoView(
+                                              bytes: element
+                                                  .videoBytesData
+                                                  ?.byteList
+                                                  .value)),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  )
                                       : const SizedBox();
                                 }),
-                                Obx(() => (element.isVideoError.value == true)
+                                Obx(() =>
+                                (element.isVideoError.value == true)
                                     ? Column(
-                                        children: [
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "    Please select video",
-                                            style:
-                                                CustomTextStyle.errorRedStyle,
-                                          ),
-                                        ],
-                                      )
+                                  children: [
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "    Please select video",
+                                      style:
+                                      CustomTextStyle.errorRedStyle,
+                                    ),
+                                  ],
+                                )
                                     : const SizedBox()),
                                 const SizedBox(height: 10),
-                                Obx(() => (element.version.value != 1)
+                                Obx(() =>
+                                (element.version.value != 1)
                                     ? HoverButton(
-                                        btnText: "Save",
-                                        callback: () {
-                                          controller.onUploadMediaBtnTapped(
-                                              element: element);
-                                        },
-                                      )
+                                  btnText: "Save",
+                                  callback: () {
+                                    controller.onUploadMediaBtnTapped(
+                                        element: element);
+                                  },
+                                  isLoading: element.isSaveLoading,
+                                )
                                     : const SizedBox()),
                                 const SizedBox(height: 10),
                                 Container(
@@ -2748,6 +2793,7 @@ class AddProductScreen extends StatelessWidget {
               child: AddBtn(
                 btnText: "ADD PRODUCT",
                 onTap: controller.onAddProductBtnTapped,
+                isLoading: controller.isAddBtnLoading,
               ),
             ),
             const SizedBox(height: 30),
