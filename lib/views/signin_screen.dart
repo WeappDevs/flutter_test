@@ -7,6 +7,7 @@ import 'package:admin_web_app/utils/strings.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -29,8 +30,8 @@ class _SignInScreenState extends State<SignInScreen> {
         elevation: 0,
         title: const Padding(
           padding: EdgeInsets.only(left: 30),
-          child: Text(
-            Str.appName,
+          child: STxt(
+            txt: Str.appName,
             style: TextStyle(
               color: Clr.primaryColor,
               fontSize: 28,
@@ -57,8 +58,8 @@ class _SignInScreenState extends State<SignInScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 40),
-                const Text(
-                  Str.signInText,
+                const STxt(
+                  txt: Str.signInText,
                   style: TextStyle(
                     color: Clr.primaryColor,
                     fontSize: 25,
@@ -66,8 +67,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  Str.signInSubTitleText,
+                const STxt(
+                  txt: Str.signInSubTitleText,
                   style: TextStyle(
                     color: Clr.greyColor,
                   ),
@@ -102,7 +103,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       );
                     }),
                     const SizedBox(width: 5),
-                    const Text("Remember Me"),
+                    const STxt(txt: "Remember Me"),
                     const Spacer(),
                     HoverTextUnderlineButton(
                       btnText: Str.forgotPassBtnText,

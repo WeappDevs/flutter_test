@@ -1,6 +1,7 @@
 import 'package:admin_web_app/utils/assets.dart';
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/common_componets/hover_button.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -62,8 +63,8 @@ class CustomDialog {
                 children: [
                   SvgPicture.asset(LocalSVG.tickDialogIcon),
                   const SizedBox(height: 20),
-                  Text(
-                    title,
+                  STxt(
+                    txt: title,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -72,8 +73,8 @@ class CustomDialog {
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 10),
-                    Text(
-                      subtitle,
+                    STxt(
+                      txt: subtitle,
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
@@ -161,8 +162,8 @@ class CustomDialog {
                 children: [
                   SvgPicture.asset(LocalSVG.untickDialogIcon),
                   const SizedBox(height: 20),
-                  Text(
-                    title,
+                  STxt(
+                    txt: title,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -171,8 +172,8 @@ class CustomDialog {
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 10),
-                    Text(
-                      subtitle,
+                    STxt(
+                      txt: subtitle,
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,

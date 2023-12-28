@@ -7,6 +7,7 @@ import 'package:admin_web_app/views/widgets/empty_view.dart';
 import 'package:admin_web_app/views/widgets/shimmer_cat_table_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class OverseeCategoryScreen extends StatelessWidget {
   const OverseeCategoryScreen({Key? key}) : super(key: key);
@@ -25,8 +26,8 @@ class OverseeCategoryScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Oversee Category",
+              STxt(
+                txt: "Oversee Category",
                 style: CustomTextStyle.screenHeadingStyle,
               ),
               IconButton(
@@ -71,23 +72,23 @@ class OverseeCategoryScreen extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('In', style: CustomTextStyle.tableHeaderStyle),
+                                child: STxt(txt: 'In', style: CustomTextStyle.tableHeaderStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('Category Image', style: CustomTextStyle.tableHeaderStyle),
+                                child: STxt(txt: 'Category Image', style: CustomTextStyle.tableHeaderStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('Category Name', style: CustomTextStyle.tableHeaderStyle),
+                                child: STxt(txt: 'Category Name', style: CustomTextStyle.tableHeaderStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('Category ID', style: CustomTextStyle.tableHeaderStyle),
+                                child: STxt(txt: 'Category ID', style: CustomTextStyle.tableHeaderStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('Action', style: CustomTextStyle.tableHeaderStyle),
+                                child: STxt(txt: 'Action', style: CustomTextStyle.tableHeaderStyle),
                               ),
                             ],
                             decoration: const BoxDecoration(color: Clr.tableHeaderGreyColor),
@@ -97,8 +98,8 @@ class OverseeCategoryScreen extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                  child: Text(
-                                      '${(controller.categoryListModel.value?.data?.indexOf(element) ?? 0) + 1}.',
+                                  child: STxt(
+                                      txt: '${(controller.categoryListModel.value?.data?.indexOf(element) ?? 0) + 1}.',
                                       style: CustomTextStyle.tableContentStyle),
                                 ),
                                 Row(
@@ -120,11 +121,13 @@ class OverseeCategoryScreen extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                  child: Text(element.categoryName ?? '-', style: CustomTextStyle.tableContentStyle),
+                                  child:
+                                      STxt(txt: element.categoryName ?? '-', style: CustomTextStyle.tableContentStyle),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                  child: Text(element.id ?? '-',
+                                  child: STxt(
+                                      txt: element.id ?? '-',
                                       style: CustomTextStyle.tableContentStyle.copyWith(fontWeight: FontWeight.w600)),
                                 ),
                                 Center(

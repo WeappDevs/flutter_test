@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class MyLoader {
   static show() {
@@ -46,7 +47,7 @@ class LoaderView extends StatelessWidget {
             children: [
               LoadingAnimationWidget.halfTriangleDot(color: Clr.blackColor, size: 50),
               const SizedBox(height: 20),
-              Text("Hold on a moment...", style: CustomTextStyle.mediumGreyStyle.copyWith(color: Clr.primaryColor))
+              STxt(txt: "Hold on a moment...", style: CustomTextStyle.mediumGreyStyle.copyWith(color: Clr.primaryColor))
             ],
           ),
         ),

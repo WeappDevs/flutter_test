@@ -27,10 +27,7 @@ class MyToasts {
           Expanded(
             child: Text(
               toast,
-              style: const TextStyle(
-                  color: Clr.toastTextClr,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+              style: const TextStyle(color: Clr.toastTextClr, fontWeight: FontWeight.w400, fontSize: 16),
             ),
           ),
         ],
@@ -67,10 +64,7 @@ class MyToasts {
           Expanded(
             child: Text(
               toast,
-              style: const TextStyle(
-                  color: Clr.toastTextClr,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+              style: const TextStyle(color: Clr.toastTextClr, fontWeight: FontWeight.w400, fontSize: 16),
             ),
           ),
         ],
@@ -107,10 +101,7 @@ class MyToasts {
           Expanded(
             child: Text(
               toast,
-              style: const TextStyle(
-                  color: Clr.toastTextClr,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+              style: const TextStyle(color: Clr.toastTextClr, fontWeight: FontWeight.w400, fontSize: 16),
             ),
           ),
         ],
@@ -147,10 +138,7 @@ class MyToasts {
           Expanded(
             child: Text(
               toast,
-              style: const TextStyle(
-                  color: Clr.toastTextClr,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
+              style: const TextStyle(color: Clr.toastTextClr, fontWeight: FontWeight.w400, fontSize: 16),
             ),
           ),
         ],

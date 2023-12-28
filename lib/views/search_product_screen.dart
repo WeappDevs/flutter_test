@@ -12,6 +12,7 @@ import 'package:admin_web_app/views/widgets/shimmer_table_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class SearchProductScreen extends StatelessWidget {
   const SearchProductScreen({Key? key}) : super(key: key);
@@ -28,8 +29,8 @@ class SearchProductScreen extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          Text(
-            "Search Product",
+          STxt(
+            txt: "Search Product",
             style: CustomTextStyle.screenHeadingStyle,
           ),
           const SizedBox(
@@ -178,8 +179,9 @@ class SearchProductScreen extends StatelessWidget {
                       children: [
                         Align(
                           alignment: Alignment.centerRight,
-                          child: Text(
-                              "Total Number Of Record: ${controller.searchProductListModel.value?.totalNumberOfData}",
+                          child: STxt(
+                              txt:
+                                  "Total Number Of Record: ${controller.searchProductListModel.value?.totalNumberOfData}",
                               style: CustomTextStyle.tableHeaderStyle),
                         ),
                         const SizedBox(height: 5),
@@ -205,35 +207,35 @@ class SearchProductScreen extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('In', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'In', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('Product ID', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'Product ID', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('SKU', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'SKU', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('Product Name', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'Product Name', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('Product Type', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'Product Type', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('Product Style', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'Product Style', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('Price', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'Price', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                    child: Text('Action', style: CustomTextStyle.tableHeaderStyle),
+                                    child: STxt(txt: 'Action', style: CustomTextStyle.tableHeaderStyle),
                                   ),
                                 ],
                                 decoration: const BoxDecoration(color: Clr.tableHeaderGreyColor),
@@ -243,38 +245,44 @@ class SearchProductScreen extends StatelessWidget {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(
-                                          '${(controller.searchProductListModel.value?.data?.indexOf(element) ?? 0) + 1}.',
+                                      child: STxt(
+                                          txt:
+                                              '${(controller.searchProductListModel.value?.data?.indexOf(element) ?? 0) + 1}.',
                                           style: CustomTextStyle.tableContentStyle),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(element.id ?? "-",
+                                      child: STxt(
+                                          txt: element.id ?? "-",
                                           style:
                                               CustomTextStyle.tableContentStyle.copyWith(fontWeight: FontWeight.w600)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(element.additionalDetails?.productSku ?? "-",
+                                      child: STxt(
+                                          txt: element.additionalDetails?.productSku ?? "-",
                                           style: CustomTextStyle.tableContentStyle),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(element.name ?? "-", style: CustomTextStyle.tableContentStyle),
+                                      child: STxt(txt: element.name ?? "-", style: CustomTextStyle.tableContentStyle),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(element.additionalDetails?.style ?? "-",
+                                      child: STxt(
+                                          txt: element.additionalDetails?.style ?? "-",
                                           style: CustomTextStyle.tableContentStyle),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(element.categoryId?.categoryName ?? "-",
+                                      child: STxt(
+                                          txt: element.categoryId?.categoryName ?? "-",
                                           style: CustomTextStyle.tableContentStyle),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                      child: Text(element.generalPrice?.toString() ?? "-",
+                                      child: STxt(
+                                          txt: element.generalPrice?.toString() ?? "-",
                                           style: CustomTextStyle.tableContentStyle),
                                     ),
                                     Center(
@@ -442,8 +450,8 @@ class SearchProductScreen extends StatelessWidget {
                                             : Clr.transparentColor,
                                       ),
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        (index + 1).toString(),
+                                      child: STxt(
+                                        txt: (index + 1).toString(),
                                         style: CustomTextStyle.tableHeaderStyle.copyWith(
                                             color: (controller.selectedSearchTableIndex.value == index)
                                                 ? Clr.whiteColor

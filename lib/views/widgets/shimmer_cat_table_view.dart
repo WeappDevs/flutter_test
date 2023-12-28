@@ -2,6 +2,7 @@ import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class ShimmerCatTableView extends StatelessWidget {
   const ShimmerCatTableView({super.key});
@@ -27,23 +28,23 @@ class ShimmerCatTableView extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('In', style: CustomTextStyle.tableHeaderStyle),
+                child: STxt(txt: 'In', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Category Image', style: CustomTextStyle.tableHeaderStyle),
+                child: STxt(txt: 'Category Image', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Category Name', style: CustomTextStyle.tableHeaderStyle),
+                child: STxt(txt: 'Category Name', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Category ID', style: CustomTextStyle.tableHeaderStyle),
+                child: STxt(txt: 'Category ID', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Action', style: CustomTextStyle.tableHeaderStyle),
+                child: STxt(txt: 'Action', style: CustomTextStyle.tableHeaderStyle),
               ),
             ],
             decoration: const BoxDecoration(color: Clr.tableHeaderGreyColor),
@@ -56,7 +57,8 @@ class ShimmerCatTableView extends StatelessWidget {
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: Text('${i + 1}.',
+                    child: STxt(
+                        txt: '${i + 1}.',
                         style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
@@ -84,7 +86,8 @@ class ShimmerCatTableView extends StatelessWidget {
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: Text('BNGJOR1647-GW4',
+                    child: STxt(
+                        txt: 'BNGJOR1647-GW4',
                         style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
@@ -93,7 +96,8 @@ class ShimmerCatTableView extends StatelessWidget {
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: Text('BNGJOR1647-GW4',
+                    child: STxt(
+                        txt: 'BNGJOR1647-GW4',
                         style: CustomTextStyle.tableContentStyle
                             .copyWith(fontWeight: FontWeight.w600, backgroundColor: Clr.whiteColor)),
                   ),

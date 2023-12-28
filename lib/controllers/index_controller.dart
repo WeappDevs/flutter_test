@@ -14,6 +14,7 @@ import 'package:admin_web_app/models/product/product_detail_model.dart';
 import 'package:admin_web_app/models/res/response_model.dart';
 import 'package:admin_web_app/models/shape_model.dart';
 import 'package:admin_web_app/models/tab_model.dart';
+import 'package:admin_web_app/models/v_media_tab_model.dart';
 import 'package:admin_web_app/models/view_product/view_product_list_model.dart';
 import 'package:admin_web_app/models/visual_detail_model.dart';
 import 'package:admin_web_app/providers/common_api_provider.dart';
@@ -30,6 +31,7 @@ import 'package:admin_web_app/utils/map_extension.dart';
 import 'package:admin_web_app/utils/route_management/route_names.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -207,13 +209,13 @@ class IndexController extends GetxController {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Change Password",
+          STxt(
+            txt: "Change Password",
             style: CustomTextStyle.infoHeadingStyle,
           ),
           const SizedBox(height: 20),
-          Text(
-            "Old Password",
+          STxt(
+            txt: "Old Password",
             style: CustomTextStyle.fieldTitleStyle,
           ),
           const SizedBox(height: 5),
@@ -223,8 +225,8 @@ class IndexController extends GetxController {
             isObscure: true,
           ),
           const SizedBox(height: 15),
-          Text(
-            "New Password",
+          STxt(
+            txt: "New Password",
             style: CustomTextStyle.fieldTitleStyle,
           ),
           const SizedBox(height: 5),
@@ -234,8 +236,8 @@ class IndexController extends GetxController {
             isObscure: true,
           ),
           const SizedBox(height: 15),
-          Text(
-            "Confirm Password",
+          STxt(
+            txt: "Confirm Password",
             style: CustomTextStyle.fieldTitleStyle,
           ),
           const SizedBox(height: 5),
@@ -331,7 +333,7 @@ class IndexController extends GetxController {
   ///View Product Access............................................................................
   //handlers of the table pagination
   RxInt selectedProductTableIndex = 0.obs;
-  RxInt productPageLength = 10.obs;
+  RxInt productPageLength = 0.obs;
   final ItemScrollController productItemScrollController = ItemScrollController();
 
   //Table Loader Handler
@@ -366,7 +368,7 @@ class IndexController extends GetxController {
       if (viewProductListModel.value?.success == true) {
         debugPrint("API Success is true");
         getPageLength(
-            totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 10, pageLength: productPageLength);
+            totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 0, pageLength: productPageLength);
       } else {
         debugPrint("API Success is false: ${viewProductListModel.value?.message}");
         MyToasts.errorToast(toast: viewProductListModel.value?.message.toString() ?? "");
@@ -383,16 +385,20 @@ class IndexController extends GetxController {
     required RxInt pageLength,
   }) {
     debugPrint("getPageLength ------------------------>");
-    int checkHasHalfPage = totalNumberOfData % Consts.limitValKey;
+    if (totalNumberOfData != 0) {
+      int checkHasHalfPage = totalNumberOfData % Consts.limitValKey;
 
-    if (checkHasHalfPage > 0) {
-      int totalPage = (totalNumberOfData ~/ Consts.limitValKey) + 1;
-      pageLength.value = totalPage;
+      if (checkHasHalfPage > 0) {
+        int totalPage = (totalNumberOfData ~/ Consts.limitValKey) + 1;
+        pageLength.value = totalPage;
+      } else {
+        int totalPage = totalNumberOfData ~/ Consts.limitValKey;
+        pageLength.value = totalPage;
+      }
+      debugPrint("pageLength: $pageLength");
     } else {
-      int totalPage = totalNumberOfData ~/ Consts.limitValKey;
-      pageLength.value = totalPage;
+      pageLength.value = 0;
     }
-    debugPrint("totalPage: $pageLength");
   }
 
   void onNextButtonTapped(
@@ -561,6 +567,7 @@ class IndexController extends GetxController {
         productDetailModel.value = ProductDetailModel.fromJson(data);
 
         if (productDetailModel.value?.success == true) {
+          onAddVMediaCalled();
         } else {
           debugPrint("API Success is false: ${productDetailModel.value?.message}");
           MyToasts.errorToast(toast: productDetailModel.value?.message ?? "No Message");
@@ -572,12 +579,65 @@ class IndexController extends GetxController {
   }
 
   ///Product Detail Access............................................................................
+  RxList<VMediaTabModel> vMediaTabListModel = RxList<VMediaTabModel>([]);
+  Rx<VMediaTabModel?> selectedVMediaTabModel = Rx<VMediaTabModel?>(null);
 
   void onProductDetailBackBtnTapped() {
     debugPrint("onProductDetailBackBtnTapped--------------------------->");
     if (isProductDetail.value != false) {
       isProductDetail.value = false;
     }
+  }
+
+  void onVMediaChangedBtnTapped({required VMediaTabModel ele}) {
+    debugPrint("onVMediaChangedBtnTapped ------------------------>");
+    for (var element in vMediaTabListModel) {
+      if (element.index == ele.index) {
+        if (ele.isSelected.value != true) {
+          ele.isSelected.value = true;
+        }
+      } else {
+        if (element.isSelected.value != false) {
+          element.isSelected.value = false;
+        }
+      }
+    }
+
+    selectedVMediaTabModel.value = ele;
+  }
+
+  void onAddVMediaCalled() {
+    debugPrint("onAddVMediaCalled ---------------->");
+    if (productDetailModel.value?.data?.value?.visualDetails?.isNotEmpty == true) {
+      int i = 0;
+      vMediaTabListModel.clear();
+      productDetailModel.value?.data?.value?.visualDetails?.forEach((element) {
+        vMediaTabListModel.add(VMediaTabModel(
+          visualDetails: element,
+          selectedMediaPath: Rx<String?>(element.productVideo),
+          isSelected: (i == 0) ? true.obs : false.obs,
+          index: i,
+          isVideoSelected: true.obs,
+        ));
+        i++;
+      });
+
+      if (vMediaTabListModel.isNotEmpty) {
+        selectedVMediaTabModel.value = vMediaTabListModel.first;
+      }
+    }
+  }
+
+  void onVideoTapped() {
+    debugPrint("onVideoTapped ---------------->");
+    selectedVMediaTabModel.value?.isVideoSelected?.value = true;
+    selectedVMediaTabModel.value?.selectedMediaPath.value = selectedVMediaTabModel.value?.visualDetails.productVideo;
+  }
+
+  void onImageTapped({required String image}) {
+    debugPrint("onImageTapped ---------------->");
+    selectedVMediaTabModel.value?.isVideoSelected?.value = false;
+    selectedVMediaTabModel.value?.selectedMediaPath.value = image;
   }
 
   ///Add Product Access............................................................................
@@ -1579,7 +1639,7 @@ class IndexController extends GetxController {
 
   //handlers of the table pagination
   RxInt selectedSearchTableIndex = 0.obs;
-  RxInt searchPageLength = 10.obs;
+  RxInt searchPageLength = 0.obs;
   final ItemScrollController searchItemScrollController = ItemScrollController();
 
   void tabHandleOfSearchProduct() {
@@ -1683,7 +1743,7 @@ class IndexController extends GetxController {
       if (searchProductListModel.value?.success == true) {
         debugPrint("API Success is true");
         getPageLength(
-            totalNumberOfData: searchProductListModel.value?.totalNumberOfData ?? 10, pageLength: searchPageLength);
+            totalNumberOfData: searchProductListModel.value?.totalNumberOfData ?? 0, pageLength: searchPageLength);
       } else {
         debugPrint("API Success is false: ${searchProductListModel.value?.message}");
         MyToasts.errorToast(toast: searchProductListModel.value?.message.toString() ?? "");
@@ -1846,14 +1906,14 @@ class IndexController extends GetxController {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Text(
-              (element != null) ? "Edit Category" : "Add Category",
+            child: STxt(
+              txt: (element != null) ? "Edit Category" : "Add Category",
               style: CustomTextStyle.dialogTitleStyle,
             ),
           ),
           const SizedBox(height: 15),
-          Text(
-            "Category Image",
+          STxt(
+            txt: "Category Image",
             style: CustomTextStyle.fieldTitleStyle,
           ),
           const SizedBox(height: 5),
@@ -1890,8 +1950,8 @@ class IndexController extends GetxController {
             ),
           ),
           const SizedBox(height: 15),
-          Text(
-            "Product Type",
+          STxt(
+            txt: "Product Type",
             style: CustomTextStyle.fieldTitleStyle,
           ),
           const SizedBox(height: 5),
@@ -1905,8 +1965,8 @@ class IndexController extends GetxController {
             },
           ),
           const SizedBox(height: 15),
-          Text(
-            "Product Category Name",
+          STxt(
+            txt: "Product Category Name",
             style: CustomTextStyle.fieldTitleStyle,
           ),
           const SizedBox(height: 5),

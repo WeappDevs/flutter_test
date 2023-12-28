@@ -3,6 +3,7 @@ import 'package:admin_web_app/models/fitter_model.dart';
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class HoverMenuButton extends StatefulWidget {
   final Widget? btnChild;
@@ -102,8 +103,8 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
                                         },
                                       );
                                     }),
-                                    title: Text(
-                                      element.filterText,
+                                    title: STxt(
+                                      txt: element.filterText,
                                       style: const TextStyle(
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.w500,
@@ -166,8 +167,8 @@ class _HoverMenuButtonState extends State<HoverMenuButton> {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      widget.btnText ?? "",
+                    STxt(
+                      txt: widget.btnText ?? "",
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

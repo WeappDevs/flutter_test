@@ -52,4 +52,7 @@ class Clr {
   ///Shimmer Colors
   static Color shimmerBaseClr = Colors.grey.shade200;
   static Color shimmerHighlightClr = Colors.grey.shade100;
+
+  ///Image
+  static Color imageBGClr = Clr.decentGreyColor.withOpacity(.3);
 }

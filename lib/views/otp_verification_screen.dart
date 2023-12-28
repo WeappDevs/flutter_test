@@ -9,6 +9,7 @@ import 'package:admin_web_app/utils/strings.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
   const OTPVerificationScreen({Key? key}) : super(key: key);
@@ -31,8 +32,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         elevation: 0,
         title: const Padding(
           padding: EdgeInsets.only(left: 30),
-          child: Text(
-            Str.appName,
+          child: STxt(
+            txt: Str.appName,
             style: TextStyle(
               color: Clr.primaryColor,
               fontSize: 28,
@@ -59,8 +60,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 40),
-                const Text(
-                  Str.verificationText,
+                const STxt(
+                  txt: Str.verificationText,
                   style: TextStyle(
                     color: Clr.primaryColor,
                     fontSize: 25,
@@ -68,8 +69,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  "${Str.verificationSubTitleText} ${Consts.defaultEmail.maskedEmail}",
+                STxt(
+                  txt: "${Str.verificationSubTitleText} ${Consts.defaultEmail.maskedEmail}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Clr.greyColor,

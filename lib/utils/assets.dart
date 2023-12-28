@@ -12,4 +12,5 @@ class LocalJson {}
 
 class LocalPNG {
   static const String faviconIcon = "assets/pngs/favicon.png";
+  static const String playIcon = "assets/pngs/play.png";
 }

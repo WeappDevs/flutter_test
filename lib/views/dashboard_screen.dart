@@ -1,6 +1,7 @@
 import 'package:admin_web_app/controllers/index_controller.dart';
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,8 +19,8 @@ class DashBoardScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30),
-          Text(
-            "Dashboard",
+          STxt(
+            txt: "Dashboard",
             style: CustomTextStyle.screenHeadingStyle,
           ),
           const SizedBox(height: 10),
@@ -50,9 +51,10 @@ class DashBoardScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => Text((controller.dashboardModel.value?.data?.totalProducts ?? 0).toString(),
+                      Obx(() => STxt(
+                          txt: (controller.dashboardModel.value?.data?.totalProducts ?? 0).toString(),
                           style: CustomTextStyle.extraLargeStyle)),
-                      Text("Total Product", style: CustomTextStyle.largeMidGreyStyle),
+                      STxt(txt: "Total Product", style: CustomTextStyle.largeMidGreyStyle),
                     ],
                   ),
                 ),
@@ -73,9 +75,10 @@ class DashBoardScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => Text((controller.dashboardModel.value?.data?.totalSells ?? 0).toString(),
+                      Obx(() => STxt(
+                          txt: (controller.dashboardModel.value?.data?.totalSells ?? 0).toString(),
                           style: CustomTextStyle.extraLargeStyle)),
-                      Text("Total Sell", style: CustomTextStyle.largeMidGreyStyle),
+                      STxt(txt: "Total Sell", style: CustomTextStyle.largeMidGreyStyle),
                     ],
                   ),
                 ),
@@ -96,9 +99,10 @@ class DashBoardScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => Text((controller.dashboardModel.value?.data?.totalReturns ?? 0).toString(),
+                      Obx(() => STxt(
+                          txt: (controller.dashboardModel.value?.data?.totalReturns ?? 0).toString(),
                           style: CustomTextStyle.extraLargeStyle)),
-                      Text("Total Returns", style: CustomTextStyle.largeMidGreyStyle),
+                      STxt(txt: "Total Returns", style: CustomTextStyle.largeMidGreyStyle),
                     ],
                   ),
                 ),
@@ -119,9 +123,10 @@ class DashBoardScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => Text((controller.dashboardModel.value?.data?.totalPayment ?? 0).toString(),
+                      Obx(() => STxt(
+                          txt: (controller.dashboardModel.value?.data?.totalPayment ?? 0).toString(),
                           style: CustomTextStyle.extraLargeStyle)),
-                      Text("Total Payment", style: CustomTextStyle.largeMidGreyStyle),
+                      STxt(txt: "Total Payment", style: CustomTextStyle.largeMidGreyStyle),
                     ],
                   ),
                 ),

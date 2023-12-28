@@ -1,11 +1,14 @@
 import 'dart:typed_data';
+import 'package:admin_web_app/views/widgets/empty_view.dart';
 import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:flutter/material.dart';
 import 'dart:html' as html;
 
 class MiniVideoView extends StatefulWidget {
-  const MiniVideoView({Key? key, required this.bytes}) : super(key: key);
+  const MiniVideoView({Key? key, this.bytes, this.netImageURL, this.isNotMute}) : super(key: key);
   final Uint8List? bytes;
+  final String? netImageURL;
+  final bool? isNotMute;
 
   @override
   State<MiniVideoView> createState() => _MiniVideoViewState();
@@ -15,15 +18,15 @@ class _MiniVideoViewState extends State<MiniVideoView> {
   late VideoPlayerController videoPlayerController;
   late CustomVideoPlayerController _customVideoPlayerController;
 
-  String videoUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  String videoUrl = '';
 
   @override
   void initState() {
     super.initState();
-    createNetUrlFromBytes();
+    initVideoUrlActivity();
     videoPlayerController = VideoPlayerController.network(videoUrl)
       ..initialize().then((value) => setState(() {}))
-      ..setVolume(0)
+      ..setVolume((widget.isNotMute == true) ? 1 : 0)
       ..play();
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
@@ -41,6 +44,16 @@ class _MiniVideoViewState extends State<MiniVideoView> {
     });
   }
 
+  void initVideoUrlActivity() {
+    if (widget.bytes?.isNotEmpty == true) {
+      createNetUrlFromBytes();
+    } else {
+      if (widget.netImageURL?.isNotEmpty == true) {
+        videoUrl = widget.netImageURL!;
+      }
+    }
+  }
+
   void createNetUrlFromBytes() {
     final blob = html.Blob([widget.bytes]);
     final url = html.Url.createObjectUrlFromBlob(blob);
@@ -48,19 +61,21 @@ class _MiniVideoViewState extends State<MiniVideoView> {
     videoUrl = url;
   }
 
-  Future<void> disposeView() async {
+  Future<void> disposeVideoActivity() async {
     await videoPlayerController.dispose();
     _customVideoPlayerController.dispose();
   }
 
   @override
   void dispose() {
-    disposeView();
+    disposeVideoActivity();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomVideoPlayer(customVideoPlayerController: _customVideoPlayerController);
+    return (videoUrl.isNotEmpty == true)
+        ? CustomVideoPlayer(customVideoPlayerController: _customVideoPlayerController)
+        : const EmptyView();
   }
 }

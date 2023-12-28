@@ -1,6 +1,7 @@
 import 'package:admin_web_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class NestedRowBuilder extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -25,8 +26,8 @@ class NestedRowBuilder extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text(
-                                "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (Map)",
+                              child: STxt(
+                                txt: "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (Map)",
                                 style: const TextStyle(color: Clr.greyColor),
                               ),
                             ),
@@ -54,8 +55,9 @@ class NestedRowBuilder extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 3,
-                                  child: Text(
-                                    "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (List_${element.value.length})",
+                                  child: STxt(
+                                    txt:
+                                        "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (List_${element.value.length})",
                                     style: const TextStyle(color: Clr.greyColor),
                                   ),
                                 ),
@@ -68,10 +70,10 @@ class NestedRowBuilder extends StatelessWidget {
                                           children: List.generate(
                                               element.value.length,
                                               (index) => (element.value[index].runtimeType == String)
-                                                  ? Text(element.value[index] ?? "-")
+                                                  ? STxt(txt: element.value[index] ?? "-")
                                                   : NestedRowBuilder(data: element.value[index])),
                                         )
-                                      : const Text("-"),
+                                      : const STxt(txt: "-"),
                                 ),
                               ],
                             ),
@@ -90,15 +92,15 @@ class NestedRowBuilder extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 3,
-                                  child: Text(
-                                    element.key.replaceAll("_", " ").toString().trimLeft().capitalize.toString(),
+                                  child: STxt(
+                                    txt: element.key.replaceAll("_", " ").toString().trimLeft().capitalize.toString(),
                                     style: const TextStyle(color: Clr.greyColor),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   flex: 9,
-                                  child: Text(element.value?.toString() ?? "-"),
+                                  child: STxt(txt: element.value?.toString() ?? "-"),
                                 ),
                               ],
                             ),

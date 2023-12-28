@@ -12,6 +12,7 @@ import 'package:admin_web_app/views/search_product_screen.dart';
 import 'package:admin_web_app/views/view_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({Key? key}) : super(key: key);
@@ -62,12 +63,12 @@ class _IndexPageState extends State<IndexPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            Consts.userModel?.data?.firstName ?? "GreenWave",
+                          STxt(
+                            txt: Consts.userModel?.data?.firstName ?? "GreenWave",
                             style: CustomTextStyle.title600Style,
                           ),
-                          Text(
-                            "admin".toLowerCase(),
+                          STxt(
+                            txt: "admin".toLowerCase(),
                             style: CustomTextStyle.mediumGreyStyle,
                           ),
                         ],
@@ -133,7 +134,7 @@ class _IndexPageState extends State<IndexPage> {
                 //     color: Clr.redColor.withOpacity(.3),
                 //   ),
                 //   alignment: Alignment.center,
-                //   child: Text("Sign Out",
+                //   child: STxt(txt:"Sign Out",
                 //       style: CustomTextStyle.midRedStyle,
                 //       textAlign: TextAlign.center),
                 // ),

@@ -3,6 +3,7 @@ import 'package:admin_web_app/utils/colors.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class ShimmerOrderTableView extends StatelessWidget {
   const ShimmerOrderTableView({super.key});
@@ -12,10 +13,7 @@ class ShimmerOrderTableView extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(color: Clr.whiteColor),
       child: Table(
-        border: TableBorder.all(
-            width: .1,
-            color: Clr.greyColor,
-            borderRadius: BorderRadius.circular(5)),
+        border: TableBorder.all(width: .1, color: Clr.greyColor, borderRadius: BorderRadius.circular(5)),
         defaultVerticalAlignment: TableCellVerticalAlignment.top,
         columnWidths: const {
           0: IntrinsicColumnWidth(flex: .2),
@@ -38,77 +36,56 @@ class ShimmerOrderTableView extends StatelessWidget {
             children: [
               /*0=In, 1=Order ID, 2=Customer Name, 3=Customer ID, 4=Product Name, 5=Product Type, 6=Product ID, 7=S-Payment ID, 8=Location, 9=Date, 10=Price, 11=Status, 12=Action*/
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('In', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'In', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child:
-                    Text('Order ID', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Order ID', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Customer Name',
-                    style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Customer Name', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Customer ID',
-                    style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Customer ID', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Product Name',
-                    style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Product Name', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Product Type',
-                    style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Product Type', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child:
-                    Text('Product ID', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Product ID', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('S-Payment ID',
-                    style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'S-Payment ID', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child:
-                    Text('Location', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Location', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Date', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Date', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Price', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Price', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Status', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Status', style: CustomTextStyle.tableHeaderStyle),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Text('Action', style: CustomTextStyle.tableHeaderStyle),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: STxt(txt: 'Action', style: CustomTextStyle.tableHeaderStyle),
               ),
             ],
             decoration: const BoxDecoration(color: Clr.tableHeaderGreyColor),
@@ -122,122 +99,111 @@ class ShimmerOrderTableView extends StatelessWidget {
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('${i + 1}.',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: '${i + 1}.',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('BNGJOR1647-GW4',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: 'BNGJOR1647-GW4',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('Test Dev',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: 'Test Dev',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('BNGJOR1647-GW4',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: 'BNGJOR1647-GW4',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text(
-                        '${Random().nextInt(10000)}${Random().nextInt(10000)}${Random().nextInt(10000)}${Random().nextInt(10000)}${Random().nextInt(10000)}',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt:
+                            '${Random().nextInt(10000)}${Random().nextInt(10000)}${Random().nextInt(10000)}${Random().nextInt(10000)}${Random().nextInt(10000)}',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text("Bracelet",
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: "Bracelet",
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('BNGJOR1647-GW4',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: 'BNGJOR1647-GW4',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('BNGJOR1647-GW4',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: 'BNGJOR1647-GW4',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('Surat, Gujarat, India.',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: 'Surat, Gujarat, India.',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('01-08-2024\n12:30 PM',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: '01-08-2024\n12:30 PM',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
                   baseColor: Clr.shimmerBaseClr,
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Text('\$120',
-                        style: CustomTextStyle.tableContentStyle
-                            .copyWith(backgroundColor: Clr.whiteColor)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: STxt(
+                        txt: '\$120',
+                        style: CustomTextStyle.tableContentStyle.copyWith(backgroundColor: Clr.whiteColor)),
                   ),
                 ),
                 Shimmer.fromColors(
@@ -246,11 +212,9 @@ class ShimmerOrderTableView extends StatelessWidget {
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                     child: Chip(
-                      label: Text('Refunded',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Clr.whiteColor)),
+                      label: STxt(
+                          txt: 'Refunded',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Clr.whiteColor)),
                       backgroundColor: Clr.whiteColor,
                     ),
                   ),
@@ -260,8 +224,7 @@ class ShimmerOrderTableView extends StatelessWidget {
                   highlightColor: Clr.shimmerHighlightClr,
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -271,13 +234,11 @@ class ShimmerOrderTableView extends StatelessWidget {
                               height: 35,
                               width: 35,
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: .8, color: Clr.blueColor),
+                                border: Border.all(width: .8, color: Clr.blueColor),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               alignment: Alignment.center,
-                              child: const Icon(Icons.remove_red_eye_outlined,
-                                  color: Clr.blueColor, size: 20),
+                              child: const Icon(Icons.remove_red_eye_outlined, color: Clr.blueColor, size: 20),
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -287,13 +248,11 @@ class ShimmerOrderTableView extends StatelessWidget {
                               height: 35,
                               width: 35,
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: .8, color: Clr.redColor),
+                                border: Border.all(width: .8, color: Clr.redColor),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               alignment: Alignment.center,
-                              child: const Icon(Icons.cancel_outlined,
-                                  color: Clr.redColor, size: 20),
+                              child: const Icon(Icons.cancel_outlined, color: Clr.redColor, size: 20),
                             ),
                           ),
                         ],

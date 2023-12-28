@@ -7,6 +7,7 @@ import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -29,8 +30,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         elevation: 0,
         title: const Padding(
           padding: EdgeInsets.only(left: 30),
-          child: Text(
-            Str.appName,
+          child: STxt(
+            txt: Str.appName,
             style: TextStyle(
               color: Clr.primaryColor,
               fontSize: 28,
@@ -59,8 +60,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               children: [
                 const SizedBox(height: 40),
                 const Center(
-                  child: Text(
-                    Str.changePassTitleText,
+                  child: STxt(
+                    txt: Str.changePassTitleText,
                     style: TextStyle(
                       color: Clr.primaryColor,
                       fontSize: 25,
@@ -70,8 +71,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 const SizedBox(height: 10),
                 const Center(
-                  child: Text(
-                    Str.changePassSubtitleText,
+                  child: STxt(
+                    txt: Str.changePassSubtitleText,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Clr.greyColor,
@@ -79,8 +80,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                Text(
-                  "New Password",
+                STxt(
+                  txt: "New Password",
                   style: CustomTextStyle.fieldTitleStyle,
                 ),
                 const SizedBox(height: 5),
@@ -90,8 +91,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   isObscure: true,
                 ),
                 const SizedBox(height: 15),
-                Text(
-                  "Confirm Password",
+                STxt(
+                  txt: "Confirm Password",
                   style: CustomTextStyle.fieldTitleStyle,
                 ),
                 const SizedBox(height: 5),

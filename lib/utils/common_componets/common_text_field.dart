@@ -5,7 +5,6 @@ import 'package:admin_web_app/utils/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class CommonTextField extends StatelessWidget {
   CommonTextField(

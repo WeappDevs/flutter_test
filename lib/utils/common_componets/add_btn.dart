@@ -1,4 +1,5 @@
 import 'package:admin_web_app/utils/colors.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -35,23 +36,21 @@ class AddBtn extends StatelessWidget {
                 height: height ?? 60,
                 width: width ?? 700,
                 decoration: BoxDecoration(
-                  color: (isHover.value == true) ? Clr.primaryColor : Clr
-                      .blackColor,
+                  color: (isHover.value == true) ? Clr.primaryColor : Clr.blackColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
                 child: (isLoading?.value == true)
-                    ? LoadingAnimationWidget.fallingDot(
-                    color: Clr.whiteColor, size: 32)
-                    : Text(
-                  btnText,
-                  style: btnTextStyle ??
-                      const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Clr.whiteColor,
+                    ? LoadingAnimationWidget.fallingDot(color: Clr.whiteColor, size: 32)
+                    : STxt(
+                        txt: btnText,
+                        style: btnTextStyle ??
+                            const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Clr.whiteColor,
+                            ),
                       ),
-                ),
               );
             }),
           ),

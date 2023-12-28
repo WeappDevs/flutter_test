@@ -10,6 +10,7 @@ import 'package:admin_web_app/views/widgets/shimmer_order_table_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:admin_web_app/views/widgets/s_txt.dart';
 
 class ManageOrderScreen extends StatelessWidget {
   const ManageOrderScreen({super.key});
@@ -27,8 +28,8 @@ class ManageOrderScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Text(
-              "Manage Orders",
+            STxt(
+              txt: "Manage Orders",
               style: CustomTextStyle.screenHeadingStyle,
             ),
             const SizedBox(
@@ -79,55 +80,55 @@ class ManageOrderScreen extends StatelessWidget {
                             /*0=In, 1=Order ID, 2=Customer Name, 3=Customer ID, 4=Product Name, 5=Product Type, 6=Product ID, 7=S-Payment ID, 8=Location, 9=Date, 10=Price, 11=Status, 12=Action*/
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('In', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'In', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Order ID', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Order ID', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Customer Name', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Customer Name', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Customer ID', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Customer ID', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Product Name', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Product Name', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Product Type', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Product Type', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Product ID', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Product ID', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('S-Payment ID', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'S-Payment ID', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Location', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Location', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Date', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Date', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Price', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Price', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Status', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Status', style: CustomTextStyle.tableHeaderStyle),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              child: Text('Action', style: CustomTextStyle.tableHeaderStyle),
+                              child: STxt(txt: 'Action', style: CustomTextStyle.tableHeaderStyle),
                             ),
                           ],
                           decoration: const BoxDecoration(color: Clr.tableHeaderGreyColor),
@@ -139,55 +140,58 @@ class ManageOrderScreen extends StatelessWidget {
 
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('${i + 1}.', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: '${i + 1}.', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('BNGJOR1647-GW4',
+                                child: STxt(
+                                    txt: 'BNGJOR1647-GW4',
                                     style: CustomTextStyle.tableContentStyle.copyWith(fontWeight: FontWeight.w600)),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('Test Dev', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: 'Test Dev', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('BNGJOR1647-GW4', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: 'BNGJOR1647-GW4', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text("Diamond Pave Crossover Fashion Band",
+                                child: STxt(
+                                    txt: "Diamond Pave Crossover Fashion Band",
                                     style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text("Bracelet", style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: "Bracelet", style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('BNGJOR1647-GW4', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: 'BNGJOR1647-GW4', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('BNGJOR1647-GW4', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: 'BNGJOR1647-GW4', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('Surat, Gujarat, India.', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: 'Surat, Gujarat, India.', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('01-08-2024\n12:30 PM', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: '01-08-2024\n12:30 PM', style: CustomTextStyle.tableContentStyle),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                child: Text('\$120', style: CustomTextStyle.tableContentStyle),
+                                child: STxt(txt: '\$120', style: CustomTextStyle.tableContentStyle),
                               ),
                               (i % 2 == 0)
                                   ? const Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                                       child: Chip(
-                                        label: Text('Refunded',
+                                        label: STxt(
+                                            txt: 'Refunded',
                                             style: TextStyle(
                                                 fontSize: 12, fontWeight: FontWeight.w500, color: Clr.whiteColor)),
                                         backgroundColor: Clr.orangeColor,
@@ -197,7 +201,8 @@ class ManageOrderScreen extends StatelessWidget {
                                       ? const Padding(
                                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                                           child: Chip(
-                                            label: Text('Canceled',
+                                            label: STxt(
+                                                txt: 'Canceled',
                                                 style: TextStyle(
                                                     fontSize: 12, fontWeight: FontWeight.w500, color: Clr.whiteColor)),
                                             backgroundColor: Clr.greyColor,
@@ -206,7 +211,8 @@ class ManageOrderScreen extends StatelessWidget {
                                       : const Padding(
                                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                                           child: Chip(
-                                            label: Text('Paid',
+                                            label: STxt(
+                                                txt: 'Paid',
                                                 style: TextStyle(
                                                     fontSize: 12, fontWeight: FontWeight.w500, color: Clr.whiteColor)),
                                             backgroundColor: Clr.greenColor,
@@ -341,8 +347,8 @@ class ManageOrderScreen extends StatelessWidget {
                                               : Clr.transparentColor,
                                         ),
                                         alignment: Alignment.center,
-                                        child: Text(
-                                          (index + 1).toString(),
+                                        child: STxt(
+                                          txt: (index + 1).toString(),
                                           style: CustomTextStyle.tableHeaderStyle.copyWith(
                                               color: (controller.selectedProductTableIndex.value == index)
                                                   ? Clr.whiteColor
