@@ -6,11 +6,13 @@ class MemoryFileModel {
   String? fileName;
   String? netImagePath;
   String? netImageUrl;
+  RxBool isRefreshVideo;
 
   MemoryFileModel({
     required this.byteList,
     this.fileName,
     this.netImagePath,
     this.netImageUrl,
+    required this.isRefreshVideo,
   });
 }

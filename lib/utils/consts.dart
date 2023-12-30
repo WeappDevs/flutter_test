@@ -34,6 +34,7 @@ class URLs {
   static const String uploadVisualMediaUri = "${URLs.baseUrl}/upload_visual_media";
   static const String inWaitingJewelleryUri = "${URLs.baseUrl}/in_waiting_jewellery";
   static const String searchJewelleryUri = "${URLs.baseUrl}/search_jewellery";
+  static const String editJewelleryUri = "${URLs.baseUrl}/edit_jewellery";
 
   ///Category Operations
   static const String categoryListUri = "${URLs.baseUrl}/category_list";

@@ -192,12 +192,15 @@ class ProductDetailScreen extends StatelessWidget {
                                                                 Expanded(
                                                                     flex: 3,
                                                                     child: STxt(
-                                                                        txt: element.key
-                                                                            .replaceAll("_", " ")
-                                                                            .toString()
-                                                                            .trimLeft()
-                                                                            .capitalize
-                                                                            .toString(),
+                                                                        txt: (element.value is List &&
+                                                                                element.value.length != 0)
+                                                                            ? "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (List_${element.value.length})"
+                                                                            : element.key
+                                                                                .replaceAll("_", " ")
+                                                                                .toString()
+                                                                                .trimLeft()
+                                                                                .capitalize
+                                                                                .toString(),
                                                                         style: const TextStyle(color: Clr.greyColor))),
                                                                 const SizedBox(width: 10),
                                                                 Expanded(

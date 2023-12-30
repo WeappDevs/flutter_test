@@ -70,7 +70,7 @@ class IndexController extends GetxController {
         selectedRhodiumPlated: Rx<String?>(null),
         imageList: <MemoryFileModel>[].obs,
         priceController: TextEditingController(),
-        videoBytesData: MemoryFileModel(byteList: Rx<Uint8List?>(null)),
+        videoBytesData: MemoryFileModel(byteList: Rx<Uint8List?>(null), isRefreshVideo: false.obs),
         version: 1.obs,
         isImageError: false.obs,
         isVideoError: false.obs,
@@ -542,39 +542,508 @@ class IndexController extends GetxController {
   Future<void> onViewProductBtnTapped({required String jewelID}) async {
     debugPrint("onViewProductBtnTapped--------------------------->");
 
-    //Work when selected tab is other than the view product
-    if (selectedTabIndex.value != Consts.viewProductIndex) {
-      onTabTapped(index: Consts.viewProductIndex);
+    if (jewelID.isNotEmpty) {
+      //Work when selected tab is other than the view product
+      if (selectedTabIndex.value != Consts.viewProductIndex) {
+        onTabTapped(index: Consts.viewProductIndex);
+      }
+
+      if (isProductDetail.value != true) {
+        isProductDetail.value = true;
+        Map<String, dynamic> passingData = {
+          Consts.jewelleryIdKey: jewelID,
+        };
+
+        ///API Calling
+        dynamic data = await ApiProvider.commonProvider(
+          url: URLs.jewelleryDetailsUri,
+          bodyData: passingData,
+          header: {
+            "Authorization":
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
+          },
+        );
+
+        if (data != null) {
+          productDetailModel.value = ProductDetailModel.fromJson(data);
+
+          if (productDetailModel.value?.success == true) {
+            onAddVMediaCalled();
+          } else {
+            debugPrint("API Success is false: ${productDetailModel.value?.message}");
+            MyToasts.errorToast(toast: productDetailModel.value?.message ?? "No Message");
+          }
+        } else {
+          debugPrint("Data is null");
+        }
+      }
+    }
+  }
+
+  RxBool isEditLoading = false.obs;
+  Future<void> onEditProductBtnTapped({required String jewelID}) async {
+    debugPrint("onEditProductBtnTapped--------------------------->");
+    isEditLoading.value = true;
+
+    //Work when selected tab is other than the edit product
+    if (selectedTabIndex.value != Consts.addProductIndex) {
+      onTabTapped(index: Consts.addProductIndex);
     }
 
-    if (isProductDetail.value != true) {
-      isProductDetail.value = true;
-      Map<String, dynamic> passingData = {
-        Consts.jewelleryIdKey: jewelID,
-      };
+    isEditProductView.value = true;
+    editProductDetailModel.value = null;
 
-      ///API Calling
-      dynamic data = await ApiProvider.commonProvider(
-        url: URLs.jewelleryDetailsUri,
-        bodyData: passingData,
-        header: {
-          "Authorization":
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-        },
-      );
+    Map<String, dynamic> passingData = {
+      Consts.jewelleryIdKey: jewelID,
+    };
 
-      if (data != null) {
-        productDetailModel.value = ProductDetailModel.fromJson(data);
+    ///API Calling
+    dynamic data = await ApiProvider.commonProvider(
+      url: URLs.jewelleryDetailsUri,
+      bodyData: passingData,
+      header: {
+        "Authorization":
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
+      },
+    );
 
-        if (productDetailModel.value?.success == true) {
-          onAddVMediaCalled();
+    if (data != null) {
+      editProductDetailModel.value = ProductDetailModel.fromJson(data);
+
+      if (editProductDetailModel.value?.success == true) {
+        getAllEditData();
+      } else {
+        debugPrint("API Success is false: ${editProductDetailModel.value?.message}");
+        MyToasts.errorToast(toast: editProductDetailModel.value?.message ?? "No Message");
+      }
+    } else {
+      debugPrint("Data is null");
+    }
+    isEditLoading.value = false;
+  }
+
+  void getAllEditData() {
+    debugPrint("getAllEditData--------------------------->");
+    PData? editData = editProductDetailModel.value?.data?.value;
+
+    if (editData != null) {
+      //General Selection Control
+      dropdownEditor(
+          dropdownList: genderList,
+          selectedDropdownValue: selectedGender,
+          defValue: "Female",
+          newValue: editData.gender?.capitalize);
+      dropdownEditor(
+          dropdownList: productTypeList,
+          selectedDropdownValue: selectedProductType,
+          defValue: null,
+          newValue: editData.categoryId?.categoryName);
+      if (categoryListModel.value?.data?.any((element) => element.id == editData.categoryId?.id) == true) {
+        selectedProductCategoryID.value = editData.categoryId?.id;
+      } else {
+        selectedProductCategoryID.value = null;
+      }
+
+      //Diamond Detail Control
+      dropdownEditor(
+          dropdownList: stoneTypeList,
+          selectedDropdownValue: selectedStoneType,
+          defValue: "Diamond",
+          newValue: editData.diamondDetails?.stoneType);
+      dropdownEditor(
+          dropdownList: stoneTypeList,
+          selectedDropdownValue: selectedSideDiaStoneType,
+          defValue: "Diamond",
+          newValue: editData.sideDiamondDetails?.stoneType);
+      dropdownEditor(
+          dropdownList: creationMethodList,
+          selectedDropdownValue: selectedCreationMethod,
+          defValue: "Lab Grown",
+          newValue: editData.diamondDetails?.creationMethod);
+      dropdownEditor(
+          dropdownList: creationMethodList,
+          selectedDropdownValue: selectedSideDiaCreationMethod,
+          defValue: "Lab Grown",
+          newValue: editData.sideDiamondDetails?.creationMethod);
+
+      for (var element in shapeList) {
+        if (element.shapeName == editData.diamondDetails?.shape) {
+          element.isSelectedTab.value = true;
+          selectedShapeIndex.value = shapeList.indexOf(element);
         } else {
-          debugPrint("API Success is false: ${productDetailModel.value?.message}");
-          MyToasts.errorToast(toast: productDetailModel.value?.message ?? "No Message");
+          element.isSelectedTab.value = false;
+        }
+      }
+      for (var element in sideDiaShapeList) {
+        if (element.shapeName == editData.sideDiamondDetails?.shape) {
+          element.isSelectedTab.value = true;
+          selectedSideDiaShapeIndex.value = sideDiaShapeList.indexOf(element);
+        } else {
+          element.isSelectedTab.value = false;
+        }
+      }
+
+      selectedColor.value = null;
+      otherDropdownEditor(
+          isColorListing: true,
+          selectedDropdownValue: selectedColor,
+          defValue: null,
+          newValue: editData.diamondDetails?.color);
+      otherDropdownEditor(
+          isColorListing: true,
+          selectedDropdownValue: selectedSideDiaColor,
+          defValue: null,
+          newValue: editData.sideDiamondDetails?.color);
+      otherDropdownEditor(
+          isColorHueListing: true,
+          selectedDropdownValue: selectedColorHue,
+          defValue: null,
+          newValue: editData.diamondDetails?.colorHue);
+      otherDropdownEditor(
+          isColorHueListing: true,
+          selectedDropdownValue: selectedSideDiaColorHue,
+          defValue: null,
+          newValue: editData.sideDiamondDetails?.colorHue);
+      dropdownEditor(
+          dropdownList: clarityList,
+          selectedDropdownValue: selectedClarity,
+          defValue: "VS1",
+          newValue: editData.diamondDetails?.clarity);
+      dropdownEditor(
+          dropdownList: clarityList,
+          selectedDropdownValue: selectedSideDiaClarity,
+          defValue: "VS1",
+          newValue: editData.sideDiamondDetails?.clarity);
+      dropdownEditor(
+          dropdownList: cutGradeList,
+          selectedDropdownValue: selectedCutGrade,
+          defValue: "Excellent",
+          newValue: editData.diamondDetails?.cutGrade);
+      dropdownEditor(
+          dropdownList: cutGradeList,
+          selectedDropdownValue: selectedSideDiaCutGrade,
+          defValue: "Excellent",
+          newValue: editData.sideDiamondDetails?.cutGrade);
+      dropdownEditor(
+          dropdownList: settingList,
+          selectedDropdownValue: selectedSetting,
+          defValue: null,
+          newValue: editData.diamondDetails?.setting);
+      dropdownEditor(
+          dropdownList: settingList,
+          selectedDropdownValue: selectedSideDiaSetting,
+          defValue: null,
+          newValue: editData.sideDiamondDetails?.setting);
+      dropdownEditor(
+          dropdownList: polishList,
+          selectedDropdownValue: selectedPolish,
+          defValue: null,
+          newValue: editData.diamondDetails?.polish);
+      dropdownEditor(
+          dropdownList: polishList,
+          selectedDropdownValue: selectedSideDiaPolish,
+          defValue: null,
+          newValue: editData.sideDiamondDetails?.polish);
+      dropdownEditor(
+          dropdownList: symmetryList,
+          selectedDropdownValue: selectedSymmetry,
+          defValue: null,
+          newValue: editData.diamondDetails?.symmetry);
+      dropdownEditor(
+          dropdownList: symmetryList,
+          selectedDropdownValue: selectedSideDiaSymmetry,
+          defValue: null,
+          newValue: editData.sideDiamondDetails?.symmetry);
+
+      //Side Diamond Details
+      if (editData.sideDiamondDetails != null) {
+        if (isShowSideDiamondDetails.value != true) {
+          isShowSideDiamondDetails.value = true;
         }
       } else {
-        debugPrint("Data is null");
+        if (isShowSideDiamondDetails.value != false) {
+          isShowSideDiamondDetails.value = false;
+        }
       }
+
+      //RingStyle
+      dropdownEditor(
+          dropdownList: ringStyleList,
+          selectedDropdownValue: selectedRingStyle,
+          defValue: null,
+          newValue: editData.additionalDetails?.style);
+      dropdownEditor(
+          dropdownList: generalRhodiumPlatedList,
+          selectedDropdownValue: selectedGeneralRhodiumPlated,
+          defValue: "Yes",
+          newValue: editData.additionalDetails?.generalRhodiumPlated?.capitalize);
+
+      //EarringStyle
+      dropdownEditor(
+          dropdownList: earringStyleList,
+          selectedDropdownValue: selectedEarringStyle,
+          defValue: null,
+          newValue: editData.additionalDetails?.style);
+      dropdownEditor(
+          dropdownList: earringBackTypeList,
+          selectedDropdownValue: selectedEarringBackType,
+          defValue: null,
+          newValue: editData.additionalDetails?.backType);
+
+      //NecklaceStyle
+      dropdownEditor(
+          dropdownList: necklaceStyleList,
+          selectedDropdownValue: selectedNecklaceStyle,
+          defValue: null,
+          newValue: editData.additionalDetails?.style);
+      dropdownEditor(
+          dropdownList: chainTypeList,
+          selectedDropdownValue: selectedChainType,
+          defValue: null,
+          newValue: editData.additionalDetails?.chainType);
+      dropdownEditor(
+          dropdownList: claspTypeList,
+          selectedDropdownValue: selectedClaspType,
+          defValue: null,
+          newValue: editData.additionalDetails?.claspType);
+
+      //BraceletStyle
+      dropdownEditor(
+          dropdownList: braceletStyleList,
+          selectedDropdownValue: selectedBraceletStyle,
+          defValue: null,
+          newValue: editData.additionalDetails?.style);
+
+      //Shipping Details
+      if (editData.shippingDetails == ShippingDetailsRadio.Custom.name.toLowerCase()) {
+        if (selectedShippingDetails.value != ShippingDetailsRadio.Custom.name) {
+          selectedShippingDetails.value = ShippingDetailsRadio.Custom.name;
+        }
+      } else {
+        if (selectedShippingDetails.value != ShippingDetailsRadio.Default.name) {
+          selectedShippingDetails.value = ShippingDetailsRadio.Default.name;
+        }
+      }
+
+      //Returns Details
+      if (editData.returnDetails == ReturnDetailsRadio.Custom.name.toLowerCase()) {
+        if (selectedReturnDetails.value != ReturnDetailsRadio.Custom.name) {
+          selectedReturnDetails.value = ReturnDetailsRadio.Custom.name;
+        }
+      } else {
+        if (selectedReturnDetails.value != ReturnDetailsRadio.Default.name) {
+          selectedReturnDetails.value = ReturnDetailsRadio.Default.name;
+        }
+      }
+
+      //Visual Detail Handling
+      if (editData.visualDetails != null && editData.visualDetails?.isEmpty != true) {
+        visualDetailsList.clear();
+
+        editData.visualDetails?.forEach((vData) {
+          Rx<String?> selectedMetalType = Rx<String?>(null);
+          if (metalTypeList.any((element) => element.metalName == vData.metalTypeColor) == true) {
+            selectedMetalType.value = vData.metalTypeColor;
+          }
+
+          Rx<String?> selectedRhodiumPlated = Rx<String?>(null);
+          if (generalRhodiumPlatedList.contains(vData.rhodiumPlated?.capitalize) == true) {
+            selectedRhodiumPlated.value = vData.rhodiumPlated?.capitalize;
+          }
+
+          TextEditingController priceController = TextEditingController();
+          if (vData.metalVisePrice != null) {
+            priceController.text = vData.metalVisePrice?.toString() ?? '';
+          }
+
+          //get edit image data
+          RxList<MemoryFileModel> imageList = <MemoryFileModel>[].obs;
+          if (vData.productImages != null && vData.productImages?.isEmpty != true) {
+            vData.productImages?.forEach((element) {
+              MemoryFileModel? imageBytesData = MemoryFileModel(
+                  byteList: Rx<Uint8List?>(null),
+                  netImagePath: extractPathFromUrl(element),
+                  netImageUrl: element,
+                  isRefreshVideo: false.obs);
+
+              imageList.add(imageBytesData);
+            });
+          }
+
+          //get edit video data
+          MemoryFileModel? videoBytesData = MemoryFileModel(byteList: Rx<Uint8List?>(null), isRefreshVideo: false.obs);
+          if (vData.productVideo != null && vData.productVideo?.isEmpty != true) {
+            videoBytesData = MemoryFileModel(
+                byteList: Rx<Uint8List?>(null),
+                netImagePath: extractPathFromUrl(vData.productVideo),
+                netImageUrl: vData.productVideo,
+                isRefreshVideo: false.obs);
+          }
+
+          visualDetailsList.add(
+            VisualDetailModel(
+              metalTypeList: metalTypeList,
+              selectedMetalType: selectedMetalType,
+              rhodiumPlatedList: generalRhodiumPlatedList,
+              selectedRhodiumPlated: selectedRhodiumPlated,
+              imageList: imageList,
+              priceController: priceController,
+              videoBytesData: videoBytesData,
+              version: 1.obs,
+              isImageError: false.obs,
+              isVideoError: false.obs,
+              isSaveLoading: false.obs,
+            ),
+          );
+        });
+      } else {
+        visualDetailsList.clear();
+        addVisualDetailElement();
+      }
+
+      //Controllers
+      //Basic Details Controllers.
+      textControllerEditor(textController: productNameController, newValue: editData.name);
+      textControllerEditor(textController: productSubTitleController, newValue: editData.subTitle);
+      textControllerEditor(textController: productDetailsController, newValue: editData.description);
+      textControllerEditor(textController: productGeneralPriceController, newValue: editData.generalPrice?.toString());
+
+      //AdditionalDetails Controllers.
+      textControllerEditor(textController: skuController, newValue: editData.additionalDetails?.productSku);
+      textControllerEditor(textController: averageWidthController, newValue: editData.additionalDetails?.averageWidth);
+      textControllerEditor(
+          textController: caratTotalWeightController, newValue: editData.additionalDetails?.caratTotalWeight);
+      textControllerEditor(
+          textController: earringLengthController, newValue: editData.additionalDetails?.earringLength?.toString());
+      textControllerEditor(
+          textController: earringWidthController, newValue: editData.additionalDetails?.earringWidth?.toString());
+      textControllerEditor(
+          textController: pendantLengthController, newValue: editData.additionalDetails?.pendantLength?.toString());
+      textControllerEditor(
+          textController: pendantWidthController, newValue: editData.additionalDetails?.pendantWidth?.toString());
+      textControllerEditor(
+          textController: chainLengthController, newValue: editData.additionalDetails?.chainLength?.toString());
+      textControllerEditor(
+          textController: chainWidthController, newValue: editData.additionalDetails?.chainWidth?.toString());
+      textControllerEditor(
+          textController: braceletLengthController, newValue: editData.additionalDetails?.braceletLength?.toString());
+      textControllerEditor(
+          textController: braceletWidthController, newValue: editData.additionalDetails?.braceletWidth?.toString());
+
+      //DiamondDetails Controllers
+      textControllerEditor(textController: countController, newValue: editData.diamondDetails?.count?.toString());
+      textControllerEditor(
+          textController: caratWeightController, newValue: editData.diamondDetails?.carateWeight?.toString());
+      textControllerEditor(
+          textController: totalCaratWeightController, newValue: editData.diamondDetails?.totalCarateWeight?.toString());
+      textControllerEditor(textController: depthController, newValue: editData.diamondDetails?.depth?.toString());
+      textControllerEditor(textController: tableController, newValue: editData.diamondDetails?.table?.toString());
+      textControllerEditor(
+          textController: measurementsController, newValue: editData.diamondDetails?.measurements?.toString());
+
+      //SideDiamondDetails Controllers
+      textControllerEditor(
+          textController: sideDiaCountController, newValue: editData.sideDiamondDetails?.count?.toString());
+      textControllerEditor(
+          textController: sideDiaCaratWeightController,
+          newValue: editData.sideDiamondDetails?.carateWeight?.toString());
+      textControllerEditor(
+          textController: sideDiaTotalCaratWeightController,
+          newValue: editData.sideDiamondDetails?.totalCarateWeight?.toString());
+      textControllerEditor(
+          textController: sideDiaDepthController, newValue: editData.sideDiamondDetails?.depth?.toString());
+      textControllerEditor(
+          textController: sideDiaTableController, newValue: editData.sideDiamondDetails?.table?.toString());
+      textControllerEditor(
+          textController: sideDiaMeasurementsController,
+          newValue: editData.sideDiamondDetails?.measurements?.toString());
+
+      //Other Controller
+      textControllerEditor(textController: customShippingDetailsController, newValue: editData.customShippingDetails);
+      textControllerEditor(textController: customReturnsDetailsController, newValue: editData.customReturnDetails);
+    }
+  }
+
+  //This function is check that given value has available in dropdown and
+  //if yes then change value according and if not then set by default value of dropdown
+  void dropdownEditor({
+    required List<String> dropdownList,
+    required Rx<String?> selectedDropdownValue,
+    required String? defValue,
+    required String? newValue,
+  }) {
+    if (newValue != null && newValue.isEmpty != true) {
+      if (dropdownList.contains(newValue) == true) {
+        selectedDropdownValue.value = newValue;
+      } else {
+        if (selectedDropdownValue.value != defValue) {
+          selectedDropdownValue.value = defValue;
+        }
+      }
+    } else {
+      if (selectedDropdownValue.value != defValue) {
+        selectedDropdownValue.value = defValue;
+      }
+    }
+    colorList.where((element) => element.colorName == newValue);
+  }
+
+  void otherDropdownEditor({
+    bool? isColorListing,
+    bool? isColorHueListing,
+    required Rx<String?> selectedDropdownValue,
+    required String? defValue,
+    required String? newValue,
+  }) {
+    if (isColorListing == true) {
+      if (newValue != null && newValue.isEmpty != true) {
+        if (colorList.any((element) => element.colorName == newValue) == true) {
+          selectedDropdownValue.value = newValue;
+        } else {
+          if (selectedDropdownValue.value != defValue) {
+            selectedDropdownValue.value = defValue;
+          }
+        }
+      } else {
+        if (selectedDropdownValue.value != defValue) {
+          selectedDropdownValue.value = defValue;
+        }
+      }
+    } else if (isColorHueListing == true) {
+      if (newValue != null && newValue.isEmpty != true) {
+        if (colorHueList.any((element) => element.colorName == newValue) == true) {
+          selectedDropdownValue.value = newValue;
+        } else {
+          if (selectedDropdownValue.value != defValue) {
+            selectedDropdownValue.value = defValue;
+          }
+        }
+      } else {
+        if (selectedDropdownValue.value != defValue) {
+          selectedDropdownValue.value = defValue;
+        }
+      }
+    }
+  }
+
+  void textControllerEditor({required TextEditingController textController, required String? newValue}) {
+    if (newValue != null && newValue.isEmpty != true) {
+      textController.text = newValue;
+    } else {
+      textController.clear();
+    }
+  }
+
+  String? extractPathFromUrl(String? url) {
+    if (url != null && url.isEmpty != true) {
+      List<String> segments = Uri.parse(url).pathSegments;
+      if (segments.length >= 2) {
+        return segments.sublist(segments.length - 2).join('/');
+      } else {
+        return null;
+      }
+    } else {
+      return null;
     }
   }
 
@@ -642,7 +1111,7 @@ class IndexController extends GetxController {
 
   ///Add Product Access............................................................................
   //Gender Selection Control
-  List<String> genderList = ["Male", "Female", "Unisex"];
+  List<String> genderList = ["Male", "Female", "Other"];
   RxString selectedGender = "Female".obs;
 
   //Product Type Control
@@ -1039,6 +1508,12 @@ class IndexController extends GetxController {
     //Other Controller
     customShippingDetailsController.clear();
     customReturnsDetailsController.clear();
+
+    //Change the EditProductView to the AddProductView
+    if (isEditProductView.value != false) {
+      isEditProductView.value = false;
+    }
+    editProductDetailModel.value = null;
   }
 
   void onProductTypeDropDownChanged({String? newVal}) {
@@ -1128,6 +1603,7 @@ class IndexController extends GetxController {
               MemoryFileModel(
                 byteList: fileBytes.obs,
                 fileName: fileName,
+                isRefreshVideo: false.obs,
               ),
             );
       }
@@ -1154,11 +1630,14 @@ class IndexController extends GetxController {
       if (visualDetailsList[index].videoBytesData?.byteList.value != null) {
         visualDetailsList[index].videoBytesData?.byteList.value = null;
       }
+      visualDetailsList[index].videoBytesData?.isRefreshVideo.value =
+          !(visualDetailsList[index].videoBytesData?.isRefreshVideo.value ?? false);
 
       Future.delayed(const Duration(milliseconds: 200)).then((value) {
         visualDetailsList[index].videoBytesData?.byteList.value = fileBytes;
         visualDetailsList[index].videoBytesData?.fileName = fileName;
         visualDetailsList[index].videoBytesData?.netImagePath = null;
+        visualDetailsList[index].videoBytesData?.netImageUrl = null;
       });
 
       element.version++;
@@ -1289,7 +1768,7 @@ class IndexController extends GetxController {
         element.isImageError.value = false;
       }
       //video validate
-      if (element.videoBytesData?.byteList.value == null) {
+      if (element.videoBytesData?.netImagePath == null /*element.videoBytesData?.byteList.value == null*/) {
         element.isVideoError.value = true;
         isGoFurther = false;
       } else {
@@ -1301,8 +1780,8 @@ class IndexController extends GetxController {
 
   RxBool isAddBtnLoading = false.obs;
 
-  Future<void> onAddProductBtnTapped() async {
-    debugPrint("onAddProductBtnTapped----------------------->");
+  Future<void> onAddEditProductBtnTapped({String? jewelID}) async {
+    debugPrint("onAddEditProductBtnTapped----------------------->");
     bool isValidateMedia = validateMedia();
     bool? isValidateForm = formValidateKey.currentState?.validate();
 
@@ -1471,11 +1950,16 @@ class IndexController extends GetxController {
         });
       }
 
+      if (jewelID != null && jewelID.isEmpty != true) {
+        passingData.addAll({
+          Consts.jewelleryIdKey: jewelID,
+        });
+      }
       // debugPrint("passingData: $passingData");
 
       ///API Calling
       dynamic data = await ApiProvider.commonProvider(
-        url: URLs.addJewelleryUri,
+        url: (jewelID != null && jewelID.isEmpty != true) ? URLs.editJewelleryUri : URLs.addJewelleryUri,
         bodyData: passingData,
         header: {
           "Authorization":
@@ -1488,6 +1972,10 @@ class IndexController extends GetxController {
 
         if (responseModel.success == true) {
           MyToasts.successToast(toast: responseModel.message ?? "No message");
+          if (jewelID != null && jewelID.isEmpty != true) {
+            onResetFormBtnTapped();
+            onViewProductBtnTapped(jewelID: jewelID);
+          }
         } else {
           MyToasts.errorToast(toast: responseModel.message ?? "No message");
         }
@@ -1499,11 +1987,17 @@ class IndexController extends GetxController {
         if (isValidateMedia == false) {
           MyToasts.warningToast(toast: "Please save all media or recheck before proceeding.");
         }
+      } else {
+        MyToasts.warningToast(toast: "Please fill missing details.");
       }
     }
 
     isAddBtnLoading.value = false;
   }
+
+  ///Edit Product Access............................................................................
+  RxBool isEditProductView = false.obs;
+  Rx<ProductDetailModel?> editProductDetailModel = Rx<ProductDetailModel?>(null);
 
   ///Search Product Access............................................................................
   List<FilterModel> shapeFilterList = [
@@ -1596,8 +2090,7 @@ class IndexController extends GetxController {
   List<FilterModel> genderFilterList = [
     FilterModel(
         filterText: "Woman", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.femaleVal),
-    FilterModel(
-        filterText: "Unisex", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.otherVal),
+    FilterModel(filterText: "Other", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.otherVal),
     FilterModel(filterText: "Men", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.maleVal),
   ];
   List<FilterModel> inStockFilterList = [
@@ -1894,7 +2387,8 @@ class IndexController extends GetxController {
 
     if (element != null) {
       cateNameController.text = element.categoryName ?? "";
-      memoryFileModel.value = MemoryFileModel(byteList: null.obs, netImagePath: element.categoryImage ?? "");
+      memoryFileModel.value =
+          MemoryFileModel(byteList: null.obs, netImagePath: element.categoryImage ?? "", isRefreshVideo: false.obs);
     }
 
     debugPrint("onAddEditCategoryBtnTapped -------------->");
@@ -2063,6 +2557,7 @@ class IndexController extends GetxController {
       MemoryFileModel memoryFileModel = MemoryFileModel(
         byteList: fileBytes.obs,
         fileName: fileName,
+        isRefreshVideo: false.obs,
       );
       return memoryFileModel;
     } else {

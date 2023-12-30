@@ -209,16 +209,21 @@ class ViewProductScreen extends StatelessWidget {
                                               const SizedBox(width: 8),
                                               Tooltip(
                                                 message: "Edit Product",
-                                                child: Container(
-                                                  height: 35,
-                                                  width: 35,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(width: .8, color: Clr.amberColor),
-                                                    borderRadius: BorderRadius.circular(5),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    controller.onEditProductBtnTapped(jewelID: element.id ?? "");
+                                                  },
+                                                  child: Container(
+                                                    height: 35,
+                                                    width: 35,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(width: .8, color: Clr.amberColor),
+                                                      borderRadius: BorderRadius.circular(5),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: const Icon(Icons.mode_edit_outline_outlined,
+                                                        color: Clr.amberColor, size: 20),
                                                   ),
-                                                  alignment: Alignment.center,
-                                                  child: const Icon(Icons.mode_edit_outline_outlined,
-                                                      color: Clr.amberColor, size: 20),
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
@@ -321,8 +326,8 @@ class ViewProductScreen extends StatelessWidget {
                                               : Clr.transparentColor,
                                         ),
                                         alignment: Alignment.center,
-                                        child: STxt(
-                                          txt: (index + 1).toString(),
+                                        child: Text(
+                                          (index + 1).toString(),
                                           style: CustomTextStyle.tableHeaderStyle.copyWith(
                                               color: (controller.selectedProductTableIndex.value == index)
                                                   ? Clr.whiteColor

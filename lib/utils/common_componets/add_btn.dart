@@ -42,8 +42,8 @@ class AddBtn extends StatelessWidget {
                 alignment: Alignment.center,
                 child: (isLoading?.value == true)
                     ? LoadingAnimationWidget.fallingDot(color: Clr.whiteColor, size: 32)
-                    : STxt(
-                        txt: btnText,
+                    : Text(
+                        btnText,
                         style: btnTextStyle ??
                             const TextStyle(
                               fontSize: 20,

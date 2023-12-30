@@ -50,7 +50,9 @@ class PData {
   final DiamondDetails? diamondDetails;
   final DiamondDetails? sideDiamondDetails;
   final String? shippingDetails;
+  final String? customShippingDetails;
   final String? returnDetails;
+  final String? customReturnDetails;
   final List<VisualDetails>? visualDetails;
   final num? averageRating;
   final bool? isDeleted;
@@ -69,7 +71,9 @@ class PData {
     this.diamondDetails,
     this.sideDiamondDetails,
     this.shippingDetails,
+    this.customShippingDetails,
     this.returnDetails,
+    this.customReturnDetails,
     this.visualDetails,
     this.averageRating,
     this.isDeleted,
@@ -91,7 +95,9 @@ class PData {
         sideDiamondDetails:
             json["side_diamond_details"] == null ? null : DiamondDetails.fromJson(json["side_diamond_details"]),
         shippingDetails: json["shipping_details"],
+        customShippingDetails: json["custom_shipping_details"],
         returnDetails: json["return_details"],
+        customReturnDetails: json["custom_return_details"],
         visualDetails: json["visual_details"] == null
             ? []
             : List<VisualDetails>.from(json["visual_details"]!.map((x) => VisualDetails.fromJson(x))),
@@ -113,7 +119,9 @@ class PData {
         "diamond_details": diamondDetails?.toJson(),
         "side_diamond_details": sideDiamondDetails?.toJson(),
         "shipping_details": shippingDetails,
+        "custom_shipping_details": customShippingDetails,
         "return_details": returnDetails,
+        "custom_return_details": customReturnDetails,
         "visual_details":
             visualDetails == null ? [] : List<Map<String, dynamic>>.from(visualDetails!.map((x) => x.toJson())),
         "average_rating": averageRating,
