@@ -1,6 +1,8 @@
 import 'package:admin_web_app/controllers/index_controller.dart';
 import 'package:admin_web_app/models/view_product/view_product_list_model.dart';
 import 'package:admin_web_app/utils/colors.dart';
+import 'package:admin_web_app/utils/common_componets/common_text_field.dart';
+import 'package:admin_web_app/utils/text_field_styles.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:admin_web_app/views/widgets/empty_view.dart';
@@ -42,6 +44,17 @@ class ViewProductScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
+            CommonTextField(
+              decoration: CustomTextFieldStyle.normalFieldDecoration.copyWith(
+                hintText: "Search Products By Id here...",
+                prefixIcon: const Icon(Icons.manage_search_rounded),
+              ),
+              controller: controller.searchIDController,
+              onChanged: (value) {
+                controller.onSearchIdFieldChanged();
+              },
+            ),
+            const SizedBox(height: 20),
             Obx(() => (controller.isTableLoaderShow.value == Loader.Show.name)
                 ? const ShimmerProductTableView()
                 : (controller.viewProductListModel.value?.data?.isNotEmpty ?? false)

@@ -33,9 +33,11 @@ import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/utils/validate.dart';
 import 'package:admin_web_app/views/widgets/s_txt.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum ShippingDetailsRadio { Default, Custom }
 
@@ -341,6 +343,7 @@ class IndexController extends GetxController {
 
   Rx<ViewProductListModel?> viewProductListModel = Rx<ViewProductListModel?>(null);
   Rx<ProductDetailModel?> productDetailModel = Rx<ProductDetailModel?>(null);
+  TextEditingController searchIDController = TextEditingController();
 
   void tabHandleOfViewProduct() {
     selectedProductTableIndex.value = 0;
@@ -355,6 +358,8 @@ class IndexController extends GetxController {
       Consts.pageKey: (pageIndex != null) ? pageIndex.toString() : 1.toString(),
       Consts.limitKey: Consts.limitValKey.toString(),
     };
+
+    passData.addParamsIfNotNull(key: Consts.jewelleryIdKey, value: searchIDController.text);
 
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
@@ -539,14 +544,17 @@ class IndexController extends GetxController {
     }
   }
 
+  RxBool isViewProductLoading = false.obs;
   Future<void> onViewProductBtnTapped({required String jewelID}) async {
     debugPrint("onViewProductBtnTapped--------------------------->");
-
     if (jewelID.isNotEmpty) {
       //Work when selected tab is other than the view product
       if (selectedTabIndex.value != Consts.viewProductIndex) {
         onTabTapped(index: Consts.viewProductIndex);
+      } else {
+        mainScrollController.jumpTo(0);
       }
+      isViewProductLoading.value = true;
 
       if (isProductDetail.value != true) {
         isProductDetail.value = true;
@@ -578,6 +586,8 @@ class IndexController extends GetxController {
         }
       }
     }
+
+    isViewProductLoading.value = false;
   }
 
   RxBool isEditLoading = false.obs;
@@ -1047,6 +1057,15 @@ class IndexController extends GetxController {
     }
   }
 
+  void onSearchIdFieldChanged() {
+    timer?.cancel();
+    timer = Timer(const Duration(milliseconds: 300), () {
+      debugPrint("onSearchIdFieldChanged----------------------------------------->");
+      selectedProductTableIndex.value = 0;
+      getProductList();
+    });
+  }
+
   ///Product Detail Access............................................................................
   RxList<VMediaTabModel> vMediaTabListModel = RxList<VMediaTabModel>([]);
   Rx<VMediaTabModel?> selectedVMediaTabModel = Rx<VMediaTabModel?>(null);
@@ -1107,6 +1126,15 @@ class IndexController extends GetxController {
     debugPrint("onImageTapped ---------------->");
     selectedVMediaTabModel.value?.isVideoSelected?.value = false;
     selectedVMediaTabModel.value?.selectedMediaPath.value = image;
+  }
+
+  void onUrlOpenCalled({required String? url}) {
+    try {
+      Uri uri = Uri.parse(url ?? "");
+      launchUrl(uri);
+    } catch (e) {
+      MyToasts.errorToast(toast: "Oops, encountered an issue while attempting to open the URL.");
+    }
   }
 
   ///Add Product Access............................................................................
@@ -1630,8 +1658,11 @@ class IndexController extends GetxController {
       if (visualDetailsList[index].videoBytesData?.byteList.value != null) {
         visualDetailsList[index].videoBytesData?.byteList.value = null;
       }
-      visualDetailsList[index].videoBytesData?.isRefreshVideo.value =
-          !(visualDetailsList[index].videoBytesData?.isRefreshVideo.value ?? false);
+
+      if (visualDetailsList[index].videoBytesData?.netImageUrl != null) {
+        visualDetailsList[index].videoBytesData?.isRefreshVideo.value =
+            ((visualDetailsList[index].videoBytesData?.isRefreshVideo.value ?? false) == true) ? false : true;
+      }
 
       Future.delayed(const Duration(milliseconds: 200)).then((value) {
         visualDetailsList[index].videoBytesData?.byteList.value = fileBytes;
@@ -1639,6 +1670,8 @@ class IndexController extends GetxController {
         visualDetailsList[index].videoBytesData?.netImagePath = null;
         visualDetailsList[index].videoBytesData?.netImageUrl = null;
       });
+
+      // debugPrint(visualDetailsList[index].videoBytesData?.netImageUrl);
 
       element.version++;
     } else {
@@ -1768,12 +1801,19 @@ class IndexController extends GetxController {
         element.isImageError.value = false;
       }
       //video validate
-      if (element.videoBytesData?.netImagePath == null /*element.videoBytesData?.byteList.value == null*/) {
+      if (element.videoBytesData?.netImageUrl != null || element.videoBytesData?.byteList.value != null) {
+        element.isVideoError.value = false;
+      } else {
         element.isVideoError.value = true;
         isGoFurther = false;
-      } else {
-        element.isVideoError.value = false;
       }
+
+      // if (element.videoBytesData?.netImageUrl == null || element.videoBytesData?.byteList.value == null) {
+      //   element.isVideoError.value = true;
+      //   isGoFurther = false;
+      // } else {
+      //   element.isVideoError.value = false;
+      // }
     }
     return isGoFurther;
   }
@@ -1825,24 +1865,25 @@ class IndexController extends GetxController {
       ///SideDiamondDetails
       if (isShowSideDiamondDetails.value == true) {
         Map<String, dynamic> sideDiamondData = {};
-        diamondData.addInnerParamsIfNotNull(key: Consts.stoneTypeKey, value: selectedSideDiaStoneType.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.creationMethodKey, value: selectedSideDiaCreationMethod.value);
-        diamondData.addInnerParamsIfNotNull(
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.stoneTypeKey, value: selectedSideDiaStoneType.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.creationMethodKey, value: selectedSideDiaCreationMethod.value);
+        sideDiamondData.addInnerParamsIfNotNull(
             key: Consts.shapeKey, value: shapeList[selectedSideDiaShapeIndex.value].shapeName);
-        diamondData.addInnerParamsIfNotNull(key: Consts.colorKey, value: selectedSideDiaColor.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.colorHueKey, value: selectedSideDiaColorHue.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.clarityKey, value: selectedSideDiaClarity.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.cutGradeKey, value: selectedSideDiaCutGrade.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.countKey, value: sideDiaCountController.text);
-        diamondData.addInnerParamsIfNotNull(key: Consts.carateWeightKey, value: sideDiaCaratWeightController.text);
-        diamondData.addInnerParamsIfNotNull(
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.colorKey, value: selectedSideDiaColor.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.colorHueKey, value: selectedSideDiaColorHue.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.clarityKey, value: selectedSideDiaClarity.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.cutGradeKey, value: selectedSideDiaCutGrade.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.countKey, value: sideDiaCountController.text);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.carateWeightKey, value: sideDiaCaratWeightController.text);
+        sideDiamondData.addInnerParamsIfNotNull(
             key: Consts.caratTotalWeightKey, value: sideDiaTotalCaratWeightController.text);
-        diamondData.addInnerParamsIfNotNull(key: Consts.settingKey, value: selectedSideDiaSetting.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.polishKey, value: selectedSideDiaPolish.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.symmetryKey, value: selectedSideDiaSymmetry.value);
-        diamondData.addInnerParamsIfNotNull(key: Consts.depthKey, value: sideDiaDepthController.text);
-        diamondData.addInnerParamsIfNotNull(key: Consts.tableKey, value: sideDiaTableController.text);
-        diamondData.addInnerParamsIfNotNull(key: Consts.measurementsKey, value: sideDiaMeasurementsController.text);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.settingKey, value: selectedSideDiaSetting.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.polishKey, value: selectedSideDiaPolish.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.symmetryKey, value: selectedSideDiaSymmetry.value);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.depthKey, value: sideDiaDepthController.text);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.tableKey, value: sideDiaTableController.text);
+        sideDiamondData.addInnerParamsIfNotNull(key: Consts.measurementsKey, value: sideDiaMeasurementsController.text);
 
         passingData.addAll({
           Consts.sideDiamondDetailsKey: sideDiamondData.toString(),

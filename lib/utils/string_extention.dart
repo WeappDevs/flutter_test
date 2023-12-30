@@ -16,4 +16,18 @@ extension StringExtension on String {
     // Construct the masked email address
     return '$maskedUsername@$domain';
   }
+
+  bool get isLink {
+    try {
+      // Uri.parse(this);
+      // return true;
+      if (contains("http")) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 }

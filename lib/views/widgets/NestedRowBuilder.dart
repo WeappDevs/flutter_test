@@ -11,7 +11,7 @@ class NestedRowBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: data.entries.expand((element) {
-        debugPrint(element.value.runtimeType.toString());
+        // debugPrint(element.value.runtimeType.toString());
         return
 
             ///Map

@@ -2270,7 +2270,8 @@ class AddProductScreen extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 15),
                                         Obx(() {
-                                          element.videoBytesData?.isRefreshVideo;
+                                          debugPrint(
+                                              "isRefresh -------------> ${element.videoBytesData?.isRefreshVideo.value}");
 
                                           return (element.videoBytesData?.byteList.value != null ||
                                                   element.videoBytesData?.netImageUrl != null &&

@@ -3,12 +3,16 @@ import 'package:admin_web_app/models/product/product_detail_model.dart';
 import 'package:admin_web_app/models/v_media_tab_model.dart';
 import 'package:admin_web_app/utils/assets.dart';
 import 'package:admin_web_app/utils/colors.dart';
+import 'package:admin_web_app/utils/common_componets/common_toast.dart';
+import 'package:admin_web_app/utils/common_componets/hover_underline_button.dart';
+import 'package:admin_web_app/utils/string_extention.dart';
 import 'package:admin_web_app/utils/text_styles.dart';
 import 'package:admin_web_app/views/widgets/NestedRowBuilder.dart';
 import 'package:admin_web_app/views/widgets/empty_view.dart';
 import 'package:admin_web_app/views/widgets/mini_video_view.dart';
 import 'package:admin_web_app/views/widgets/s_txt.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -51,8 +55,9 @@ class ProductDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           Obx(() {
-            return (controller.productDetailModel.value != null &&
-                    controller.productDetailModel.value?.data?.value != null)
+            return (controller.isViewProductLoading.value != true ||
+                    controller.productDetailModel.value != null &&
+                        controller.productDetailModel.value?.data?.value != null)
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +70,8 @@ class ProductDetailScreen extends StatelessWidget {
                             style: CustomTextStyle.infoHeadingStyle,
                           ),
                           const SizedBox(height: 20),
-                          (controller.productDetailModel.value?.data?.value?.visualDetails?.isNotEmpty == true)
+                          (controller.productDetailModel.value?.data?.value?.visualDetails != null &&
+                                  controller.productDetailModel.value?.data?.value?.visualDetails?.isEmpty != true)
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -215,16 +221,44 @@ class ProductDetailScreen extends StatelessWidget {
                                                                                   (index) => (element.value[index]
                                                                                               .runtimeType ==
                                                                                           String)
-                                                                                      ? STxt(
-                                                                                          txt: element.value[index] ??
-                                                                                              "-")
+                                                                                      ? (element.value[index]
+                                                                                                  ?.toString()
+                                                                                                  .isLink ==
+                                                                                              true)
+                                                                                          ? HoverTextUnderlineButton(
+                                                                                              btnText: element
+                                                                                                      .value[index] ??
+                                                                                                  "-",
+                                                                                              callBack: () {
+                                                                                                controller
+                                                                                                    .onUrlOpenCalled(
+                                                                                                        url: element
+                                                                                                                .value[
+                                                                                                            index]);
+                                                                                              },
+                                                                                              isLoading: false.obs,
+                                                                                            )
+                                                                                          : STxt(
+                                                                                              txt: element
+                                                                                                      .value[index] ??
+                                                                                                  "-")
                                                                                       : STxt(
                                                                                           txt: element.value
                                                                                                   ?.toString() ??
                                                                                               "-")),
                                                                             )
                                                                           : const STxt(txt: "-")
-                                                                      : STxt(txt: element.value?.toString() ?? "-"),
+                                                                      : (element.value is String &&
+                                                                              element.value?.toString().isLink == true)
+                                                                          ? HoverTextUnderlineButton(
+                                                                              btnText: element.value ?? "-",
+                                                                              callBack: () {
+                                                                                controller.onUrlOpenCalled(
+                                                                                    url: element.value);
+                                                                              },
+                                                                              isLoading: false.obs,
+                                                                            )
+                                                                          : STxt(txt: element.value?.toString() ?? "-"),
                                                                 ),
                                                               ],
                                                             ),
@@ -258,9 +292,22 @@ class ProductDetailScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            STxt(
-                              txt: "All Details",
-                              style: CustomTextStyle.infoHeadingStyle,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                STxt(
+                                  txt: "All Details",
+                                  style: CustomTextStyle.infoHeadingStyle,
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(
+                                          text: controller.productDetailModel.value?.data?.value?.toJson().toString() ??
+                                              "No data"));
+                                      MyToasts.successToast(toast: "Data Copied Successfully.");
+                                    },
+                                    icon: const Icon(Icons.content_copy_rounded))
+                              ],
                             ),
                             const SizedBox(height: 10),
                             NestedRowBuilder(
@@ -539,9 +586,7 @@ class ProductDetailScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                     ],
                   )
-                : Center(
-                    child: LoadingAnimationWidget.fallingDot(color: Clr.whiteColor, size: 32),
-                  );
+                : Center(child: LoadingAnimationWidget.fallingDot(color: Clr.blackColor, size: 32)).paddingAll(20);
           })
         ],
       ),
