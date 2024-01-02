@@ -2,18 +2,14 @@ import 'package:admin_web_app/models/auth/user_model.dart';
 
 class URLs {
   /// Local
+  // static const String ipAddress = '127.0.0.1';
+  // static const String port = '8001';
+  // static const String baseUrl = 'http://$ipAddress:$port/admin/v1/auth';
+
+  ///Live(for production use)
   static const String ipAddress = '64.227.160.216';
   static const String port = '8001';
   static const String baseUrl = 'http://$ipAddress:$port/admin/v1/auth';
-
-  ///Dev(for developer and tester use)
-// String baseUrl = 'https://ad-anima.com:8081/v1/user';
-
-  ///Staging(for client use)
-// String baseUrl = 'https://ad-anima.com:8080/v1/user';
-
-  ///Live(for production use)
-  // String baseUrl = 'https://ad-anima.com:8082/v1/user';
 
   ///Image Default Path
   // String imgBaseUrl = 'http://localhost:8001/public/jewellery_images/9165_1703703114505.mp4';
