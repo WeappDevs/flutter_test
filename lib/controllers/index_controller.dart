@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:admin_web_app/models/add_product/category_list_model.dart';
 import 'package:admin_web_app/models/add_product/upload_media_model.dart';
 import 'package:admin_web_app/models/auth/user_model.dart';
@@ -491,11 +490,7 @@ class IndexController extends GetxController {
         ///API Calling
         dynamic data = await ApiProvider.commonProvider(
           url: URLs.deleteJewelleryUri,
-          bodyData: passingData,
-          header: {
-            "Authorization":
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-          },
+          header: ApiProvider.commonHeader(),
         );
 
         if (data != null) {
@@ -566,10 +561,7 @@ class IndexController extends GetxController {
         dynamic data = await ApiProvider.commonProvider(
           url: URLs.jewelleryDetailsUri,
           bodyData: passingData,
-          header: {
-            "Authorization":
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-          },
+          header: ApiProvider.commonHeader(),
         );
 
         if (data != null) {
@@ -611,10 +603,7 @@ class IndexController extends GetxController {
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.jewelleryDetailsUri,
       bodyData: passingData,
-      header: {
-        "Authorization":
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-      },
+      header: ApiProvider.commonHeader(),
     );
 
     if (data != null) {
@@ -2539,10 +2528,7 @@ class IndexController extends GetxController {
                           ]
                         : const [],
                     fieldName: Consts.categoryImageKey,
-                    header: {
-                      "Authorization":
-                          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-                    },
+                    header: ApiProvider.commonHeader(),
                   );
 
                   if (data != null) {

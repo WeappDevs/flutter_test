@@ -131,7 +131,7 @@ class ApiProvider {
           }
         } else if (respond.statusCode == 401) {
           // Block by the admin(Authentication failed).
-          nullErrorToast();
+          onAuthFailed();
           return null;
         } else if (respond.statusCode == 101 || respond.statusCode == 102) {
           nullErrorToast();

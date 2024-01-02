@@ -2,7 +2,7 @@ import 'package:admin_web_app/models/auth/user_model.dart';
 
 class URLs {
   /// Local
-  static const String ipAddress = '127.0.0.1';
+  static const String ipAddress = '64.227.160.216';
   static const String port = '8001';
   static const String baseUrl = 'http://$ipAddress:$port/admin/v1/auth';
 
