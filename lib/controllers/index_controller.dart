@@ -54,7 +54,8 @@ class IndexController extends GetxController {
 
   void getUserDataFromStorage() {
     debugPrint("getUserDataFromStorage------------------------->");
-    dynamic readData = StorageProvider.instance.readStorage(key: Consts.userDataKey);
+    dynamic readData =
+        StorageProvider.instance.readStorage(key: Consts.userDataKey);
     if (readData != null) {
       Consts.userModel = UserModel.fromJson(readData);
     } else {
@@ -71,7 +72,8 @@ class IndexController extends GetxController {
         selectedRhodiumPlated: Rx<String?>(null),
         imageList: <MemoryFileModel>[].obs,
         priceController: TextEditingController(),
-        videoBytesData: MemoryFileModel(byteList: Rx<Uint8List?>(null), isRefreshVideo: false.obs),
+        videoBytesData: MemoryFileModel(
+            byteList: Rx<Uint8List?>(null), isRefreshVideo: false.obs),
         version: 1.obs,
         isImageError: false.obs,
         isVideoError: false.obs,
@@ -176,7 +178,8 @@ class IndexController extends GetxController {
           ResponseModel rModel = ResponseModel.fromJson(data);
 
           if (rModel.success == true) {
-            await StorageProvider.instance.removeStorage(key: Consts.userDataKey);
+            await StorageProvider.instance
+                .removeStorage(key: Consts.userDataKey);
 
             isLoading.value = false;
             Get.back();
@@ -276,7 +279,8 @@ class IndexController extends GetxController {
                   ResponseModel rModel = ResponseModel.fromJson(data);
 
                   if (rModel.success == true) {
-                    await StorageProvider.instance.removeStorage(key: Consts.userDataKey);
+                    await StorageProvider.instance
+                        .removeStorage(key: Consts.userDataKey);
 
                     isLoading.value = false;
                     Get.back();
@@ -323,8 +327,10 @@ class IndexController extends GetxController {
       if (dashboardModel.value?.success == true) {
         debugPrint("API Success is true");
       } else {
-        debugPrint("API Success is false: ${viewProductListModel.value?.message}");
-        MyToasts.errorToast(toast: viewProductListModel.value?.message ?? "No Message");
+        debugPrint(
+            "API Success is false: ${viewProductListModel.value?.message}");
+        MyToasts.errorToast(
+            toast: viewProductListModel.value?.message ?? "No Message");
       }
     } else {
       debugPrint("Data is null");
@@ -335,12 +341,14 @@ class IndexController extends GetxController {
   //handlers of the table pagination
   RxInt selectedProductTableIndex = 0.obs;
   RxInt productPageLength = 0.obs;
-  final ItemScrollController productItemScrollController = ItemScrollController();
+  final ItemScrollController productItemScrollController =
+      ItemScrollController();
 
   //Table Loader Handler
   Rx<String> isTableLoaderShow = Loader.Hide.name.obs;
 
-  Rx<ViewProductListModel?> viewProductListModel = Rx<ViewProductListModel?>(null);
+  Rx<ViewProductListModel?> viewProductListModel =
+      Rx<ViewProductListModel?>(null);
   Rx<ProductDetailModel?> productDetailModel = Rx<ProductDetailModel?>(null);
   TextEditingController searchIDController = TextEditingController();
 
@@ -358,7 +366,8 @@ class IndexController extends GetxController {
       Consts.limitKey: Consts.limitValKey.toString(),
     };
 
-    passData.addParamsIfNotNull(key: Consts.jewelleryIdKey, value: searchIDController.text);
+    passData.addParamsIfNotNull(
+        key: Consts.jewelleryIdKey, value: searchIDController.text);
 
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
@@ -372,10 +381,14 @@ class IndexController extends GetxController {
       if (viewProductListModel.value?.success == true) {
         debugPrint("API Success is true");
         getPageLength(
-            totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 0, pageLength: productPageLength);
+            totalNumberOfData:
+                viewProductListModel.value?.totalNumberOfData ?? 0,
+            pageLength: productPageLength);
       } else {
-        debugPrint("API Success is false: ${viewProductListModel.value?.message}");
-        MyToasts.errorToast(toast: viewProductListModel.value?.message.toString() ?? "");
+        debugPrint(
+            "API Success is false: ${viewProductListModel.value?.message}");
+        MyToasts.errorToast(
+            toast: viewProductListModel.value?.message.toString() ?? "");
       }
     } else {
       debugPrint("Data is null");
@@ -466,7 +479,9 @@ class IndexController extends GetxController {
   }
 
   void onElementTapped(
-      {required int index, required RxInt selectedTableIndex, required void Function(int) onIndexChanged}) {
+      {required int index,
+      required RxInt selectedTableIndex,
+      required void Function(int) onIndexChanged}) {
     debugPrint("onElementTapped -------------->");
     debugPrint("actual index: $index");
     if (selectedTableIndex.value != index) {
@@ -476,7 +491,8 @@ class IndexController extends GetxController {
     }
   }
 
-  void onDeleteProductTapped({required String jewelID, required RxList<VDatum>? dataList}) {
+  void onDeleteProductTapped(
+      {required String jewelID, required RxList<VDatum>? dataList}) {
     debugPrint("onDeleteProductTapped -------------->");
     CustomDialog.failureDialog(
       title: "Delete Product?",
@@ -497,7 +513,12 @@ class IndexController extends GetxController {
           DeleteModel deleteModel = DeleteModel.fromJson(data);
 
           if (deleteModel.success == true) {
-            dataList?.removeWhere((element) => (element.id == jewelID) ? true : false);
+            dataList?.removeWhere(
+                (element) => (element.id == jewelID) ? true : false);
+
+            if (editProductDetailModel.value?.data?.value?.id == jewelID) {
+              onResetFormBtnTapped();
+            }
 
             Get.back();
             MyToasts.successToast(toast: deleteModel.message ?? "No Message");
@@ -516,7 +537,8 @@ class IndexController extends GetxController {
   Future<void> onInWaitingBtnTapped({required VDatum ele}) async {
     Map<String, dynamic> passingData = {
       Consts.jewelleryIdKey: ele.id.toString(),
-      Consts.inWaitingKey: ((ele.inWaiting?.value == true) ? false : true).toString(),
+      Consts.inWaitingKey:
+          ((ele.inWaiting?.value == true) ? false : true).toString(),
     };
 
     ///API Calling
@@ -540,6 +562,7 @@ class IndexController extends GetxController {
   }
 
   RxBool isViewProductLoading = false.obs;
+
   Future<void> onViewProductBtnTapped({required String jewelID}) async {
     debugPrint("onViewProductBtnTapped--------------------------->");
     if (jewelID.isNotEmpty) {
@@ -570,8 +593,10 @@ class IndexController extends GetxController {
           if (productDetailModel.value?.success == true) {
             onAddVMediaCalled();
           } else {
-            debugPrint("API Success is false: ${productDetailModel.value?.message}");
-            MyToasts.errorToast(toast: productDetailModel.value?.message ?? "No Message");
+            debugPrint(
+                "API Success is false: ${productDetailModel.value?.message}");
+            MyToasts.errorToast(
+                toast: productDetailModel.value?.message ?? "No Message");
           }
         } else {
           debugPrint("Data is null");
@@ -583,6 +608,7 @@ class IndexController extends GetxController {
   }
 
   RxBool isEditLoading = false.obs;
+
   Future<void> onEditProductBtnTapped({required String jewelID}) async {
     debugPrint("onEditProductBtnTapped--------------------------->");
     isEditLoading.value = true;
@@ -612,8 +638,10 @@ class IndexController extends GetxController {
       if (editProductDetailModel.value?.success == true) {
         getAllEditData();
       } else {
-        debugPrint("API Success is false: ${editProductDetailModel.value?.message}");
-        MyToasts.errorToast(toast: editProductDetailModel.value?.message ?? "No Message");
+        debugPrint(
+            "API Success is false: ${editProductDetailModel.value?.message}");
+        MyToasts.errorToast(
+            toast: editProductDetailModel.value?.message ?? "No Message");
       }
     } else {
       debugPrint("Data is null");
@@ -637,7 +665,9 @@ class IndexController extends GetxController {
           selectedDropdownValue: selectedProductType,
           defValue: null,
           newValue: editData.categoryId?.categoryName);
-      if (categoryListModel.value?.data?.any((element) => element.id == editData.categoryId?.id) == true) {
+      if (categoryListModel.value?.data
+              ?.any((element) => element.id == editData.categoryId?.id) ==
+          true) {
         selectedProductCategoryID.value = editData.categoryId?.id;
       } else {
         selectedProductCategoryID.value = null;
@@ -775,7 +805,8 @@ class IndexController extends GetxController {
           dropdownList: generalRhodiumPlatedList,
           selectedDropdownValue: selectedGeneralRhodiumPlated,
           defValue: "Yes",
-          newValue: editData.additionalDetails?.generalRhodiumPlated?.capitalize);
+          newValue:
+              editData.additionalDetails?.generalRhodiumPlated?.capitalize);
 
       //EarringStyle
       dropdownEditor(
@@ -814,18 +845,21 @@ class IndexController extends GetxController {
           newValue: editData.additionalDetails?.style);
 
       //Shipping Details
-      if (editData.shippingDetails == ShippingDetailsRadio.Custom.name.toLowerCase()) {
+      if (editData.shippingDetails ==
+          ShippingDetailsRadio.Custom.name.toLowerCase()) {
         if (selectedShippingDetails.value != ShippingDetailsRadio.Custom.name) {
           selectedShippingDetails.value = ShippingDetailsRadio.Custom.name;
         }
       } else {
-        if (selectedShippingDetails.value != ShippingDetailsRadio.Default.name) {
+        if (selectedShippingDetails.value !=
+            ShippingDetailsRadio.Default.name) {
           selectedShippingDetails.value = ShippingDetailsRadio.Default.name;
         }
       }
 
       //Returns Details
-      if (editData.returnDetails == ReturnDetailsRadio.Custom.name.toLowerCase()) {
+      if (editData.returnDetails ==
+          ReturnDetailsRadio.Custom.name.toLowerCase()) {
         if (selectedReturnDetails.value != ReturnDetailsRadio.Custom.name) {
           selectedReturnDetails.value = ReturnDetailsRadio.Custom.name;
         }
@@ -836,17 +870,22 @@ class IndexController extends GetxController {
       }
 
       //Visual Detail Handling
-      if (editData.visualDetails != null && editData.visualDetails?.isEmpty != true) {
+      if (editData.visualDetails != null &&
+          editData.visualDetails?.isEmpty != true) {
         visualDetailsList.clear();
 
         editData.visualDetails?.forEach((vData) {
           Rx<String?> selectedMetalType = Rx<String?>(null);
-          if (metalTypeList.any((element) => element.metalName == vData.metalTypeColor) == true) {
+          if (metalTypeList.any(
+                  (element) => element.metalName == vData.metalTypeColor) ==
+              true) {
             selectedMetalType.value = vData.metalTypeColor;
           }
 
           Rx<String?> selectedRhodiumPlated = Rx<String?>(null);
-          if (generalRhodiumPlatedList.contains(vData.rhodiumPlated?.capitalize) == true) {
+          if (generalRhodiumPlatedList
+                  .contains(vData.rhodiumPlated?.capitalize) ==
+              true) {
             selectedRhodiumPlated.value = vData.rhodiumPlated?.capitalize;
           }
 
@@ -857,7 +896,8 @@ class IndexController extends GetxController {
 
           //get edit image data
           RxList<MemoryFileModel> imageList = <MemoryFileModel>[].obs;
-          if (vData.productImages != null && vData.productImages?.isEmpty != true) {
+          if (vData.productImages != null &&
+              vData.productImages?.isEmpty != true) {
             vData.productImages?.forEach((element) {
               MemoryFileModel? imageBytesData = MemoryFileModel(
                   byteList: Rx<Uint8List?>(null),
@@ -870,8 +910,10 @@ class IndexController extends GetxController {
           }
 
           //get edit video data
-          MemoryFileModel? videoBytesData = MemoryFileModel(byteList: Rx<Uint8List?>(null), isRefreshVideo: false.obs);
-          if (vData.productVideo != null && vData.productVideo?.isEmpty != true) {
+          MemoryFileModel? videoBytesData = MemoryFileModel(
+              byteList: Rx<Uint8List?>(null), isRefreshVideo: false.obs);
+          if (vData.productVideo != null &&
+              vData.productVideo?.isEmpty != true) {
             videoBytesData = MemoryFileModel(
                 byteList: Rx<Uint8List?>(null),
                 netImagePath: extractPathFromUrl(vData.productVideo),
@@ -902,47 +944,77 @@ class IndexController extends GetxController {
 
       //Controllers
       //Basic Details Controllers.
-      textControllerEditor(textController: productNameController, newValue: editData.name);
-      textControllerEditor(textController: productSubTitleController, newValue: editData.subTitle);
-      textControllerEditor(textController: productDetailsController, newValue: editData.description);
-      textControllerEditor(textController: productGeneralPriceController, newValue: editData.generalPrice?.toString());
+      textControllerEditor(
+          textController: productNameController, newValue: editData.name);
+      textControllerEditor(
+          textController: productSubTitleController,
+          newValue: editData.subTitle);
+      textControllerEditor(
+          textController: productDetailsController,
+          newValue: editData.description);
+      textControllerEditor(
+          textController: productGeneralPriceController,
+          newValue: editData.generalPrice?.toString());
 
       //AdditionalDetails Controllers.
-      textControllerEditor(textController: skuController, newValue: editData.additionalDetails?.productSku);
-      textControllerEditor(textController: averageWidthController, newValue: editData.additionalDetails?.averageWidth);
       textControllerEditor(
-          textController: caratTotalWeightController, newValue: editData.additionalDetails?.caratTotalWeight);
+          textController: skuController,
+          newValue: editData.additionalDetails?.productSku);
       textControllerEditor(
-          textController: earringLengthController, newValue: editData.additionalDetails?.earringLength?.toString());
+          textController: averageWidthController,
+          newValue: editData.additionalDetails?.averageWidth);
       textControllerEditor(
-          textController: earringWidthController, newValue: editData.additionalDetails?.earringWidth?.toString());
+          textController: caratTotalWeightController,
+          newValue: editData.additionalDetails?.caratTotalWeight);
       textControllerEditor(
-          textController: pendantLengthController, newValue: editData.additionalDetails?.pendantLength?.toString());
+          textController: earringLengthController,
+          newValue: editData.additionalDetails?.earringLength?.toString());
       textControllerEditor(
-          textController: pendantWidthController, newValue: editData.additionalDetails?.pendantWidth?.toString());
+          textController: earringWidthController,
+          newValue: editData.additionalDetails?.earringWidth?.toString());
       textControllerEditor(
-          textController: chainLengthController, newValue: editData.additionalDetails?.chainLength?.toString());
+          textController: pendantLengthController,
+          newValue: editData.additionalDetails?.pendantLength?.toString());
       textControllerEditor(
-          textController: chainWidthController, newValue: editData.additionalDetails?.chainWidth?.toString());
+          textController: pendantWidthController,
+          newValue: editData.additionalDetails?.pendantWidth?.toString());
       textControllerEditor(
-          textController: braceletLengthController, newValue: editData.additionalDetails?.braceletLength?.toString());
+          textController: chainLengthController,
+          newValue: editData.additionalDetails?.chainLength?.toString());
       textControllerEditor(
-          textController: braceletWidthController, newValue: editData.additionalDetails?.braceletWidth?.toString());
+          textController: chainWidthController,
+          newValue: editData.additionalDetails?.chainWidth?.toString());
+      textControllerEditor(
+          textController: braceletLengthController,
+          newValue: editData.additionalDetails?.braceletLength?.toString());
+      textControllerEditor(
+          textController: braceletWidthController,
+          newValue: editData.additionalDetails?.braceletWidth?.toString());
 
       //DiamondDetails Controllers
-      textControllerEditor(textController: countController, newValue: editData.diamondDetails?.count?.toString());
       textControllerEditor(
-          textController: caratWeightController, newValue: editData.diamondDetails?.carateWeight?.toString());
+          textController: countController,
+          newValue: editData.diamondDetails?.count?.toString());
       textControllerEditor(
-          textController: totalCaratWeightController, newValue: editData.diamondDetails?.totalCarateWeight?.toString());
-      textControllerEditor(textController: depthController, newValue: editData.diamondDetails?.depth?.toString());
-      textControllerEditor(textController: tableController, newValue: editData.diamondDetails?.table?.toString());
+          textController: caratWeightController,
+          newValue: editData.diamondDetails?.carateWeight?.toString());
       textControllerEditor(
-          textController: measurementsController, newValue: editData.diamondDetails?.measurements?.toString());
+          textController: totalCaratWeightController,
+          newValue: editData.diamondDetails?.totalCarateWeight?.toString());
+      textControllerEditor(
+          textController: depthController,
+          newValue: editData.diamondDetails?.depth?.toString());
+      textControllerEditor(
+          textController: tableController,
+          newValue: editData.diamondDetails?.table?.toString());
+      textControllerEditor(
+          textController: measurementsController,
+          newValue: editData.diamondDetails?.measurements?.toString());
 
       //SideDiamondDetails Controllers
       textControllerEditor(
-          textController: sideDiaCountController, newValue: editData.sideDiamondDetails?.count?.toString());
+          textController: sideDiaCountController,
+          newValue: editData.sideDiamondDetails?.count?.toString());
       textControllerEditor(
           textController: sideDiaCaratWeightController,
           newValue: editData.sideDiamondDetails?.carateWeight?.toString());
@@ -950,16 +1022,22 @@ class IndexController extends GetxController {
           textController: sideDiaTotalCaratWeightController,
           newValue: editData.sideDiamondDetails?.totalCarateWeight?.toString());
       textControllerEditor(
-          textController: sideDiaDepthController, newValue: editData.sideDiamondDetails?.depth?.toString());
+          textController: sideDiaDepthController,
+          newValue: editData.sideDiamondDetails?.depth?.toString());
       textControllerEditor(
-          textController: sideDiaTableController, newValue: editData.sideDiamondDetails?.table?.toString());
+          textController: sideDiaTableController,
+          newValue: editData.sideDiamondDetails?.table?.toString());
       textControllerEditor(
           textController: sideDiaMeasurementsController,
           newValue: editData.sideDiamondDetails?.measurements?.toString());
 
       //Other Controller
-      textControllerEditor(textController: customShippingDetailsController, newValue: editData.customShippingDetails);
-      textControllerEditor(textController: customReturnsDetailsController, newValue: editData.customReturnDetails);
+      textControllerEditor(
+          textController: customShippingDetailsController,
+          newValue: editData.customShippingDetails);
+      textControllerEditor(
+          textController: customReturnsDetailsController,
+          newValue: editData.customReturnDetails);
     }
   }
 
@@ -1010,7 +1088,8 @@ class IndexController extends GetxController {
       }
     } else if (isColorHueListing == true) {
       if (newValue != null && newValue.isEmpty != true) {
-        if (colorHueList.any((element) => element.colorName == newValue) == true) {
+        if (colorHueList.any((element) => element.colorName == newValue) ==
+            true) {
           selectedDropdownValue.value = newValue;
         } else {
           if (selectedDropdownValue.value != defValue) {
@@ -1025,7 +1104,9 @@ class IndexController extends GetxController {
     }
   }
 
-  void textControllerEditor({required TextEditingController textController, required String? newValue}) {
+  void textControllerEditor(
+      {required TextEditingController textController,
+      required String? newValue}) {
     if (newValue != null && newValue.isEmpty != true) {
       textController.text = newValue;
     } else {
@@ -1049,7 +1130,8 @@ class IndexController extends GetxController {
   void onSearchIdFieldChanged() {
     timer?.cancel();
     timer = Timer(const Duration(milliseconds: 300), () {
-      debugPrint("onSearchIdFieldChanged----------------------------------------->");
+      debugPrint(
+          "onSearchIdFieldChanged----------------------------------------->");
       selectedProductTableIndex.value = 0;
       getProductList();
     });
@@ -1085,7 +1167,8 @@ class IndexController extends GetxController {
 
   void onAddVMediaCalled() {
     debugPrint("onAddVMediaCalled ---------------->");
-    if (productDetailModel.value?.data?.value?.visualDetails?.isNotEmpty == true) {
+    if (productDetailModel.value?.data?.value?.visualDetails?.isNotEmpty ==
+        true) {
       int i = 0;
       vMediaTabListModel.clear();
       productDetailModel.value?.data?.value?.visualDetails?.forEach((element) {
@@ -1108,7 +1191,8 @@ class IndexController extends GetxController {
   void onVideoTapped() {
     debugPrint("onVideoTapped ---------------->");
     selectedVMediaTabModel.value?.isVideoSelected?.value = true;
-    selectedVMediaTabModel.value?.selectedMediaPath.value = selectedVMediaTabModel.value?.visualDetails.productVideo;
+    selectedVMediaTabModel.value?.selectedMediaPath.value =
+        selectedVMediaTabModel.value?.visualDetails.productVideo;
   }
 
   void onImageTapped({required String image}) {
@@ -1122,7 +1206,9 @@ class IndexController extends GetxController {
       Uri uri = Uri.parse(url ?? "");
       launchUrl(uri);
     } catch (e) {
-      MyToasts.errorToast(toast: "Oops, encountered an issue while attempting to open the URL.");
+      MyToasts.errorToast(
+          toast:
+              "Oops, encountered an issue while attempting to open the URL.");
     }
   }
 
@@ -1132,7 +1218,13 @@ class IndexController extends GetxController {
   RxString selectedGender = "Female".obs;
 
   //Product Type Control
-  List<String> productTypeList = ["Ring", "Earring", "Necklace", "Bracelet", "Diamond"];
+  List<String> productTypeList = [
+    "Ring",
+    "Earring",
+    "Necklace",
+    "Bracelet",
+    "Diamond"
+  ];
   Rx<String?> selectedProductType = Rx<String?>(null);
   Rx<String?> selectedProductCategoryID = Rx<String?>(null);
 
@@ -1144,32 +1236,96 @@ class IndexController extends GetxController {
   Rx<String?> selectedCreationMethod = "Lab Grown".obs;
   Rx<String?> selectedSideDiaCreationMethod = "Lab Grown".obs;
   List<ShapeModel> shapeList = [
-    ShapeModel(shapeName: "Asscher", shapePath: "assets/pngs/asscher.png", isSelectedTab: true.obs),
-    ShapeModel(shapeName: "Cushion", shapePath: "assets/pngs/cushion.png", isSelectedTab: false.obs),
     ShapeModel(
-        shapeName: "Elongated Cushion", shapePath: "assets/pngs/elongated_cushion.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Emerald", shapePath: "assets/pngs/emerald.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Heart", shapePath: "assets/pngs/heart.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Marquise", shapePath: "assets/pngs/marquise.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Oval", shapePath: "assets/pngs/oval.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Pear", shapePath: "assets/pngs/pear.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Princess", shapePath: "assets/pngs/princess.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Radiant", shapePath: "assets/pngs/radiant.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Round", shapePath: "assets/pngs/round.png", isSelectedTab: false.obs),
+        shapeName: "Asscher",
+        shapePath: "assets/pngs/asscher.png",
+        isSelectedTab: true.obs),
+    ShapeModel(
+        shapeName: "Cushion",
+        shapePath: "assets/pngs/cushion.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Elongated Cushion",
+        shapePath: "assets/pngs/elongated_cushion.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Emerald",
+        shapePath: "assets/pngs/emerald.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Heart",
+        shapePath: "assets/pngs/heart.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Marquise",
+        shapePath: "assets/pngs/marquise.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Oval",
+        shapePath: "assets/pngs/oval.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Pear",
+        shapePath: "assets/pngs/pear.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Princess",
+        shapePath: "assets/pngs/princess.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Radiant",
+        shapePath: "assets/pngs/radiant.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Round",
+        shapePath: "assets/pngs/round.png",
+        isSelectedTab: false.obs),
   ];
   List<ShapeModel> sideDiaShapeList = [
-    ShapeModel(shapeName: "Asscher", shapePath: "assets/pngs/asscher.png", isSelectedTab: true.obs),
-    ShapeModel(shapeName: "Cushion", shapePath: "assets/pngs/cushion.png", isSelectedTab: false.obs),
     ShapeModel(
-        shapeName: "Elongated Cushion", shapePath: "assets/pngs/elongated_cushion.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Emerald", shapePath: "assets/pngs/emerald.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Heart", shapePath: "assets/pngs/heart.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Marquise", shapePath: "assets/pngs/marquise.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Oval", shapePath: "assets/pngs/oval.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Pear", shapePath: "assets/pngs/pear.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Princess", shapePath: "assets/pngs/princess.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Radiant", shapePath: "assets/pngs/radiant.png", isSelectedTab: false.obs),
-    ShapeModel(shapeName: "Round", shapePath: "assets/pngs/round.png", isSelectedTab: false.obs),
+        shapeName: "Asscher",
+        shapePath: "assets/pngs/asscher.png",
+        isSelectedTab: true.obs),
+    ShapeModel(
+        shapeName: "Cushion",
+        shapePath: "assets/pngs/cushion.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Elongated Cushion",
+        shapePath: "assets/pngs/elongated_cushion.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Emerald",
+        shapePath: "assets/pngs/emerald.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Heart",
+        shapePath: "assets/pngs/heart.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Marquise",
+        shapePath: "assets/pngs/marquise.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Oval",
+        shapePath: "assets/pngs/oval.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Pear",
+        shapePath: "assets/pngs/pear.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Princess",
+        shapePath: "assets/pngs/princess.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Radiant",
+        shapePath: "assets/pngs/radiant.png",
+        isSelectedTab: false.obs),
+    ShapeModel(
+        shapeName: "Round",
+        shapePath: "assets/pngs/round.png",
+        isSelectedTab: false.obs),
   ];
   RxInt selectedShapeIndex = 0.obs;
   RxInt selectedSideDiaShapeIndex = 0.obs;
@@ -1184,18 +1340,30 @@ class IndexController extends GetxController {
     ColorModel(colorName: "Faint Yellow-K", color: const Color(0xfffdf6e0)),
     ColorModel(colorName: "Faint Yellow-L", color: const Color(0xfffdf6e0)),
     ColorModel(colorName: "Faint Yellow-M", color: const Color(0xfffff5db)),
-    ColorModel(colorName: "Very Light Yellow-N", color: const Color(0xfffff6dd)),
-    ColorModel(colorName: "Very Light Yellow-O", color: const Color(0xfffff4d5)),
-    ColorModel(colorName: "Very Light Yellow-P", color: const Color(0xfffff3cf)),
-    ColorModel(colorName: "Very Light Yellow-Q", color: const Color(0xfffff1c9)),
-    ColorModel(colorName: "Very Light Yellow-R", color: const Color(0xffffefc3)),
-    ColorModel(colorName: "Very Light Yellow-S", color: const Color(0xfffdebbb)),
-    ColorModel(colorName: "Very Light Yellow-T", color: const Color(0xfffce8b3)),
-    ColorModel(colorName: "Very Light Yellow-U", color: const Color(0xffffe9ad)),
-    ColorModel(colorName: "Very Light Yellow-V", color: const Color(0xffffe7a6)),
-    ColorModel(colorName: "Very Light Yellow-W", color: const Color(0xffffe59f)),
-    ColorModel(colorName: "Very Light Yellow-X", color: const Color(0xfffde196)),
-    ColorModel(colorName: "Very Light Yellow-Z", color: const Color(0xfff8db8d)),
+    ColorModel(
+        colorName: "Very Light Yellow-N", color: const Color(0xfffff6dd)),
+    ColorModel(
+        colorName: "Very Light Yellow-O", color: const Color(0xfffff4d5)),
+    ColorModel(
+        colorName: "Very Light Yellow-P", color: const Color(0xfffff3cf)),
+    ColorModel(
+        colorName: "Very Light Yellow-Q", color: const Color(0xfffff1c9)),
+    ColorModel(
+        colorName: "Very Light Yellow-R", color: const Color(0xffffefc3)),
+    ColorModel(
+        colorName: "Very Light Yellow-S", color: const Color(0xfffdebbb)),
+    ColorModel(
+        colorName: "Very Light Yellow-T", color: const Color(0xfffce8b3)),
+    ColorModel(
+        colorName: "Very Light Yellow-U", color: const Color(0xffffe9ad)),
+    ColorModel(
+        colorName: "Very Light Yellow-V", color: const Color(0xffffe7a6)),
+    ColorModel(
+        colorName: "Very Light Yellow-W", color: const Color(0xffffe59f)),
+    ColorModel(
+        colorName: "Very Light Yellow-X", color: const Color(0xfffde196)),
+    ColorModel(
+        colorName: "Very Light Yellow-Z", color: const Color(0xfff8db8d)),
   ];
   Rx<String?> selectedColor = Rx<String?>(null);
   Rx<String?> selectedSideDiaColor = Rx<String?>(null);
@@ -1207,19 +1375,51 @@ class IndexController extends GetxController {
   ];
   Rx<String?> selectedColorHue = Rx<String?>(null);
   Rx<String?> selectedSideDiaColorHue = Rx<String?>(null);
-  List<String> clarityList = ["FL", "IF", "VVS1", "VVS2", "VS1", "VS2", "SI1", "SI2", "SI3", "L1", "L2", "L3"];
+  List<String> clarityList = [
+    "FL",
+    "IF",
+    "VVS1",
+    "VVS2",
+    "VS1",
+    "VS2",
+    "SI1",
+    "SI2",
+    "SI3",
+    "L1",
+    "L2",
+    "L3"
+  ];
   Rx<String?> selectedClarity = "VS1".obs;
   Rx<String?> selectedSideDiaClarity = "VS1".obs;
-  List<String> cutGradeList = ["Fair", "Good", "Very Good", "Excellent", "Ideal"];
+  List<String> cutGradeList = [
+    "Fair",
+    "Good",
+    "Very Good",
+    "Excellent",
+    "Ideal"
+  ];
   Rx<String?> selectedCutGrade = "Excellent".obs;
   Rx<String?> selectedSideDiaCutGrade = "Excellent".obs;
-  List<String> settingList = ["Prong", "Shared Prong", "Channel", "Bar Channel", "Pave", "Bezel"];
+  List<String> settingList = [
+    "Prong",
+    "Shared Prong",
+    "Channel",
+    "Bar Channel",
+    "Pave",
+    "Bezel"
+  ];
   Rx<String?> selectedSetting = Rx<String?>(null);
   Rx<String?> selectedSideDiaSetting = Rx<String?>(null);
   List<String> polishList = ["Fair", "Good", "Very Good", "Excellent", "Ideal"];
   Rx<String?> selectedPolish = Rx<String?>(null);
   Rx<String?> selectedSideDiaPolish = Rx<String?>(null);
-  List<String> symmetryList = ["Fair", "Good", "Very Good", "Excellent", "Ideal"];
+  List<String> symmetryList = [
+    "Fair",
+    "Good",
+    "Very Good",
+    "Excellent",
+    "Ideal"
+  ];
   Rx<String?> selectedSymmetry = Rx<String?>(null);
   Rx<String?> selectedSideDiaSymmetry = Rx<String?>(null);
 
@@ -1227,7 +1427,12 @@ class IndexController extends GetxController {
   RxBool isShowSideDiamondDetails = false.obs;
 
   //RingStyle
-  List<String> ringStyleList = ["Eternity Band", "Fashion Band", "Stackable Ring", "Fashion Ring"];
+  List<String> ringStyleList = [
+    "Eternity Band",
+    "Fashion Band",
+    "Stackable Ring",
+    "Fashion Ring"
+  ];
   Rx<String?> selectedRingStyle = Rx<String?>(null);
   List<String> generalRhodiumPlatedList = ["Yes", "No"];
   Rx<String?> selectedGeneralRhodiumPlated = "Yes".obs;
@@ -1338,22 +1543,70 @@ class IndexController extends GetxController {
 
   //Metal Type Details
   List<MetalModel> metalTypeList = [
-    MetalModel(metalName: "10K Yellow Gold", color: const Color(0xffe5ce83), metalKarat: "10K"),
-    MetalModel(metalName: "10K White Gold", color: const Color(0xffe9e9e9), metalKarat: "10K"),
-    MetalModel(metalName: "10K Rose Gold", color: const Color(0xffe7ba9a), metalKarat: "10K"),
-    MetalModel(metalName: "14K Yellow Gold", color: const Color(0xffe5ce83), metalKarat: "14K"),
-    MetalModel(metalName: "14K White Gold", color: const Color(0xffe9e9e9), metalKarat: "14K"),
-    MetalModel(metalName: "14K Rose Gold", color: const Color(0xffe7ba9a), metalKarat: "14K"),
-    MetalModel(metalName: "18K Yellow Gold", color: const Color(0xffe5ce83), metalKarat: "18K"),
-    MetalModel(metalName: "18K White Gold", color: const Color(0xffe9e9e9), metalKarat: "18K"),
-    MetalModel(metalName: "18K Rose Gold", color: const Color(0xffe7ba9a), metalKarat: "18K"),
-    MetalModel(metalName: "22K Yellow Gold", color: const Color(0xffe5ce83), metalKarat: "22K"),
-    MetalModel(metalName: "22K White Gold", color: const Color(0xffe9e9e9), metalKarat: "22K"),
-    MetalModel(metalName: "22K Rose Gold", color: const Color(0xffe7ba9a), metalKarat: "22K"),
-    MetalModel(metalName: "24K Yellow Gold", color: const Color(0xffe5ce83), metalKarat: "24K"),
-    MetalModel(metalName: "24K White Gold", color: const Color(0xffe9e9e9), metalKarat: "24K"),
-    MetalModel(metalName: "24K Rose Gold", color: const Color(0xffe7ba9a), metalKarat: "24K"),
-    MetalModel(metalName: "Platinum", color: const Color(0xffe5e4e2), metalKarat: "PL"),
+    MetalModel(
+        metalName: "10K Yellow Gold",
+        color: const Color(0xffe5ce83),
+        metalKarat: "10K"),
+    MetalModel(
+        metalName: "10K White Gold",
+        color: const Color(0xffe9e9e9),
+        metalKarat: "10K"),
+    MetalModel(
+        metalName: "10K Rose Gold",
+        color: const Color(0xffe7ba9a),
+        metalKarat: "10K"),
+    MetalModel(
+        metalName: "14K Yellow Gold",
+        color: const Color(0xffe5ce83),
+        metalKarat: "14K"),
+    MetalModel(
+        metalName: "14K White Gold",
+        color: const Color(0xffe9e9e9),
+        metalKarat: "14K"),
+    MetalModel(
+        metalName: "14K Rose Gold",
+        color: const Color(0xffe7ba9a),
+        metalKarat: "14K"),
+    MetalModel(
+        metalName: "18K Yellow Gold",
+        color: const Color(0xffe5ce83),
+        metalKarat: "18K"),
+    MetalModel(
+        metalName: "18K White Gold",
+        color: const Color(0xffe9e9e9),
+        metalKarat: "18K"),
+    MetalModel(
+        metalName: "18K Rose Gold",
+        color: const Color(0xffe7ba9a),
+        metalKarat: "18K"),
+    MetalModel(
+        metalName: "22K Yellow Gold",
+        color: const Color(0xffe5ce83),
+        metalKarat: "22K"),
+    MetalModel(
+        metalName: "22K White Gold",
+        color: const Color(0xffe9e9e9),
+        metalKarat: "22K"),
+    MetalModel(
+        metalName: "22K Rose Gold",
+        color: const Color(0xffe7ba9a),
+        metalKarat: "22K"),
+    MetalModel(
+        metalName: "24K Yellow Gold",
+        color: const Color(0xffe5ce83),
+        metalKarat: "24K"),
+    MetalModel(
+        metalName: "24K White Gold",
+        color: const Color(0xffe9e9e9),
+        metalKarat: "24K"),
+    MetalModel(
+        metalName: "24K Rose Gold",
+        color: const Color(0xffe7ba9a),
+        metalKarat: "24K"),
+    MetalModel(
+        metalName: "Platinum",
+        color: const Color(0xffe5e4e2),
+        metalKarat: "PL"),
   ];
 
   //Visual Detail Handling
@@ -1395,20 +1648,24 @@ class IndexController extends GetxController {
   //SideDiamondDetails Controllers
   TextEditingController sideDiaCountController = TextEditingController();
   TextEditingController sideDiaCaratWeightController = TextEditingController();
-  TextEditingController sideDiaTotalCaratWeightController = TextEditingController();
+  TextEditingController sideDiaTotalCaratWeightController =
+      TextEditingController();
   TextEditingController sideDiaDepthController = TextEditingController();
   TextEditingController sideDiaTableController = TextEditingController();
   TextEditingController sideDiaMeasurementsController = TextEditingController();
 
   //Other Controller
-  TextEditingController customShippingDetailsController = TextEditingController();
-  TextEditingController customReturnsDetailsController = TextEditingController();
+  TextEditingController customShippingDetailsController =
+      TextEditingController();
+  TextEditingController customReturnsDetailsController =
+      TextEditingController();
 
   //TextEditing Controller
   final GlobalKey<FormState> formValidateKey = GlobalKey<FormState>();
 
   void tabHandleOfAddProduct() {
-    if (categoryListModel.value == null || categoryListModel.value?.data?.isEmpty == true) {
+    if (categoryListModel.value == null ||
+        categoryListModel.value?.data?.isEmpty == true) {
       getCategoryList(isNotLoader: true);
     }
   }
@@ -1548,7 +1805,8 @@ class IndexController extends GetxController {
     }
   }
 
-  void onShapeTapped({required int index, required List<ShapeModel> shapeList}) {
+  void onShapeTapped(
+      {required int index, required List<ShapeModel> shapeList}) {
     for (int i = 0; i < shapeList.length; i++) {
       if (i == index) {
         shapeList[i].isSelectedTab.value = true;
@@ -1565,7 +1823,8 @@ class IndexController extends GetxController {
     } else {
       CustomDialog.failureDialog(
         title: "Remove Details!",
-        subtitle: "Warning: Deleting this may erase all entered details within the side diamond details section.",
+        subtitle:
+            "Warning: Deleting this may erase all entered details within the side diamond details section.",
         callback: () {
           isShowSideDiamondDetails.value = !isShowSideDiamondDetails.value;
           Get.back();
@@ -1604,7 +1863,8 @@ class IndexController extends GetxController {
     visualDetailsList.removeAt(index);
   }
 
-  Future<void> onImagePickerTapped({required int index, required VisualDetailModel element}) async {
+  Future<void> onImagePickerTapped(
+      {required int index, required VisualDetailModel element}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.image,
@@ -1630,11 +1890,13 @@ class IndexController extends GetxController {
     }
   }
 
-  void onImageCancelBtnTapped({required int outerIndex, required int innerIndex}) {
+  void onImageCancelBtnTapped(
+      {required int outerIndex, required int innerIndex}) {
     visualDetailsList[outerIndex].imageList.removeAt(innerIndex);
   }
 
-  Future<void> onVideoPickerTapped({required int index, required VisualDetailModel element}) async {
+  Future<void> onVideoPickerTapped(
+      {required int index, required VisualDetailModel element}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.video,
     );
@@ -1650,7 +1912,11 @@ class IndexController extends GetxController {
 
       if (visualDetailsList[index].videoBytesData?.netImageUrl != null) {
         visualDetailsList[index].videoBytesData?.isRefreshVideo.value =
-            ((visualDetailsList[index].videoBytesData?.isRefreshVideo.value ?? false) == true) ? false : true;
+            ((visualDetailsList[index].videoBytesData?.isRefreshVideo.value ??
+                        false) ==
+                    true)
+                ? false
+                : true;
       }
 
       Future.delayed(const Duration(milliseconds: 200)).then((value) {
@@ -1687,7 +1953,8 @@ class IndexController extends GetxController {
     }
   }
 
-  Future<void> onUploadMediaBtnTapped({required VisualDetailModel element}) async {
+  Future<void> onUploadMediaBtnTapped(
+      {required VisualDetailModel element}) async {
     if (validateMedia(isVersionNotConsider: true) == true) {
       debugPrint("onUploadMediaBtnTapped --------------------->");
 
@@ -1698,13 +1965,15 @@ class IndexController extends GetxController {
 
       //Upload Image
       for (var ele in element.imageList) {
-        if (ele.byteList.value != null && ele.netImagePath == null || ele.netImagePath?.isEmpty == true) {
+        if (ele.byteList.value != null && ele.netImagePath == null ||
+            ele.netImagePath?.isEmpty == true) {
           imagePassList.add(ele.byteList.value!);
         }
       }
 
       //Upload Video
-      if (element.videoBytesData?.netImagePath != null && element.videoBytesData?.netImagePath?.isEmpty != true) {
+      if (element.videoBytesData?.netImagePath != null &&
+          element.videoBytesData?.netImagePath?.isEmpty != true) {
         isVideoUpload = false;
       }
 
@@ -1719,7 +1988,9 @@ class IndexController extends GetxController {
         body: {},
         files: imagePassList,
         fieldName: Consts.productImagesKey,
-        otherFiles: (isVideoUpload == true) ? element.videoBytesData?.byteList.value : null,
+        otherFiles: (isVideoUpload == true)
+            ? element.videoBytesData?.byteList.value
+            : null,
         otherFieldName: (isVideoUpload == true) ? Consts.productVideoKey : null,
       );
 
@@ -1732,14 +2003,17 @@ class IndexController extends GetxController {
           if (uploadMediaModel.data != null) {
             //Get Image
             if (uploadMediaModel.data?.productImages?.isNotEmpty == true) {
-              int uploadImageLength = uploadMediaModel.data?.productImages?.length ?? 0;
+              int uploadImageLength =
+                  uploadMediaModel.data?.productImages?.length ?? 0;
 
               for (int i = 0, j = 0; i < element.imageList.length; i++) {
                 if (j < uploadImageLength) {
                   MemoryFileModel image = element.imageList[i];
 
-                  if (image.netImagePath == null || image.netImagePath?.isEmpty == true) {
-                    image.netImagePath = uploadMediaModel.data?.productImages?[j];
+                  if (image.netImagePath == null ||
+                      image.netImagePath?.isEmpty == true) {
+                    image.netImagePath =
+                        uploadMediaModel.data?.productImages?[j];
                     j++;
                   }
                 }
@@ -1748,7 +2022,8 @@ class IndexController extends GetxController {
 
             //Get Video
             if (uploadMediaModel.data?.productVideo?.isNotEmpty == true) {
-              element.videoBytesData?.netImagePath = uploadMediaModel.data?.productVideo;
+              element.videoBytesData?.netImagePath =
+                  uploadMediaModel.data?.productVideo;
             }
           }
 
@@ -1760,7 +2035,8 @@ class IndexController extends GetxController {
           }
           debugPrint("Video: ${element.videoBytesData?.netImagePath}");
 
-          MyToasts.successToast(toast: uploadMediaModel.message ?? "No Message");
+          MyToasts.successToast(
+              toast: uploadMediaModel.message ?? "No Message");
         } else {
           MyToasts.errorToast(toast: uploadMediaModel.message ?? "No Message");
         }
@@ -1790,7 +2066,8 @@ class IndexController extends GetxController {
         element.isImageError.value = false;
       }
       //video validate
-      if (element.videoBytesData?.netImageUrl != null || element.videoBytesData?.byteList.value != null) {
+      if (element.videoBytesData?.netImageUrl != null ||
+          element.videoBytesData?.byteList.value != null) {
         element.isVideoError.value = false;
       } else {
         element.isVideoError.value = true;
@@ -1830,22 +2107,40 @@ class IndexController extends GetxController {
 
       ///DiamondDetails
       Map<String, dynamic> diamondData = {};
-      diamondData.addInnerParamsIfNotNull(key: Consts.stoneTypeKey, value: selectedStoneType.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.creationMethodKey, value: selectedCreationMethod.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.shapeKey, value: shapeList[selectedShapeIndex.value].shapeName);
-      diamondData.addInnerParamsIfNotNull(key: Consts.colorKey, value: selectedColor.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.colorHueKey, value: selectedColorHue.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.clarityKey, value: selectedClarity.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.cutGradeKey, value: selectedCutGrade.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.countKey, value: countController.text);
-      diamondData.addInnerParamsIfNotNull(key: Consts.carateWeightKey, value: caratWeightController.text);
-      diamondData.addInnerParamsIfNotNull(key: Consts.caratTotalWeightKey, value: totalCaratWeightController.text);
-      diamondData.addInnerParamsIfNotNull(key: Consts.settingKey, value: selectedSetting.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.polishKey, value: selectedPolish.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.symmetryKey, value: selectedSymmetry.value);
-      diamondData.addInnerParamsIfNotNull(key: Consts.depthKey, value: depthController.text);
-      diamondData.addInnerParamsIfNotNull(key: Consts.tableKey, value: tableController.text);
-      diamondData.addInnerParamsIfNotNull(key: Consts.measurementsKey, value: measurementsController.text);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.stoneTypeKey, value: selectedStoneType.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.creationMethodKey, value: selectedCreationMethod.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.shapeKey,
+          value: shapeList[selectedShapeIndex.value].shapeName);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.colorKey, value: selectedColor.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.colorHueKey, value: selectedColorHue.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.clarityKey, value: selectedClarity.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.cutGradeKey, value: selectedCutGrade.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.countKey, value: countController.text);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.carateWeightKey, value: caratWeightController.text);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.caratTotalWeightKey,
+          value: totalCaratWeightController.text);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.settingKey, value: selectedSetting.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.polishKey, value: selectedPolish.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.symmetryKey, value: selectedSymmetry.value);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.depthKey, value: depthController.text);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.tableKey, value: tableController.text);
+      diamondData.addInnerParamsIfNotNull(
+          key: Consts.measurementsKey, value: measurementsController.text);
 
       passingData.addAll({
         Consts.diamondDetailsKey: diamondData.toString(),
@@ -1854,25 +2149,43 @@ class IndexController extends GetxController {
       ///SideDiamondDetails
       if (isShowSideDiamondDetails.value == true) {
         Map<String, dynamic> sideDiamondData = {};
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.stoneTypeKey, value: selectedSideDiaStoneType.value);
         sideDiamondData.addInnerParamsIfNotNull(
-            key: Consts.creationMethodKey, value: selectedSideDiaCreationMethod.value);
+            key: Consts.stoneTypeKey, value: selectedSideDiaStoneType.value);
         sideDiamondData.addInnerParamsIfNotNull(
-            key: Consts.shapeKey, value: shapeList[selectedSideDiaShapeIndex.value].shapeName);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.colorKey, value: selectedSideDiaColor.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.colorHueKey, value: selectedSideDiaColorHue.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.clarityKey, value: selectedSideDiaClarity.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.cutGradeKey, value: selectedSideDiaCutGrade.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.countKey, value: sideDiaCountController.text);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.carateWeightKey, value: sideDiaCaratWeightController.text);
+            key: Consts.creationMethodKey,
+            value: selectedSideDiaCreationMethod.value);
         sideDiamondData.addInnerParamsIfNotNull(
-            key: Consts.caratTotalWeightKey, value: sideDiaTotalCaratWeightController.text);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.settingKey, value: selectedSideDiaSetting.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.polishKey, value: selectedSideDiaPolish.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.symmetryKey, value: selectedSideDiaSymmetry.value);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.depthKey, value: sideDiaDepthController.text);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.tableKey, value: sideDiaTableController.text);
-        sideDiamondData.addInnerParamsIfNotNull(key: Consts.measurementsKey, value: sideDiaMeasurementsController.text);
+            key: Consts.shapeKey,
+            value: shapeList[selectedSideDiaShapeIndex.value].shapeName);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.colorKey, value: selectedSideDiaColor.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.colorHueKey, value: selectedSideDiaColorHue.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.clarityKey, value: selectedSideDiaClarity.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.cutGradeKey, value: selectedSideDiaCutGrade.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.countKey, value: sideDiaCountController.text);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.carateWeightKey,
+            value: sideDiaCaratWeightController.text);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.caratTotalWeightKey,
+            value: sideDiaTotalCaratWeightController.text);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.settingKey, value: selectedSideDiaSetting.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.polishKey, value: selectedSideDiaPolish.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.symmetryKey, value: selectedSideDiaSymmetry.value);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.depthKey, value: sideDiaDepthController.text);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.tableKey, value: sideDiaTableController.text);
+        sideDiamondData.addInnerParamsIfNotNull(
+            key: Consts.measurementsKey,
+            value: sideDiaMeasurementsController.text);
 
         passingData.addAll({
           Consts.sideDiamondDetailsKey: sideDiamondData.toString(),
@@ -1882,42 +2195,76 @@ class IndexController extends GetxController {
       ///AdditionalDetails
       Map<String, dynamic> additionalData = {};
       if (selectedProductType.value == Consts.ringKey) {
-        additionalData.addInnerParamsIfNotNull(key: Consts.productSkuKey, value: skuController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.styleKey, value: selectedRingStyle.value);
         additionalData.addInnerParamsIfNotNull(
-            key: Consts.generalRhodiumPlatedKey, value: selectedGeneralRhodiumPlated.value);
-        additionalData.addInnerParamsIfNotNull(key: Consts.averageWidthKey, value: averageWidthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.caratTotalWeightKey, value: caratTotalWeightController.text);
+            key: Consts.productSkuKey, value: skuController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.styleKey, value: selectedRingStyle.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.generalRhodiumPlatedKey,
+            value: selectedGeneralRhodiumPlated.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.averageWidthKey, value: averageWidthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.caratTotalWeightKey,
+            value: caratTotalWeightController.text);
       } else if (selectedProductType.value == Consts.earringKey) {
-        additionalData.addInnerParamsIfNotNull(key: Consts.productSkuKey, value: skuController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.styleKey, value: selectedEarringStyle.value);
         additionalData.addInnerParamsIfNotNull(
-            key: Consts.generalRhodiumPlatedKey, value: selectedGeneralRhodiumPlated.value);
-        additionalData.addInnerParamsIfNotNull(key: Consts.caratTotalWeightKey, value: caratTotalWeightController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.backTypeKey, value: selectedEarringBackType.value);
-        additionalData.addInnerParamsIfNotNull(key: Consts.earringLengthKey, value: earringLengthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.earringWidthKey, value: earringWidthController.text);
+            key: Consts.productSkuKey, value: skuController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.styleKey, value: selectedEarringStyle.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.generalRhodiumPlatedKey,
+            value: selectedGeneralRhodiumPlated.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.caratTotalWeightKey,
+            value: caratTotalWeightController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.backTypeKey, value: selectedEarringBackType.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.earringLengthKey, value: earringLengthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.earringWidthKey, value: earringWidthController.text);
       } else if (selectedProductType.value == Consts.necklaceKey) {
-        additionalData.addInnerParamsIfNotNull(key: Consts.productSkuKey, value: skuController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.styleKey, value: selectedNecklaceStyle.value);
         additionalData.addInnerParamsIfNotNull(
-            key: Consts.generalRhodiumPlatedKey, value: selectedGeneralRhodiumPlated.value);
-        additionalData.addInnerParamsIfNotNull(key: Consts.caratTotalWeightKey, value: caratTotalWeightController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.pendantLengthKey, value: pendantLengthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.pendantWidthKey, value: pendantWidthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.chainLengthKey, value: chainLengthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.chainWidthKey, value: chainWidthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.chainTypeKey, value: selectedChainType.value);
-        additionalData.addInnerParamsIfNotNull(key: Consts.claspTypeKey, value: selectedClaspType.value);
+            key: Consts.productSkuKey, value: skuController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.styleKey, value: selectedNecklaceStyle.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.generalRhodiumPlatedKey,
+            value: selectedGeneralRhodiumPlated.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.caratTotalWeightKey,
+            value: caratTotalWeightController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.pendantLengthKey, value: pendantLengthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.pendantWidthKey, value: pendantWidthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.chainLengthKey, value: chainLengthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.chainWidthKey, value: chainWidthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.chainTypeKey, value: selectedChainType.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.claspTypeKey, value: selectedClaspType.value);
       } else if (selectedProductType.value == Consts.braceletKey) {
-        additionalData.addInnerParamsIfNotNull(key: Consts.productSkuKey, value: skuController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.styleKey, value: selectedBraceletStyle.value);
         additionalData.addInnerParamsIfNotNull(
-            key: Consts.generalRhodiumPlatedKey, value: selectedGeneralRhodiumPlated.value);
-        additionalData.addInnerParamsIfNotNull(key: Consts.caratTotalWeightKey, value: caratTotalWeightController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.braceletLengthKey, value: braceletLengthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.braceletWidthKey, value: braceletWidthController.text);
-        additionalData.addInnerParamsIfNotNull(key: Consts.claspTypeKey, value: selectedClaspType.value);
+            key: Consts.productSkuKey, value: skuController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.styleKey, value: selectedBraceletStyle.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.generalRhodiumPlatedKey,
+            value: selectedGeneralRhodiumPlated.value);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.caratTotalWeightKey,
+            value: caratTotalWeightController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.braceletLengthKey,
+            value: braceletLengthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.braceletWidthKey, value: braceletWidthController.text);
+        additionalData.addInnerParamsIfNotNull(
+            key: Consts.claspTypeKey, value: selectedClaspType.value);
       }
 
       if (additionalData.isNotEmpty) {
@@ -1932,21 +2279,29 @@ class IndexController extends GetxController {
         if (element.version.value == 1) {
           Map<String, dynamic> innerVisualData = {};
           innerVisualData.addInnerParamsIfNotNull(
-              key: Consts.metalTypeColorKey, value: element.selectedMetalType.value);
+              key: Consts.metalTypeColorKey,
+              value: element.selectedMetalType.value);
           innerVisualData.addInnerParamsIfNotNull(
-              key: Consts.rhodiumPlatedKey, value: element.selectedRhodiumPlated.value);
-          innerVisualData.addInnerParamsIfNotNull(key: Consts.metalVisePriceKey, value: element.priceController.text);
+              key: Consts.rhodiumPlatedKey,
+              value: element.selectedRhodiumPlated.value);
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.metalVisePriceKey,
+              value: element.priceController.text);
 
           List<String> productImageList = [];
           for (var image in element.imageList) {
-            if (image.netImagePath != null && image.netImagePath?.isNotEmpty == true) {
+            if (image.netImagePath != null &&
+                image.netImagePath?.isNotEmpty == true) {
               productImageList.add(image.netImagePath!);
             }
           }
 
-          innerVisualData.addInnerParamsIfNotNull(key: Consts.productImagesKey, value: productImageList.listStringify);
           innerVisualData.addInnerParamsIfNotNull(
-              key: Consts.productVideoKey, value: element.videoBytesData?.netImagePath);
+              key: Consts.productImagesKey,
+              value: productImageList.listStringify);
+          innerVisualData.addInnerParamsIfNotNull(
+              key: Consts.productVideoKey,
+              value: element.videoBytesData?.netImagePath);
 
           visualDataList.add(innerVisualData);
         }
@@ -1989,7 +2344,9 @@ class IndexController extends GetxController {
 
       ///API Calling
       dynamic data = await ApiProvider.commonProvider(
-        url: (jewelID != null && jewelID.isEmpty != true) ? URLs.editJewelleryUri : URLs.addJewelleryUri,
+        url: (jewelID != null && jewelID.isEmpty != true)
+            ? URLs.editJewelleryUri
+            : URLs.addJewelleryUri,
         bodyData: passingData,
         header: {
           "Authorization":
@@ -2015,7 +2372,8 @@ class IndexController extends GetxController {
     } else {
       if (isValidateForm == true) {
         if (isValidateMedia == false) {
-          MyToasts.warningToast(toast: "Please save all media or recheck before proceeding.");
+          MyToasts.warningToast(
+              toast: "Please save all media or recheck before proceeding.");
         }
       } else {
         MyToasts.warningToast(toast: "Please fill missing details.");
@@ -2027,37 +2385,99 @@ class IndexController extends GetxController {
 
   ///Edit Product Access............................................................................
   RxBool isEditProductView = false.obs;
-  Rx<ProductDetailModel?> editProductDetailModel = Rx<ProductDetailModel?>(null);
+  Rx<ProductDetailModel?> editProductDetailModel =
+      Rx<ProductDetailModel?>(null);
 
   ///Search Product Access............................................................................
   List<FilterModel> shapeFilterList = [
-    FilterModel(filterText: "Asscher", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Cushion", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Elongated Cushion", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Emerald", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Heart", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Marquise", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Oval", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Pear", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Princess", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Radiant", isSelected: false.obs, categoryText: Consts.shapeKey),
-    FilterModel(filterText: "Round", isSelected: false.obs, categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Asscher",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Cushion",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Elongated Cushion",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Emerald",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Heart",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Marquise",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Oval",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Pear",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Princess",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Radiant",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
+    FilterModel(
+        filterText: "Round",
+        isSelected: false.obs,
+        categoryText: Consts.shapeKey),
   ];
   List<FilterModel> colorHueFilterList = [
-    FilterModel(filterText: "White", isSelected: false.obs, categoryText: Consts.colorHueKey),
-    FilterModel(filterText: "Very Light Yellow", isSelected: false.obs, categoryText: Consts.colorHueKey),
-    FilterModel(filterText: "Light Yellow", isSelected: false.obs, categoryText: Consts.colorHueKey),
-    FilterModel(filterText: "Yellow", isSelected: false.obs, categoryText: Consts.colorHueKey),
+    FilterModel(
+        filterText: "White",
+        isSelected: false.obs,
+        categoryText: Consts.colorHueKey),
+    FilterModel(
+        filterText: "Very Light Yellow",
+        isSelected: false.obs,
+        categoryText: Consts.colorHueKey),
+    FilterModel(
+        filterText: "Light Yellow",
+        isSelected: false.obs,
+        categoryText: Consts.colorHueKey),
+    FilterModel(
+        filterText: "Yellow",
+        isSelected: false.obs,
+        categoryText: Consts.colorHueKey),
   ];
   List<FilterModel> priceFilterList = [
     FilterModel(
-        filterText: "\$0-\$50", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 0, maxPrice: 50),
+        filterText: "\$0-\$50",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 0,
+        maxPrice: 50),
     FilterModel(
-        filterText: "\$50-\$100", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 50, maxPrice: 100),
+        filterText: "\$50-\$100",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 50,
+        maxPrice: 100),
     FilterModel(
-        filterText: "\$100-\$200", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 100, maxPrice: 200),
+        filterText: "\$100-\$200",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 100,
+        maxPrice: 200),
     FilterModel(
-        filterText: "\$200-\$400", isSelected: false.obs, categoryText: Consts.priceKey, minPrice: 200, maxPrice: 400),
+        filterText: "\$200-\$400",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey,
+        minPrice: 200,
+        maxPrice: 400),
     FilterModel(
         filterText: "\$400-\$1000",
         isSelected: false.obs,
@@ -2082,46 +2502,147 @@ class IndexController extends GetxController {
         categoryText: Consts.priceKey,
         minPrice: 2000,
         maxPrice: 3000),
-    FilterModel(filterText: "Highest", isSelected: false.obs, categoryText: Consts.priceKey),
-    FilterModel(filterText: "Lowest", isSelected: false.obs, categoryText: Consts.priceKey),
+    FilterModel(
+        filterText: "Highest",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey),
+    FilterModel(
+        filterText: "Lowest",
+        isSelected: false.obs,
+        categoryText: Consts.priceKey),
   ];
   List<FilterModel> metalFilterList = [
-    FilterModel(filterText: "10K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "10K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "10K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "14K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "14K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "14K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "18K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "18K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "18K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "22K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "22K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "22K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "24K White Gold", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "24K Yellow GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "24K Rose GOld", isSelected: false.obs, categoryText: Consts.metalKey),
-    FilterModel(filterText: "Platinum", isSelected: false.obs, categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "10K White Gold",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "10K Yellow GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "10K Rose GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "14K White Gold",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "14K Yellow GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "14K Rose GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "18K White Gold",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "18K Yellow GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "18K Rose GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "22K White Gold",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "22K Yellow GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "22K Rose GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "24K White Gold",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "24K Yellow GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "24K Rose GOld",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
+    FilterModel(
+        filterText: "Platinum",
+        isSelected: false.obs,
+        categoryText: Consts.metalKey),
   ];
   List<FilterModel> clarityFilterList = [
-    FilterModel(filterText: "FL", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "IF", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "VVS1", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "VVS2", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "VS1", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "VS2", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "SI1", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "SI2", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "SI3", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "L1", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "L2", isSelected: false.obs, categoryText: Consts.clarityKey),
-    FilterModel(filterText: "L3", isSelected: false.obs, categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "FL",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "IF",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "VVS1",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "VVS2",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "VS1",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "VS2",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "SI1",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "SI2",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "SI3",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "L1",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "L2",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
+    FilterModel(
+        filterText: "L3",
+        isSelected: false.obs,
+        categoryText: Consts.clarityKey),
   ];
   List<FilterModel> genderFilterList = [
     FilterModel(
-        filterText: "Woman", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.femaleVal),
-    FilterModel(filterText: "Other", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.otherVal),
-    FilterModel(filterText: "Men", isSelected: false.obs, categoryText: Consts.genderKey, paramName: Consts.maleVal),
+        filterText: "Woman",
+        isSelected: false.obs,
+        categoryText: Consts.genderKey,
+        paramName: Consts.femaleVal),
+    FilterModel(
+        filterText: "Other",
+        isSelected: false.obs,
+        categoryText: Consts.genderKey,
+        paramName: Consts.otherVal),
+    FilterModel(
+        filterText: "Men",
+        isSelected: false.obs,
+        categoryText: Consts.genderKey,
+        paramName: Consts.maleVal),
   ];
   List<FilterModel> inStockFilterList = [
     FilterModel(
@@ -2136,10 +2657,19 @@ class IndexController extends GetxController {
         paramName: Consts.inWaitingVal),
   ];
   List<FilterModel> shortByFilterList = [
-    FilterModel(filterText: "Best Sellers", isSelected: false.obs, categoryText: Consts.shortByKey),
     FilterModel(
-        filterText: "Top Rated", isSelected: false.obs, categoryText: Consts.shortByKey, paramName: Consts.topRatedVal),
-    FilterModel(filterText: "Newest", isSelected: false.obs, categoryText: Consts.shortByKey),
+        filterText: "Best Sellers",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey),
+    FilterModel(
+        filterText: "Top Rated",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey,
+        paramName: Consts.topRatedVal),
+    FilterModel(
+        filterText: "Newest",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey),
     FilterModel(
         filterText: "Price: Low to High",
         isSelected: false.obs,
@@ -2150,27 +2680,36 @@ class IndexController extends GetxController {
         isSelected: false.obs,
         categoryText: Consts.shortByKey,
         paramName: Consts.priceHlVal),
-    FilterModel(filterText: "Name(A-Z)", isSelected: false.obs, categoryText: Consts.shortByKey),
-    FilterModel(filterText: "Name(Z-A)", isSelected: false.obs, categoryText: Consts.shortByKey),
+    FilterModel(
+        filterText: "Name(A-Z)",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey),
+    FilterModel(
+        filterText: "Name(Z-A)",
+        isSelected: false.obs,
+        categoryText: Consts.shortByKey),
   ];
   RxList<FilterModel> selectedFilterList = <FilterModel>[].obs;
 
   //Search API Handlers
-  Rx<ViewProductListModel?> searchProductListModel = Rx<ViewProductListModel?>(null);
+  Rx<ViewProductListModel?> searchProductListModel =
+      Rx<ViewProductListModel?>(null);
   TextEditingController searchController = TextEditingController();
   Timer? timer;
 
   //handlers of the table pagination
   RxInt selectedSearchTableIndex = 0.obs;
   RxInt searchPageLength = 0.obs;
-  final ItemScrollController searchItemScrollController = ItemScrollController();
+  final ItemScrollController searchItemScrollController =
+      ItemScrollController();
 
   void tabHandleOfSearchProduct() {
     selectedSearchTableIndex.value = 0;
     getSearchList(pageIndex: 1);
   }
 
-  void onDeleteFilterBtnTapped({required FilterModel element, required int index}) {
+  void onDeleteFilterBtnTapped(
+      {required FilterModel element, required int index}) {
     debugPrint("onDeleteFilterBtnTapped-------------------->");
     element.isSelected.value = false;
     selectedFilterList.removeAt(index);
@@ -2195,7 +2734,8 @@ class IndexController extends GetxController {
       Consts.limitKey: Consts.limitValKey.toString(),
     };
 
-    passData.addParamsIfNotNull(key: Consts.searchNameKey, value: searchController.text);
+    passData.addParamsIfNotNull(
+        key: Consts.searchNameKey, value: searchController.text);
 
     List<String> colorHueList = [];
     List<String> metalList = [];
@@ -2205,16 +2745,20 @@ class IndexController extends GetxController {
     for (var element in selectedFilterList) {
       //Single Selection
       if (element.categoryText == Consts.shapeKey) {
-        passData.addParamsIfNotNull(key: element.categoryText, value: element.filterText);
+        passData.addParamsIfNotNull(
+            key: element.categoryText, value: element.filterText);
       }
       if (element.categoryText == Consts.genderKey) {
-        passData.addParamsIfNotNull(key: element.categoryText, value: element.paramName);
+        passData.addParamsIfNotNull(
+            key: element.categoryText, value: element.paramName);
       }
       if (element.categoryText == Consts.abailibilityByKey) {
-        passData.addParamsIfNotNull(key: element.categoryText, value: element.paramName);
+        passData.addParamsIfNotNull(
+            key: element.categoryText, value: element.paramName);
       }
       if (element.categoryText == Consts.shortByKey) {
-        passData.addParamsIfNotNull(key: element.categoryText, value: element.paramName);
+        passData.addParamsIfNotNull(
+            key: element.categoryText, value: element.paramName);
       }
 
       //Multiple Selection
@@ -2235,17 +2779,22 @@ class IndexController extends GetxController {
       }
     }
 
-    passData.addParamsIfNotNull(key: Consts.colorHueKey, value: colorHueList.listStringify);
-    passData.addParamsIfNotNull(key: Consts.metalKey, value: metalList.listStringify);
-    passData.addParamsIfNotNull(key: Consts.clarityKey, value: clarityList.listStringify);
+    passData.addParamsIfNotNull(
+        key: Consts.colorHueKey, value: colorHueList.listStringify);
+    passData.addParamsIfNotNull(
+        key: Consts.metalKey, value: metalList.listStringify);
+    passData.addParamsIfNotNull(
+        key: Consts.clarityKey, value: clarityList.listStringify);
 
     //Price logic
     if (priceList.isNotEmpty) {
       // Find the minimum number
-      num minNumber = priceList.reduce((min, current) => current < min ? current : min);
+      num minNumber =
+          priceList.reduce((min, current) => current < min ? current : min);
 
       // Find the maximum number
-      num maxNumber = priceList.reduce((max, current) => current > max ? current : max);
+      num maxNumber =
+          priceList.reduce((max, current) => current > max ? current : max);
 
       passData.addParamsIfNotNull(key: Consts.minPriceKey, value: minNumber);
       passData.addParamsIfNotNull(key: Consts.maxPriceKey, value: maxNumber);
@@ -2266,10 +2815,14 @@ class IndexController extends GetxController {
       if (searchProductListModel.value?.success == true) {
         debugPrint("API Success is true");
         getPageLength(
-            totalNumberOfData: searchProductListModel.value?.totalNumberOfData ?? 0, pageLength: searchPageLength);
+            totalNumberOfData:
+                searchProductListModel.value?.totalNumberOfData ?? 0,
+            pageLength: searchPageLength);
       } else {
-        debugPrint("API Success is false: ${searchProductListModel.value?.message}");
-        MyToasts.errorToast(toast: searchProductListModel.value?.message.toString() ?? "");
+        debugPrint(
+            "API Success is false: ${searchProductListModel.value?.message}");
+        MyToasts.errorToast(
+            toast: searchProductListModel.value?.message.toString() ?? "");
       }
     } else {
       debugPrint("Data is null");
@@ -2281,7 +2834,8 @@ class IndexController extends GetxController {
   void onSearchFieldAndFilterChanged() {
     timer?.cancel();
     timer = Timer(const Duration(milliseconds: 300), () {
-      debugPrint("onSearchFieldChanged----------------------------------------->");
+      debugPrint(
+          "onSearchFieldChanged----------------------------------------->");
       selectedSearchTableIndex.value = 0;
       getSearchList(pageIndex: 1);
     });
@@ -2303,7 +2857,8 @@ class IndexController extends GetxController {
     debugPrint("onCancelOrderTapped -------------->");
     CustomDialog.failureDialog(
       title: "Cancel Order?",
-      subtitle: "Are you certain you want to cancel the order? This action will permanently cancel the order.",
+      subtitle:
+          "Are you certain you want to cancel the order? This action will permanently cancel the order.",
       callback: () async {
         Get.back();
         // dynamic data = await ApiProvider.commonProvider(
@@ -2342,7 +2897,8 @@ class IndexController extends GetxController {
         debugPrint("API Success is true");
       } else {
         debugPrint("API Success is false: ${categoryListModel.value?.message}");
-        MyToasts.errorToast(toast: categoryListModel.value?.message.toString() ?? "");
+        MyToasts.errorToast(
+            toast: categoryListModel.value?.message.toString() ?? "");
       }
     } else {
       debugPrint("Data is null");
@@ -2368,10 +2924,7 @@ class IndexController extends GetxController {
         dynamic data = await ApiProvider.commonProvider(
           url: URLs.deleteCategoryUri,
           bodyData: passData,
-          header: {
-            "Authorization":
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-          },
+          header: ApiProvider.commonHeader(),
         );
 
         if (data != null) {
@@ -2379,7 +2932,8 @@ class IndexController extends GetxController {
 
           if (deleteModel.success == true) {
             debugPrint("API Success is true");
-            categoryListModel.value?.data?.removeWhere((element) => (element.id == categoryID) ? true : false);
+            categoryListModel.value?.data?.removeWhere(
+                (element) => (element.id == categoryID) ? true : false);
 
             bool isCurrentElementPresentInList = false;
             categoryListModel.value?.data?.forEach((ele) {
@@ -2417,8 +2971,10 @@ class IndexController extends GetxController {
 
     if (element != null) {
       cateNameController.text = element.categoryName ?? "";
-      memoryFileModel.value =
-          MemoryFileModel(byteList: null.obs, netImagePath: element.categoryImage ?? "", isRefreshVideo: false.obs);
+      memoryFileModel.value = MemoryFileModel(
+          byteList: null.obs,
+          netImagePath: element.categoryImage ?? "",
+          isRefreshVideo: false.obs);
     }
 
     debugPrint("onAddEditCategoryBtnTapped -------------->");
@@ -2456,18 +3012,27 @@ class IndexController extends GetxController {
                     decoration: BoxDecoration(
                       color: Clr.decentGreyColor,
                       borderRadius: BorderRadius.circular(5),
-                      image: (memoryFileModel.value != null && memoryFileModel.value?.byteList.value != null)
+                      image: (memoryFileModel.value != null &&
+                              memoryFileModel.value?.byteList.value != null)
                           ? DecorationImage(
                               fit: BoxFit.cover,
-                              image: MemoryImage(memoryFileModel.value?.byteList.value ?? Uint8List(0)))
-                          : (memoryFileModel.value != null && memoryFileModel.value?.netImagePath != null)
+                              image: MemoryImage(
+                                  memoryFileModel.value?.byteList.value ??
+                                      Uint8List(0)))
+                          : (memoryFileModel.value != null &&
+                                  memoryFileModel.value?.netImagePath != null)
                               ? DecorationImage(
-                                  fit: BoxFit.cover, image: NetworkImage(memoryFileModel.value?.netImagePath ?? ""))
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      memoryFileModel.value?.netImagePath ??
+                                          ""))
                               : null,
                     ),
                     alignment: Alignment.center,
-                    child: (memoryFileModel.value != null && memoryFileModel.value?.byteList.value != null ||
-                            memoryFileModel.value != null && memoryFileModel.value?.netImagePath != null)
+                    child: (memoryFileModel.value != null &&
+                                memoryFileModel.value?.byteList.value != null ||
+                            memoryFileModel.value != null &&
+                                memoryFileModel.value?.netImagePath != null)
                         ? null
                         : const Icon(Icons.add_photo_alternate_rounded),
                   )),
@@ -2509,22 +3074,27 @@ class IndexController extends GetxController {
               if (formKey.currentState?.validate() == true) {
                 if ((element != null)
                     ? true
-                    : memoryFileModel.value != null && memoryFileModel.value?.byteList.value != null) {
+                    : memoryFileModel.value != null &&
+                        memoryFileModel.value?.byteList.value != null) {
                   Map<String, dynamic> passData = {
                     Consts.categoryNameKey: cateNameController.text.capitalize,
                   };
 
                   if (element != null) {
-                    passData.addParamsIfNotNull(key: Consts.categoryIdKey, value: element.id);
+                    passData.addParamsIfNotNull(
+                        key: Consts.categoryIdKey, value: element.id);
                   }
 
                   ///API Calling
                   dynamic data = await ApiProvider.commonMultipartProvider(
-                    url: (element != null) ? URLs.editCategoryUri : URLs.addCategoryUri,
+                    url: (element != null)
+                        ? URLs.editCategoryUri
+                        : URLs.addCategoryUri,
                     body: passData,
                     files: (memoryFileModel.value?.byteList.value != null)
                         ? [
-                            memoryFileModel.value?.byteList.value ?? Uint8List(0),
+                            memoryFileModel.value?.byteList.value ??
+                                Uint8List(0),
                           ]
                         : const [],
                     fieldName: Consts.categoryImageKey,
@@ -2532,36 +3102,43 @@ class IndexController extends GetxController {
                   );
 
                   if (data != null) {
-                    AddCategoryModel addCategoryModel = AddCategoryModel.fromJson(data);
+                    AddCategoryModel addCategoryModel =
+                        AddCategoryModel.fromJson(data);
 
                     if (addCategoryModel.success == true) {
-                      MyToasts.successToast(toast: addCategoryModel.message ?? "No Message");
+                      MyToasts.successToast(
+                          toast: addCategoryModel.message ?? "No Message");
 
                       if (addCategoryModel.data != null) {
                         //Edit Category
                         if (element != null) {
-                          int? eleIndex = categoryListModel.value?.data?.indexOf(element);
+                          int? eleIndex =
+                              categoryListModel.value?.data?.indexOf(element);
 
                           if (eleIndex != null) {
                             categoryListModel.value?.data?.removeAt(eleIndex);
-                            categoryListModel.value?.data?.insert(eleIndex, addCategoryModel.data!);
+                            categoryListModel.value?.data
+                                ?.insert(eleIndex, addCategoryModel.data!);
                           }
                         }
                         //Add Category
                         else {
-                          categoryListModel.value?.data?.add(addCategoryModel.data!);
+                          categoryListModel.value?.data
+                              ?.add(addCategoryModel.data!);
                         }
                         Get.back();
                       }
                     } else {
                       debugPrint("API Success is false");
-                      MyToasts.errorToast(toast: addCategoryModel.message ?? "No Message");
+                      MyToasts.errorToast(
+                          toast: addCategoryModel.message ?? "No Message");
                     }
                   } else {
                     debugPrint("Data is null");
                   }
                 } else {
-                  MyToasts.errorToast(toast: "Please first add the category image");
+                  MyToasts.errorToast(
+                      toast: "Please first add the category image");
                 }
               }
             },

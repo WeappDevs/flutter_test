@@ -4,42 +4,47 @@ class URLs {
   /// Local
   // static const String ipAddress = '127.0.0.1';
   // static const String port = '8001';
-  // static const String baseUrl = 'http://$ipAddress:$port/admin/v1/auth';
+  // static const String apiVersion = 'v1';
+  // static const String baseUrl = 'http://$ipAddress:$port/admin/$apiVersion';
 
   ///Live(for production use)
   static const String ipAddress = '64.227.160.216';
   static const String port = '8001';
-  static const String baseUrl = 'http://$ipAddress:$port/admin/v1/auth';
+  static const String apiVersion = 'v1';
+  static const String baseUrl = 'http://$ipAddress:$port/admin/$apiVersion';
 
   ///Image Default Path
   // String imgBaseUrl = 'http://localhost:8001/public/jewellery_images/9165_1703703114505.mp4';
 
   ///All Uri
-  static const String adminLoginUri = "${URLs.baseUrl}/admin_login";
-  static const String adminLogoutUri = "${URLs.baseUrl}/admin_logout";
-  static const String adminChangePasswordUri = "${URLs.baseUrl}/admin_change_password";
-  static const String adminSendOtpUri = "${URLs.baseUrl}/admin_send_otp";
-  static const String adminVerifyOtpUri = "${URLs.baseUrl}/admin_verify_otp";
-  static const String adminResetPasswordUri = "${URLs.baseUrl}/admin_reset_password";
+  static const String authRoute = "auth";
+  static const String adminLoginUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_login";
+  static const String adminLogoutUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_logout";
+  static const String adminChangePasswordUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_change_password";
+  static const String adminSendOtpUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_send_otp";
+  static const String adminVerifyOtpUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_verify_otp";
+  static const String adminResetPasswordUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_reset_password";
 
   ///Jewelery Operations
-  static const String addJewelleryUri = "${URLs.baseUrl}/add_jewellery";
-  static const String jewelleryListUri = "${URLs.baseUrl}/jewellery_list";
-  static const String jewelleryDetailsUri = "${URLs.baseUrl}/jewellery_details";
-  static const String deleteJewelleryUri = "${URLs.baseUrl}/delete_jewellery";
-  static const String uploadVisualMediaUri = "${URLs.baseUrl}/upload_visual_media";
-  static const String inWaitingJewelleryUri = "${URLs.baseUrl}/in_waiting_jewellery";
-  static const String searchJewelleryUri = "${URLs.baseUrl}/search_jewellery";
-  static const String editJewelleryUri = "${URLs.baseUrl}/edit_jewellery";
+  static const String jewelleryRoute = "jewellery";
+  static const String addJewelleryUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/add_jewellery";
+  static const String jewelleryListUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/jewellery_list";
+  static const String jewelleryDetailsUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/jewellery_details";
+  static const String deleteJewelleryUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/delete_jewellery";
+  static const String uploadVisualMediaUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/upload_visual_media";
+  static const String inWaitingJewelleryUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/in_waiting_jewellery";
+  static const String searchJewelleryUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/search_jewellery";
+  static const String editJewelleryUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/edit_jewellery";
 
   ///Category Operations
-  static const String categoryListUri = "${URLs.baseUrl}/category_list";
-  static const String addCategoryUri = "${URLs.baseUrl}/add_category";
-  static const String editCategoryUri = "${URLs.baseUrl}/edit_category";
-  static const String deleteCategoryUri = "${URLs.baseUrl}/delete_category";
+  static const String categoryRoute = "category";
+  static const String categoryListUri = "${URLs.baseUrl}/${URLs.categoryRoute}/category_list";
+  static const String addCategoryUri = "${URLs.baseUrl}/${URLs.categoryRoute}/add_category";
+  static const String editCategoryUri = "${URLs.baseUrl}/${URLs.categoryRoute}/edit_category";
+  static const String deleteCategoryUri = "${URLs.baseUrl}/${URLs.categoryRoute}/delete_category";
 
   ///DashBoard
-  static const String adminDashboardUri = "${URLs.baseUrl}/admin_dashboard";
+  static const String adminDashboardUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_dashboard";
 }
 
 class Consts {

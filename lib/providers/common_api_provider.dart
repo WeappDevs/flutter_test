@@ -42,7 +42,7 @@ class ApiProvider {
           return null;
         } else if (response.statusCode == 401) {
           // Block by the admin(Authentication failed).
-          nullErrorToast();
+          onAuthFailed();
           return null;
         } else if (response.statusCode == 404) {
           //for if there is no data found or something went wrong
