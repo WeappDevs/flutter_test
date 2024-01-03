@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:admin_web_app/providers/compression_provider.dart';
 import 'package:admin_web_app/providers/internet_provider.dart';
 import 'package:admin_web_app/utils/common_componets/common_toast.dart';
 import 'package:admin_web_app/utils/consts.dart';
@@ -19,7 +21,8 @@ class ApiProvider {
     // final hasInternet = await checkInternet();
     if (true == true) {
       try {
-        final response = await http.post(Uri.parse(url), body: bodyData, headers: header);
+        final response =
+            await http.post(Uri.parse(url), body: bodyData, headers: header);
 
         if (response.statusCode == 200) {
           if (isPrintResponse == true) {
@@ -27,6 +30,11 @@ class ApiProvider {
             debugPrint("RowBody: $bodyData");
             debugPrint("StatusCode: ${response.statusCode.toString()}");
             debugPrint("Body: ${response.body.toString()}");
+            log(
+              JsonEncoder.withIndent(" " * 4)
+                  .convert(json.decode(response.body)),
+              name: 'commonProvider',
+            );
           }
 
           dynamic data = json.decode(response.body);
@@ -90,22 +98,29 @@ class ApiProvider {
         request.headers.addAll(header);
       }
 
-      for (var file in files) {
-        // var stream = http.ByteStream(file.openRead());
-        // var length = await file.length();
-        var multipartFile = http.MultipartFile.fromBytes(fieldName, file, filename: "file_image.jpeg");
-        request.files.add(multipartFile);
-      }
-
       for (var key in body.keys) {
         if (body[key] != null) {
           request.fields[key] = body[key].toString();
         }
       }
 
+      //Image Handling
+      List<Uint8List> fileList = await CompressionProvider.instance
+          .compressImageBytesList(byteList: files);
+
+      for (var file in fileList) {
+        // var stream = http.ByteStream(file.openRead());
+        // var length = await file.length();
+        var multipartFile = http.MultipartFile.fromBytes(fieldName, file,
+            filename: "file_image.jpeg");
+        request.files.add(multipartFile);
+      }
+
       //For Use in Upload Media API
       if (otherFiles != null && otherFieldName != null) {
-        var multipartFile = http.MultipartFile.fromBytes(otherFieldName, otherFiles, filename: "file_video.mp4");
+        var multipartFile = http.MultipartFile.fromBytes(
+            otherFieldName, otherFiles,
+            filename: "file_video.mp4");
         request.files.add(multipartFile);
       }
 
@@ -120,6 +135,11 @@ class ApiProvider {
             debugPrint("RowBody: $body");
             debugPrint("StatusCode: ${respond.statusCode.toString()}");
             debugPrint("Body: ${respond.body.toString()}");
+            log(
+              JsonEncoder.withIndent(" " * 4)
+                  .convert(json.decode(respond.body)),
+              name: 'commonProvider',
+            );
           }
           dynamic data = json.decode(respond.body);
 
@@ -160,6 +180,24 @@ class ApiProvider {
     }
   }
 
+  static Map<String, String> commonHeader() {
+    ///Test Header
+    // Map<String, dynamic> headerData = {
+    //   Consts.authKey:
+    //       '${Consts.bearerKey} eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
+    // };
+
+    /// Release Header
+    Map<String, String> headerData = {
+      Consts.authKey:
+          '${Consts.bearerKey} ${Consts.userModel?.data?.token ?? ""}'
+    };
+
+    debugPrint("headerData: $headerData");
+
+    return headerData;
+  }
+
   static void onTokenNotFound() {
     debugPrint("onTokenNotFound -------------------->");
     Get.rootDelegate.offAndToNamed(RouteNames.kSignInScreenRoute);
@@ -174,20 +212,5 @@ class ApiProvider {
     debugPrint("onAuthFailed -------------------->");
     MyToasts.errorToast(toast: "Authentication failed.");
     Get.rootDelegate.toNamed(RouteNames.kSignInScreenRoute);
-  }
-
-  static Map<String, String> commonHeader() {
-    ///Test Header
-    // Map<String, dynamic> headerData = {
-    //   Consts.authKey:
-    //       '${Consts.bearerKey} eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-    // };
-
-    /// Release Header
-    Map<String, String> headerData = {Consts.authKey: '${Consts.bearerKey} ${Consts.userModel?.data?.token ?? ""}'};
-
-    debugPrint("headerData: $headerData");
-
-    return headerData;
   }
 }
