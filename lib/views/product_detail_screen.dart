@@ -55,265 +55,275 @@ class ProductDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           Obx(() {
-            return (controller.isViewProductLoading.value != true ||
-                    controller.productDetailModel.value != null &&
+            return (controller.isViewProductLoading.value != true)
+                ? (controller.productDetailModel.value != null &&
                         controller.productDetailModel.value?.data?.value != null)
-                ? Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          STxt(
-                            txt: "Visual Details",
-                            style: CustomTextStyle.infoHeadingStyle,
-                          ),
-                          const SizedBox(height: 20),
-                          (controller.productDetailModel.value?.data?.value?.visualDetails != null &&
-                                  controller.productDetailModel.value?.data?.value?.visualDetails?.isEmpty != true)
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Wrap(
-                                      spacing: 10,
-                                      runSpacing: 10,
-                                      children: List.generate(controller.vMediaTabListModel.length, (index) {
-                                        VMediaTabModel element = controller.vMediaTabListModel[index];
-
-                                        return Padding(
-                                          padding: const EdgeInsets.only(right: 0),
-                                          child: Obx(() => Chip(
-                                                backgroundColor:
-                                                    (element.isSelected.value == true) ? Clr.primaryColor : null,
-                                                label: Text("VM NO: ${element.index + 1}"),
-                                                deleteIcon: Icon((element.isSelected.value == true)
-                                                    ? Icons.check_circle_rounded
-                                                    : Icons.check_circle_outline_rounded),
-                                                onDeleted: () {
-                                                  controller.onVMediaChangedBtnTapped(ele: element);
-                                                },
-                                                deleteButtonTooltipMessage: "Select",
-                                              )),
-                                        );
-                                      }),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              STxt(
+                                txt: "Visual Details",
+                                style: CustomTextStyle.infoHeadingStyle,
+                              ),
+                              const SizedBox(height: 20),
+                              (controller.productDetailModel.value?.data?.value?.visualDetails != null &&
+                                      controller.productDetailModel.value?.data?.value?.visualDetails?.isEmpty != true)
+                                  ? Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Obx(() => Column(
-                                              children: [
-                                                InkWell(
-                                                  onTap: controller.onVideoTapped,
-                                                  child: Container(
-                                                    height: 70,
-                                                    width: 70,
-                                                    color: Clr.imageBGClr,
-                                                    padding: const EdgeInsets.all(15),
-                                                    child: Image.asset(LocalPNG.playIcon),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                for (String imageURL in controller
-                                                        .selectedVMediaTabModel.value?.visualDetails.productImages ??
-                                                    []) ...[
-                                                  InkWell(
-                                                    onTap: () {
-                                                      controller.onImageTapped(image: imageURL);
+                                        Wrap(
+                                          spacing: 10,
+                                          runSpacing: 10,
+                                          children: List.generate(controller.vMediaTabListModel.length, (index) {
+                                            VMediaTabModel element = controller.vMediaTabListModel[index];
+
+                                            return Padding(
+                                              padding: const EdgeInsets.only(right: 0),
+                                              child: Obx(() => Chip(
+                                                    backgroundColor:
+                                                        (element.isSelected.value == true) ? Clr.primaryColor : null,
+                                                    label: Text("VM NO: ${element.index + 1}"),
+                                                    deleteIcon: Icon((element.isSelected.value == true)
+                                                        ? Icons.check_circle_rounded
+                                                        : Icons.check_circle_outline_rounded),
+                                                    onDeleted: () {
+                                                      controller.onVMediaChangedBtnTapped(ele: element);
                                                     },
-                                                    child: Container(
-                                                      height: 70,
-                                                      width: 70,
-                                                      color: Clr.imageBGClr,
-                                                      child: Image.network(
-                                                        imageURL,
-                                                        fit: BoxFit.cover,
+                                                    deleteButtonTooltipMessage: "Select",
+                                                  )),
+                                            );
+                                          }),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Obx(() => Column(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: controller.onVideoTapped,
+                                                      child: Container(
+                                                        height: 70,
+                                                        width: 70,
+                                                        color: Clr.imageBGClr,
+                                                        padding: const EdgeInsets.all(15),
+                                                        child: Image.asset(LocalPNG.playIcon),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                ]
-                                              ],
-                                            )),
-                                        const SizedBox(width: 20),
-                                        Obx(() => (controller.selectedVMediaTabModel.value?.isVideoSelected?.value ==
-                                                true)
-                                            ? Container(
-                                                height: 500,
-                                                width: 500,
-                                                color: Clr.imageBGClr,
-                                                child: Obx(() => MiniVideoView(
-                                                    isNotMute: true,
-                                                    netImageURL: (controller
-                                                                .selectedVMediaTabModel.value?.isVideoSelected?.value ==
-                                                            true)
-                                                        ? controller
-                                                            .selectedVMediaTabModel.value?.selectedMediaPath.value
-                                                        : null)),
-                                              )
-                                            : Container(
-                                                height: 500,
-                                                width: 500,
-                                                color: Clr.imageBGClr,
-                                                child: Image.network(
-                                                  controller.selectedVMediaTabModel.value?.selectedMediaPath.value ??
-                                                      "",
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )),
-                                        const SizedBox(width: 30),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              color: Clr.whiteColor,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                STxt(
-                                                  txt: "Media Inner Details",
-                                                  style: CustomTextStyle.infoHeadingStyle,
-                                                ),
-                                                const SizedBox(height: 10),
-                                                if (controller.productDetailModel.value?.data?.value?.visualDetails
-                                                        ?.isNotEmpty ??
-                                                    false) ...[
-                                                  for (VisualDetails ele in controller
-                                                          .productDetailModel.value?.data?.value?.visualDetails ??
-                                                      []) ...[
-                                                    Column(
-                                                      children: ele.toJson().entries.map((element) {
-                                                        return Padding(
-                                                          padding: const EdgeInsets.only(top: 5),
-                                                          child: SizedBox(
-                                                            width: double.infinity,
-                                                            child: Row(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 3,
-                                                                    child: STxt(
-                                                                        txt: (element.value is List &&
-                                                                                element.value.length != 0)
-                                                                            ? "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (List_${element.value.length})"
-                                                                            : element.key
-                                                                                .replaceAll("_", " ")
-                                                                                .toString()
-                                                                                .trimLeft()
-                                                                                .capitalize
-                                                                                .toString(),
-                                                                        style: const TextStyle(color: Clr.greyColor))),
-                                                                const SizedBox(width: 10),
-                                                                Expanded(
-                                                                  flex: 9,
-                                                                  child: (element.value is List)
-                                                                      ? (element.value.length != 0)
-                                                                          ? Column(
-                                                                              crossAxisAlignment:
-                                                                                  CrossAxisAlignment.start,
-                                                                              children: List.generate(
-                                                                                  element.value.length,
-                                                                                  (index) => (element.value[index]
-                                                                                              .runtimeType ==
-                                                                                          String)
-                                                                                      ? (element.value[index]
-                                                                                                  ?.toString()
-                                                                                                  .isLink ==
-                                                                                              true)
-                                                                                          ? HoverTextUnderlineButton(
-                                                                                              btnText: element
-                                                                                                      .value[index] ??
-                                                                                                  "-",
-                                                                                              callBack: () {
-                                                                                                controller
-                                                                                                    .onUrlOpenCalled(
-                                                                                                        url: element
-                                                                                                                .value[
-                                                                                                            index]);
-                                                                                              },
-                                                                                              isLoading: false.obs,
-                                                                                            )
-                                                                                          : STxt(
-                                                                                              txt: element
-                                                                                                      .value[index] ??
-                                                                                                  "-")
-                                                                                      : STxt(
-                                                                                          txt: element.value
-                                                                                                  ?.toString() ??
-                                                                                              "-")),
-                                                                            )
-                                                                          : const STxt(txt: "-")
-                                                                      : (element.value is String &&
-                                                                              element.value?.toString().isLink == true)
-                                                                          ? HoverTextUnderlineButton(
-                                                                              btnText: element.value ?? "-",
-                                                                              callBack: () {
-                                                                                controller.onUrlOpenCalled(
-                                                                                    url: element.value);
-                                                                              },
-                                                                              isLoading: false.obs,
-                                                                            )
-                                                                          : STxt(txt: element.value?.toString() ?? "-"),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                    const SizedBox(height: 10),
+                                                    for (String imageURL in controller.selectedVMediaTabModel.value
+                                                            ?.visualDetails.productImages ??
+                                                        []) ...[
+                                                      InkWell(
+                                                        onTap: () {
+                                                          controller.onImageTapped(image: imageURL);
+                                                        },
+                                                        child: Container(
+                                                          height: 70,
+                                                          width: 70,
+                                                          color: Clr.imageBGClr,
+                                                          child: Image.network(
+                                                            imageURL,
+                                                            fit: BoxFit.cover,
                                                           ),
-                                                        );
-                                                      }).toList(),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 10),
+                                                    ]
+                                                  ],
+                                                )),
+                                            const SizedBox(width: 20),
+                                            Obx(() =>
+                                                (controller.selectedVMediaTabModel.value?.isVideoSelected?.value ==
+                                                        true)
+                                                    ? Container(
+                                                        height: 500,
+                                                        width: 500,
+                                                        color: Clr.imageBGClr,
+                                                        child: Obx(() => MiniVideoView(
+                                                            isNotMute: true,
+                                                            netImageURL: (controller.selectedVMediaTabModel.value
+                                                                        ?.isVideoSelected?.value ==
+                                                                    true)
+                                                                ? controller.selectedVMediaTabModel.value
+                                                                    ?.selectedMediaPath.value
+                                                                : null)),
+                                                      )
+                                                    : Container(
+                                                        height: 500,
+                                                        width: 500,
+                                                        color: Clr.imageBGClr,
+                                                        child: Image.network(
+                                                          controller.selectedVMediaTabModel.value?.selectedMediaPath
+                                                                  .value ??
+                                                              "",
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      )),
+                                            const SizedBox(width: 30),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: Clr.whiteColor,
+                                                ),
+                                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    STxt(
+                                                      txt: "Media Inner Details",
+                                                      style: CustomTextStyle.infoHeadingStyle,
                                                     ),
-                                                  ]
-                                                ] else ...[
-                                                  const EmptyView()
-                                                ]
-                                              ],
+                                                    const SizedBox(height: 10),
+                                                    if (controller.productDetailModel.value?.data?.value?.visualDetails
+                                                            ?.isNotEmpty ??
+                                                        false) ...[
+                                                      for (VisualDetails ele in controller
+                                                              .productDetailModel.value?.data?.value?.visualDetails ??
+                                                          []) ...[
+                                                        Column(
+                                                          children: ele.toJson().entries.map((element) {
+                                                            return Padding(
+                                                              padding: const EdgeInsets.only(top: 5),
+                                                              child: SizedBox(
+                                                                width: double.infinity,
+                                                                child: Row(
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Expanded(
+                                                                        flex: 3,
+                                                                        child: STxt(
+                                                                            txt: (element.value is List &&
+                                                                                    element.value.length != 0)
+                                                                                ? "${element.key.replaceAll("_", " ").toString().trimLeft().capitalize} (List_${element.value.length})"
+                                                                                : element.key
+                                                                                    .replaceAll("_", " ")
+                                                                                    .toString()
+                                                                                    .trimLeft()
+                                                                                    .capitalize
+                                                                                    .toString(),
+                                                                            style:
+                                                                                const TextStyle(color: Clr.greyColor))),
+                                                                    const SizedBox(width: 10),
+                                                                    Expanded(
+                                                                      flex: 9,
+                                                                      child: (element.value is List)
+                                                                          ? (element.value.length != 0)
+                                                                              ? Column(
+                                                                                  crossAxisAlignment:
+                                                                                      CrossAxisAlignment.start,
+                                                                                  children: List.generate(
+                                                                                      element.value.length,
+                                                                                      (index) => (element.value[index]
+                                                                                                  .runtimeType ==
+                                                                                              String)
+                                                                                          ? (element.value[index]
+                                                                                                      ?.toString()
+                                                                                                      .isLink ==
+                                                                                                  true)
+                                                                                              ? HoverTextUnderlineButton(
+                                                                                                  btnText:
+                                                                                                      element.value[
+                                                                                                              index] ??
+                                                                                                          "-",
+                                                                                                  callBack: () {
+                                                                                                    controller
+                                                                                                        .onUrlOpenCalled(
+                                                                                                            url: element
+                                                                                                                    .value[
+                                                                                                                index]);
+                                                                                                  },
+                                                                                                  isLoading: false.obs,
+                                                                                                )
+                                                                                              : STxt(
+                                                                                                  txt: element.value[
+                                                                                                          index] ??
+                                                                                                      "-")
+                                                                                          : STxt(
+                                                                                              txt: element.value
+                                                                                                      ?.toString() ??
+                                                                                                  "-")),
+                                                                                )
+                                                                              : const STxt(txt: "-")
+                                                                          : (element.value is String &&
+                                                                                  element.value?.toString().isLink ==
+                                                                                      true)
+                                                                              ? HoverTextUnderlineButton(
+                                                                                  btnText: element.value ?? "-",
+                                                                                  callBack: () {
+                                                                                    controller.onUrlOpenCalled(
+                                                                                        url: element.value);
+                                                                                  },
+                                                                                  isLoading: false.obs,
+                                                                                )
+                                                                              : STxt(
+                                                                                  txt:
+                                                                                      element.value?.toString() ?? "-"),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }).toList(),
+                                                        ),
+                                                      ]
+                                                    ] else ...[
+                                                      const EmptyView()
+                                                    ]
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
-                                    ),
-                                  ],
-                                )
-                              : const EmptyView()
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Clr.whiteColor,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    )
+                                  : const EmptyView()
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Clr.whiteColor,
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                STxt(
-                                  txt: "All Details",
-                                  style: CustomTextStyle.infoHeadingStyle,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    STxt(
+                                      txt: "All Details",
+                                      style: CustomTextStyle.infoHeadingStyle,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          Clipboard.setData(ClipboardData(
+                                              text: controller.productDetailModel.value?.data?.value
+                                                      ?.toJson()
+                                                      .toString() ??
+                                                  "No data"));
+                                          MyToasts.successToast(toast: "Data Copied Successfully.");
+                                        },
+                                        icon: const Icon(Icons.content_copy_rounded))
+                                  ],
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      Clipboard.setData(ClipboardData(
-                                          text: controller.productDetailModel.value?.data?.value?.toJson().toString() ??
-                                              "No data"));
-                                      MyToasts.successToast(toast: "Data Copied Successfully.");
-                                    },
-                                    icon: const Icon(Icons.content_copy_rounded))
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            NestedRowBuilder(
-                              data: controller.productDetailModel.value?.data?.value?.toJson() ?? <String, dynamic>{},
-                            ),
-                            /*Column(
+                                const SizedBox(height: 10),
+                                NestedRowBuilder(
+                                  data:
+                                      controller.productDetailModel.value?.data?.value?.toJson() ?? <String, dynamic>{},
+                                ),
+                                /*Column(
                               children: controller.productDetailModel.value?.data?.value
                                       ?.toJson()
                                       .entries
@@ -350,242 +360,246 @@ class ProductDetailScreen extends StatelessWidget {
                                   }).toList() ??
                                   <Widget>[],
                             ),*/
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Clr.whiteColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  STxt(
-                                    txt: "Basic Details",
-                                    style: CustomTextStyle.infoHeadingStyle,
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Clr.whiteColor,
                                   ),
-                                  const SizedBox(height: 10),
-                                  Column(
-                                    children: controller.productDetailModel.value?.data?.value
-                                            ?.toJson()
-                                            .entries
-                                            .map((element) {
-                                          return (element.value.runtimeType == String ||
-                                                  element.value.runtimeType == num ||
-                                                  element.value.runtimeType == int ||
-                                                  element.value.runtimeType == bool)
-                                              ? Padding(
-                                                  padding: const EdgeInsets.only(top: 5),
-                                                  child: SizedBox(
-                                                    width: double.infinity,
-                                                    child: Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Expanded(
-                                                            flex: 3,
-                                                            child: STxt(
-                                                                txt: element.key
-                                                                    .replaceAll("_", " ")
-                                                                    .toString()
-                                                                    .trimLeft()
-                                                                    .capitalize
-                                                                    .toString(),
-                                                                style: const TextStyle(color: Clr.greyColor))),
-                                                        const SizedBox(width: 10),
-                                                        Expanded(
-                                                            flex: 9,
-                                                            child: STxt(txt: element.value?.toString() ?? "-")),
-                                                        // Expanded(flex: 3, child: STxt(txt:element.value?.runtimeType.toString() ?? "-")),
-                                                      ],
-                                                    ),
+                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      STxt(
+                                        txt: "Basic Details",
+                                        style: CustomTextStyle.infoHeadingStyle,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        children: controller.productDetailModel.value?.data?.value
+                                                ?.toJson()
+                                                .entries
+                                                .map((element) {
+                                              return (element.value.runtimeType == String ||
+                                                      element.value.runtimeType == num ||
+                                                      element.value.runtimeType == int ||
+                                                      element.value.runtimeType == bool)
+                                                  ? Padding(
+                                                      padding: const EdgeInsets.only(top: 5),
+                                                      child: SizedBox(
+                                                        width: double.infinity,
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Expanded(
+                                                                flex: 3,
+                                                                child: STxt(
+                                                                    txt: element.key
+                                                                        .replaceAll("_", " ")
+                                                                        .toString()
+                                                                        .trimLeft()
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: const TextStyle(color: Clr.greyColor))),
+                                                            const SizedBox(width: 10),
+                                                            Expanded(
+                                                                flex: 9,
+                                                                child: STxt(txt: element.value?.toString() ?? "-")),
+                                                            // Expanded(flex: 3, child: STxt(txt:element.value?.runtimeType.toString() ?? "-")),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox();
+                                            }).toList() ??
+                                            <Widget>[const EmptyView()],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 30),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Clr.whiteColor,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      STxt(
+                                        txt: "Additional Details",
+                                        style: CustomTextStyle.infoHeadingStyle,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        children: controller.productDetailModel.value?.data?.value?.additionalDetails
+                                                ?.toJson()
+                                                .entries
+                                                .map((element) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(top: 5),
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 3,
+                                                          child: STxt(
+                                                              txt: element.key
+                                                                  .replaceAll("_", " ")
+                                                                  .toString()
+                                                                  .trimLeft()
+                                                                  .capitalize
+                                                                  .toString(),
+                                                              style: const TextStyle(color: Clr.greyColor))),
+                                                      const SizedBox(width: 10),
+                                                      Expanded(
+                                                          flex: 9, child: STxt(txt: element.value?.toString() ?? "-")),
+                                                    ],
                                                   ),
-                                                )
-                                              : const SizedBox();
-                                        }).toList() ??
-                                        <Widget>[const EmptyView()],
+                                                ),
+                                              );
+                                            }).toList() ??
+                                            <Widget>[const EmptyView()],
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          const SizedBox(width: 30),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Clr.whiteColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  STxt(
-                                    txt: "Additional Details",
-                                    style: CustomTextStyle.infoHeadingStyle,
+                          const SizedBox(height: 30),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Clr.whiteColor,
                                   ),
-                                  const SizedBox(height: 10),
-                                  Column(
-                                    children: controller.productDetailModel.value?.data?.value?.additionalDetails
-                                            ?.toJson()
-                                            .entries
-                                            .map((element) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(top: 5),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                      flex: 3,
-                                                      child: STxt(
-                                                          txt: element.key
-                                                              .replaceAll("_", " ")
-                                                              .toString()
-                                                              .trimLeft()
-                                                              .capitalize
-                                                              .toString(),
-                                                          style: const TextStyle(color: Clr.greyColor))),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(flex: 9, child: STxt(txt: element.value?.toString() ?? "-")),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }).toList() ??
-                                        <Widget>[const EmptyView()],
+                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      STxt(
+                                        txt: "Diamond Details",
+                                        style: CustomTextStyle.infoHeadingStyle,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        children: controller.productDetailModel.value?.data?.value?.diamondDetails
+                                                ?.toJson()
+                                                .entries
+                                                .map((element) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(top: 5),
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: STxt(
+                                                              txt: element.key
+                                                                  .replaceAll("_", " ")
+                                                                  .toString()
+                                                                  .trimLeft()
+                                                                  .capitalize
+                                                                  .toString(),
+                                                              style: const TextStyle(color: Clr.greyColor))),
+                                                      const SizedBox(width: 10),
+                                                      Expanded(
+                                                          flex: 4, child: STxt(txt: element.value?.toString() ?? "-")),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList() ??
+                                            <Widget>[const EmptyView()],
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              const SizedBox(width: 30),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Clr.whiteColor,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      STxt(
+                                        txt: "Side Diamond Details",
+                                        style: CustomTextStyle.infoHeadingStyle,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        children: controller.productDetailModel.value?.data?.value?.sideDiamondDetails
+                                                ?.toJson()
+                                                .entries
+                                                .map((element) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(top: 5),
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: STxt(
+                                                              txt: element.key
+                                                                  .replaceAll("_", " ")
+                                                                  .toString()
+                                                                  .trimLeft()
+                                                                  .capitalize
+                                                                  .toString(),
+                                                              style: const TextStyle(color: Clr.greyColor))),
+                                                      const SizedBox(width: 10),
+                                                      Expanded(
+                                                          flex: 4, child: STxt(txt: element.value?.toString() ?? "-")),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList() ??
+                                            <Widget>[const EmptyView()],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                          const SizedBox(height: 30),
                         ],
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Clr.whiteColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  STxt(
-                                    txt: "Diamond Details",
-                                    style: CustomTextStyle.infoHeadingStyle,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Column(
-                                    children: controller.productDetailModel.value?.data?.value?.diamondDetails
-                                            ?.toJson()
-                                            .entries
-                                            .map((element) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(top: 5),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                      flex: 2,
-                                                      child: STxt(
-                                                          txt: element.key
-                                                              .replaceAll("_", " ")
-                                                              .toString()
-                                                              .trimLeft()
-                                                              .capitalize
-                                                              .toString(),
-                                                          style: const TextStyle(color: Clr.greyColor))),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(flex: 4, child: STxt(txt: element.value?.toString() ?? "-")),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }).toList() ??
-                                        <Widget>[const EmptyView()],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 30),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Clr.whiteColor,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  STxt(
-                                    txt: "Side Diamond Details",
-                                    style: CustomTextStyle.infoHeadingStyle,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Column(
-                                    children: controller.productDetailModel.value?.data?.value?.sideDiamondDetails
-                                            ?.toJson()
-                                            .entries
-                                            .map((element) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(top: 5),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                      flex: 2,
-                                                      child: STxt(
-                                                          txt: element.key
-                                                              .replaceAll("_", " ")
-                                                              .toString()
-                                                              .trimLeft()
-                                                              .capitalize
-                                                              .toString(),
-                                                          style: const TextStyle(color: Clr.greyColor))),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(flex: 4, child: STxt(txt: element.value?.toString() ?? "-")),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }).toList() ??
-                                        <Widget>[const EmptyView()],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                    ],
-                  )
+                      )
+                    : const EmptyView()
                 : Center(child: LoadingAnimationWidget.fallingDot(color: Clr.blackColor, size: 32)).paddingAll(20);
           })
         ],

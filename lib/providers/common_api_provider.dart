@@ -21,8 +21,7 @@ class ApiProvider {
     // final hasInternet = await checkInternet();
     if (true == true) {
       try {
-        final response =
-            await http.post(Uri.parse(url), body: bodyData, headers: header);
+        final response = await http.post(Uri.parse(url), body: bodyData, headers: header);
 
         if (response.statusCode == 200) {
           if (isPrintResponse == true) {
@@ -30,11 +29,10 @@ class ApiProvider {
             debugPrint("RowBody: $bodyData");
             debugPrint("StatusCode: ${response.statusCode.toString()}");
             debugPrint("Body: ${response.body.toString()}");
-            log(
-              JsonEncoder.withIndent(" " * 4)
-                  .convert(json.decode(response.body)),
-              name: 'commonProvider',
-            );
+            // log(
+            //   JsonEncoder.withIndent(" " * 4).convert(json.decode(response.body)),
+            //   name: 'commonProvider',
+            // );
           }
 
           dynamic data = json.decode(response.body);
@@ -105,22 +103,20 @@ class ApiProvider {
       }
 
       //Image Handling
-      List<Uint8List> fileList = await CompressionProvider.instance
-          .compressImageBytesList(byteList: files);
+      // List<Uint8List> fileList = await CompressionProvider.instance.compressImageBytesList(byteList: files);
+      //
+      // debugPrint("fileList Length: ${fileList.length}");
 
-      for (var file in fileList) {
+      for (var file in files) {
         // var stream = http.ByteStream(file.openRead());
         // var length = await file.length();
-        var multipartFile = http.MultipartFile.fromBytes(fieldName, file,
-            filename: "file_image.jpeg");
+        var multipartFile = http.MultipartFile.fromBytes(fieldName, file, filename: "file_image.jpeg");
         request.files.add(multipartFile);
       }
 
       //For Use in Upload Media API
       if (otherFiles != null && otherFieldName != null) {
-        var multipartFile = http.MultipartFile.fromBytes(
-            otherFieldName, otherFiles,
-            filename: "file_video.mp4");
+        var multipartFile = http.MultipartFile.fromBytes(otherFieldName, otherFiles, filename: "file_video.mp4");
         request.files.add(multipartFile);
       }
 
@@ -135,11 +131,10 @@ class ApiProvider {
             debugPrint("RowBody: $body");
             debugPrint("StatusCode: ${respond.statusCode.toString()}");
             debugPrint("Body: ${respond.body.toString()}");
-            log(
-              JsonEncoder.withIndent(" " * 4)
-                  .convert(json.decode(respond.body)),
-              name: 'commonProvider',
-            );
+            // log(
+            //   JsonEncoder.withIndent(" " * 4).convert(json.decode(respond.body)),
+            //   name: 'commonProvider',
+            // );
           }
           dynamic data = json.decode(respond.body);
 
@@ -188,10 +183,7 @@ class ApiProvider {
     // };
 
     /// Release Header
-    Map<String, String> headerData = {
-      Consts.authKey:
-          '${Consts.bearerKey} ${Consts.userModel?.data?.token ?? ""}'
-    };
+    Map<String, String> headerData = {Consts.authKey: '${Consts.bearerKey} ${Consts.userModel?.data?.token ?? ""}'};
 
     debugPrint("headerData: $headerData");
 

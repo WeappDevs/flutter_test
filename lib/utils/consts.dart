@@ -26,7 +26,7 @@ class URLs {
   static const String adminResetPasswordUri = "${URLs.baseUrl}/${URLs.authRoute}/admin_reset_password";
 
   ///Jewelery Operations
-  static const String jewelleryRoute = "jewellery";
+  static const String jewelleryRoute = "engagement";
   static const String addJewelleryUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/add_jewellery";
   static const String jewelleryListUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/jewellery_list";
   static const String jewelleryDetailsUri = "${URLs.baseUrl}/${URLs.jewelleryRoute}/jewellery_details";
@@ -128,6 +128,7 @@ class Consts {
   static const String claspTypeKey = "clasp_type";
   static const String jewelleryIdKey = "jewellery_id";
   static const String inWaitingKey = "in_waiting";
+  static const String deletedMediaIdsKey = "deleted_media_ids ";
 
   ///Search API
   static const String searchNameKey = "search_name";

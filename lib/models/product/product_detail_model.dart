@@ -56,6 +56,7 @@ class PData {
   final List<VisualDetails>? visualDetails;
   final num? averageRating;
   final bool? isDeleted;
+  final bool? inWaiting;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -77,6 +78,7 @@ class PData {
     this.visualDetails,
     this.averageRating,
     this.isDeleted,
+    this.inWaiting,
     this.createdAt,
     this.updatedAt,
   });
@@ -103,6 +105,7 @@ class PData {
             : List<VisualDetails>.from(json["visual_details"]!.map((x) => VisualDetails.fromJson(x))),
         averageRating: json["average_rating"],
         isDeleted: json["is_deleted"],
+        inWaiting: json["in_waiting"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
       );
@@ -126,6 +129,7 @@ class PData {
             visualDetails == null ? [] : List<Map<String, dynamic>>.from(visualDetails!.map((x) => x.toJson())),
         "average_rating": averageRating,
         "is_deleted": isDeleted,
+        "in_waiting": inWaiting,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
       };

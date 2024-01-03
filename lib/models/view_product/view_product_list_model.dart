@@ -31,8 +31,8 @@ class ViewProductListModel {
         success: json["success"],
         statuscode: json["statuscode"],
         message: json["message"],
-        totalNumberOfData: json["total_number_of_data"],
-        currentPage: json["current_page"],
+        totalNumberOfData: json["total_number_of_data"] ?? 0,
+        currentPage: json["current_page"] ?? "1",
         data:
             json["data"] == null ? <VDatum>[].obs : List<VDatum>.from(json["data"]!.map((x) => VDatum.fromJson(x))).obs,
       );
