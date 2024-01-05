@@ -24,7 +24,7 @@ class OTPVerificationController extends GetxController {
 
       dynamic data = await ApiProvider.commonProvider(
         url: URLs.adminVerifyOtpUri,
-        bodyData: passData,
+        body: passData,
       );
 
       if (data != null) {
@@ -53,7 +53,7 @@ class OTPVerificationController extends GetxController {
 
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.adminSendOtpUri,
-      bodyData: passData,
+      body: passData,
     );
 
     if (data != null) {

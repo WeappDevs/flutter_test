@@ -236,6 +236,8 @@ class CommonTextField extends StatelessWidget {
         return isEmptyText ?? ValidateStr.skuEmptyValidator;
       } else if (value.length < 20) {
         return ValidateStr.skuLengthValidator;
+      } else if (value.contains(RegexValidation.instance.kSKUValid) == false) {
+        return ValidateStr.skuValidValidator;
       }
       return null;
     } else if (validateType == Validate.OTP) {

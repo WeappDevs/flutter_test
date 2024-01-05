@@ -64,7 +64,6 @@ class Consts {
   static const String necklaceKey = "Necklace";
   static const String braceletKey = "Bracelet";
   static const String diamondKey = "Diamond";
-  static const String customKey = "Custom";
 
   ///Tab Index
   static const int dashBoardIndex = 0;

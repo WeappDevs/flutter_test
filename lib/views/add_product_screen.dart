@@ -972,6 +972,51 @@ class AddProductScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 30),
                                     ]
+
+                                    ///Diamond or Other Category Details Handling..................................................
+                                    else ...[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Clr.whiteColor,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Additional Details",
+                                                  style: CustomTextStyle.infoHeadingStyle,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                const Tooltip(
+                                                  message:
+                                                      "Please consider providing additional details to enhance\nthe customer's understanding of the product.",
+                                                  child: Icon(
+                                                    Icons.info_rounded,
+                                                    color: Clr.darkGreyColor,
+                                                    size: 17,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Text(
+                                              "Product SKU(Stock Keeping Unit)",
+                                              style: CustomTextStyle.fieldTitleStyle,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            CommonTextField(
+                                              controller: controller.skuController,
+                                              validateType: Validate.SKU,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 30),
+                                    ]
                                   ],
                                 );
                               }),

@@ -48,7 +48,7 @@ class SignInController extends GetxController {
       ///API Calling
       dynamic data = await ApiProvider.commonProvider(
         url: URLs.adminLoginUri,
-        bodyData: passingData,
+        body: passingData,
       );
 
       if (data != null) {
@@ -102,7 +102,7 @@ class SignInController extends GetxController {
 
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.adminSendOtpUri,
-      bodyData: passData,
+      body: passData,
     );
 
     if (data != null) {

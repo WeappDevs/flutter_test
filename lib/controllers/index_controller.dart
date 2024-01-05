@@ -268,7 +268,7 @@ class IndexController extends GetxController {
 
                 dynamic data = await ApiProvider.commonProvider(
                   url: URLs.adminChangePasswordUri,
-                  bodyData: bodyData,
+                  body: bodyData,
                   header: ApiProvider.commonHeader(),
                 );
 
@@ -363,7 +363,7 @@ class IndexController extends GetxController {
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.jewelleryListUri,
-      bodyData: passData,
+      body: passData,
     );
 
     if (data != null) {
@@ -375,6 +375,8 @@ class IndexController extends GetxController {
             totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 0, pageLength: productPageLength);
       } else {
         debugPrint("API Success is false: ${viewProductListModel.value?.message}");
+        getPageLength(
+            totalNumberOfData: viewProductListModel.value?.totalNumberOfData ?? 0, pageLength: productPageLength);
         // MyToasts.errorToast(toast: viewProductListModel.value?.message.toString() ?? "");
       }
     } else {
@@ -491,7 +493,7 @@ class IndexController extends GetxController {
         dynamic data = await ApiProvider.commonProvider(
           url: URLs.deleteJewelleryUri,
           header: ApiProvider.commonHeader(),
-          bodyData: passingData,
+          body: passingData,
         );
 
         if (data != null) {
@@ -527,7 +529,7 @@ class IndexController extends GetxController {
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.inWaitingJewelleryUri,
-      bodyData: passingData,
+      body: passingData,
       header: ApiProvider.commonHeader(),
     );
 
@@ -566,7 +568,7 @@ class IndexController extends GetxController {
         ///API Calling
         dynamic data = await ApiProvider.commonProvider(
           url: URLs.jewelleryDetailsUri,
-          bodyData: passingData,
+          body: passingData,
           header: ApiProvider.commonHeader(),
         );
 
@@ -609,7 +611,7 @@ class IndexController extends GetxController {
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.jewelleryDetailsUri,
-      bodyData: passingData,
+      body: passingData,
       header: ApiProvider.commonHeader(),
     );
 
@@ -1941,6 +1943,8 @@ class IndexController extends GetxController {
         additionalData.addInnerParamsIfNotNull(key: Consts.braceletLengthKey, value: braceletLengthController.text);
         additionalData.addInnerParamsIfNotNull(key: Consts.braceletWidthKey, value: braceletWidthController.text);
         additionalData.addInnerParamsIfNotNull(key: Consts.claspTypeKey, value: selectedClaspType.value);
+      } else {
+        additionalData.addInnerParamsIfNotNull(key: Consts.productSkuKey, value: skuController.text);
       }
 
       if (additionalData.isNotEmpty) {
@@ -2028,16 +2032,12 @@ class IndexController extends GetxController {
       ///API Calling
       dynamic data = await ApiProvider.commonProvider(
         url: (jewelID != null && jewelID.isEmpty != true) ? URLs.editJewelleryUri : URLs.addJewelleryUri,
-        bodyData: passingData,
-        header: {
-          "Authorization":
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzg5ZmE4MGIxZTYyODMxODgyMjI3MiIsImlhdCI6MTcwMjQwNDAwOH0.8aHdi6qHLMVQMh9Ew4IrT2UCOqJ0RwX-uUBj45XFV3Y'
-        },
+        body: passingData,
+        header: ApiProvider.commonHeader(),
       );
 
       if (data != null) {
         ResponseModel responseModel = ResponseModel.fromJson(data);
-
         if (responseModel.success == true) {
           MyToasts.successToast(toast: responseModel.message ?? "No message");
           onResetFormBtnTapped();
@@ -2295,7 +2295,7 @@ class IndexController extends GetxController {
     ///API Calling
     dynamic data = await ApiProvider.commonProvider(
       url: URLs.searchJewelleryUri,
-      bodyData: passData,
+      body: passData,
       header: ApiProvider.commonHeader(),
     );
 
@@ -2406,7 +2406,7 @@ class IndexController extends GetxController {
         ///API Calling
         dynamic data = await ApiProvider.commonProvider(
           url: URLs.deleteCategoryUri,
-          bodyData: passData,
+          body: passData,
           header: ApiProvider.commonHeader(),
         );
 

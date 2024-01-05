@@ -23,7 +23,7 @@ class ResetPasswordController extends GetxController {
 
       dynamic data = await ApiProvider.commonProvider(
         url: URLs.adminResetPasswordUri,
-        bodyData: bodyData,
+        body: bodyData,
       );
 
       if (data != null) {

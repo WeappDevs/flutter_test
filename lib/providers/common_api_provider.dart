@@ -14,19 +14,24 @@ import 'package:http/http.dart' as http;
 class ApiProvider {
   static Future<dynamic> commonProvider({
     required String url,
-    Object? bodyData,
+    Object? body,
     Map<String, String>? header,
     bool? isPrintResponse = true,
   }) async {
     // final hasInternet = await checkInternet();
+
+    debugPrint("URL ==> $url");
+    debugPrint("Header ==> $header");
+    debugPrint("Body ==> $body");
+
     if (true == true) {
       try {
-        final response = await http.post(Uri.parse(url), body: bodyData, headers: header);
+        final response = await http.post(Uri.parse(url), body: body, headers: header);
 
         if (response.statusCode == 200) {
           if (isPrintResponse == true) {
             debugPrint("URl: $url");
-            debugPrint("RowBody: $bodyData");
+            debugPrint("RowBody: $body");
             debugPrint("StatusCode: ${response.statusCode.toString()}");
             debugPrint("Body: ${response.body.toString()}");
             // log(
@@ -88,6 +93,10 @@ class ApiProvider {
     String? otherFieldName,
   }) async {
     // final hasInternet = await checkInternet();
+
+    debugPrint("URL ==> $url");
+    debugPrint("Header ==> $header");
+    debugPrint("Body ==> $body");
 
     if (true == true) {
       var request = http.MultipartRequest('POST', Uri.parse(url));

@@ -28,6 +28,7 @@ class RegexValidation {
   final RegExp kEmailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final RegExp kPassValid = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{7,}$');
   final RegExp kPhoneValid = RegExp(r"([0-9]{8,12}$)");
+  final RegExp kSKUValid = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&*!])[A-Za-z\d@#$%^&*!]+$');
 }
 
 class ValidateStr {
@@ -50,6 +51,8 @@ class ValidateStr {
   static String passwordValidValidator = "Entered password should be minimum 8 character long";
   static String passValidValidator =
       "password must have at least one lowercase, uppercase, digit, and special characters (!\$@%#) and at least 8 characters";
+  static String skuValidValidator =
+      "sku must have at least one lowercase, uppercase, digit, special characters (!\$@%#) and it should be unique";
 
   static String confirmPasswordValidValidator = "confirm password is not same as the new password";
   static String phoneEmptyValidator = "Please enter phone number";
